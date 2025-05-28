@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://b12bvldcy3kts"]
+
+[ext_resource type="Script" uid="uid://bdnmku7adl06u" path="res://Scripts/Root.cs" id="1_glv2v"]
+[ext_resource type="Script" uid="uid://datqvqvw8l06i" path="res://Scripts/Scene.cs" id="2_trn2v"]
+[ext_resource type="Script" uid="uid://btfs01nmb4bbk" path="res://Scripts/Component/AudioMixPlayer.cs" id="3_r0du0"]
+[ext_resource type="Script" uid="uid://cekqq2gf7y07n" path="res://Scripts/Interface.cs" id="3_trn2v"]
+[ext_resource type="AudioStream" uid="uid://bkqggp80p1mhq" path="res://Audio/Mili - Old City.mp3" id="4_lgr22"]
+[ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="5_3dxm6"]
+[ext_resource type="AudioStream" uid="uid://blobw6njkvn22" path="res://Audio/Mili - Old City Market.mp3" id="6_trn2v"]
+[ext_resource type="AudioStream" uid="uid://ci6xtwak1rqax" path="res://Audio/Mili - Old City ~ Respite.mp3" id="7_lgr22"]
+
+[node name="Root" type="Node" node_paths=PackedStringArray("_scene", "_ui", "_audioMixPlayer")]
+script = ExtResource("1_glv2v")
+_scene = NodePath("Scene")
+_ui = NodePath("CanvasLayer/Control")
+_audioMixPlayer = NodePath("Node")
+
+[node name="Scene" type="Node2D" parent="." node_paths=PackedStringArray("Level")]
+script = ExtResource("2_trn2v")
+Level = NodePath("Level")
+
+[node name="Level" type="Node2D" parent="Scene"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_trn2v")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 82.0
+offset_bottom = 26.0
+text = "0"
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("3_r0du0")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node"]
+stream = ExtResource("6_trn2v")
+script = ExtResource("5_3dxm6")
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node"]
+stream = ExtResource("4_lgr22")
+script = ExtResource("5_3dxm6")
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Node"]
+stream = ExtResource("7_lgr22")
+script = ExtResource("5_3dxm6")

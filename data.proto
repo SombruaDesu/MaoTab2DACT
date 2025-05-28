@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message PlayerData {
+  // 位置
+  Vector2 position = 1;
+}
+
+message Vector2 {
+  float x = 1;
+  float y = 2;
+}

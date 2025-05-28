@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bkqggp80p1mhq"
+path="res://.godot/imported/Mili - Old City.mp3-05323fb972fa09f7ec77defc8681f356.mp3str"
+
+[deps]
+
+source_file="res://Audio/Mili - Old City.mp3"
+dest_files=["res://.godot/imported/Mili - Old City.mp3-05323fb972fa09f7ec77defc8681f356.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
