@@ -10,6 +10,13 @@ namespace MaoTab.Scripts;
 public partial class Player
 {
     private InteractionAction _curInteractionAction;
+
+    public void SetInteractionAction(InteractionAction interactionAction)
+    {
+        // 角色没有事件时才挂载
+        if (_curInteractionAction == null)
+            _curInteractionAction = interactionAction;
+    }
     
     public void DoInteractionAction(InteractionAction action)
     {

@@ -93,8 +93,8 @@ public partial class YarnSpinnerPlugin : EditorPlugin
     public static void Initialize()
     {
 #if TOOLS
-        AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly())!
-                           .Unloading += alc => { YarnProjectEditorUtility.ClearJSONCache(); };
+        AssemblyLoadContext.GetLoadContext(Assembly.GetExecutingAssembly())
+            .Unloading += alc => { YarnProjectEditorUtility.ClearJSONCache(); };
 #endif
     }
 
@@ -107,6 +107,9 @@ public partial class YarnSpinnerPlugin : EditorPlugin
         var yarnProjectScript =
             ResourceLoader.Load<CSharpScript>(
                 "res://addons/YarnSpinner-Godot/Runtime/YarnProject.cs");
+        var dialogueRunnerScript =
+            ResourceLoader.Load<CSharpScript>(
+                "res://addons/YarnSpinner-Godot/Runtime/DialogueRunner.cs");
 
         // load icons
         var miniYarnSpinnerIcon =
@@ -142,7 +145,9 @@ public partial class YarnSpinnerPlugin : EditorPlugin
 
         _popup.IdPressed += OnPopupIDPressed;
         AddToolSubmenuItem(ToolsMenuName, _popup);
-        
+
+        AddCustomType(nameof(DialogueRunner), "Node", dialogueRunnerScript,
+            miniYarnSpinnerIcon);
         AddCustomType(nameof(YarnProject), "Resource", yarnProjectScript,
             miniYarnProjectIcon);
     }
@@ -153,7 +158,8 @@ public partial class YarnSpinnerPlugin : EditorPlugin
         {
             RemoveImportPlugin(plugin);
         }
-        
+
+        RemoveCustomType(nameof(DialogueRunner));
         RemoveCustomType(nameof(YarnProject));
         foreach (var plugin in _inspectorPlugins.Where(IsInstanceValid))
         {

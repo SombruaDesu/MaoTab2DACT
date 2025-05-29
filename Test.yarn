@@ -1,12 +1,19 @@
 title: Node_Start
 position: 273,433
 ---
-Null
+NULL
 ===
-
 
 title: Node_A
 position: 273,433
 ---
-Hello
+<<define>>
+·extends Node
+·func _ready():
+·   var nodet = $"../Level/TestLevel/ITestZone" as Node2D;
+·   print(GameState.GetGameLoop());
+·   print(GameState.GetPlayer().position);
+·   print(nodet);
+·   queue_free();
+<<do>>
 ===

@@ -23,15 +23,16 @@ public partial class Logic
 
         Game.MainPlayer          = player;
         Game.Camera.FollowTarget = player;
-
-        await Game.Scene.LoadLevel("TestLevel");
-        var level = Game.Scene.CurLevel;
         
         var home  = Game.Interface.HomePanel;
 
         home.OnHostGame += async void () =>
         {
             home.Visible = false;
+            
+            await Game.Scene.LoadLevel("TestLevel");
+            var level = Game.Scene.CurLevel;
+            
             player.Init(level.SpawnPoint.Position, true);
 
             networkManager.Init(true);
@@ -40,7 +41,7 @@ public partial class Logic
 
             var dlg = await ResourceHelper.LoadPacked<DlgPanel>("res://Panel/DlgPanel.tscn", Game.Interface);
             dlg.Init();
-
+            
             /*Game.Yarn.OnLineArrival += s => 
             { 
                 _ = dlg.FreshDlg(s, () =>
@@ -50,10 +51,13 @@ public partial class Logic
             };*/
         };
 
-        home.OnJoinGame += () =>
+        home.OnJoinGame += async void () =>
         {
             home.Visible = false;
 
+            await Game.Scene.LoadLevel("TestLevel");
+            var level = Game.Scene.CurLevel;
+            
             player.Init(level.SpawnPoint.Position, true);
 
             Game.Camera.FollowTarget = player;

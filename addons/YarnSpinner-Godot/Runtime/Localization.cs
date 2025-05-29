@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using Godot;
 
 #if TOOLS
@@ -41,7 +42,9 @@ public partial class Localization : Resource
                 {
                     try
                     {
-                        _stringTable = JsonConvert.DeserializeObject<Dictionary<string, StringTableEntry>>(_stringTableJSON);
+                        _stringTable =
+                            JsonSerializer.Deserialize(_stringTableJSON,
+                                YarnJSONContext.Default.DictionaryStringStringTableEntry);
                     }
                     catch (Exception e)
                     {
@@ -65,14 +68,12 @@ public partial class Localization : Resource
             {
                 entry.Value.File = ProjectSettings.LocalizePath(entry.Value.File);
             }
-            
-            _stringTableJSON = JsonConvert.SerializeObject(_stringTable);
-            #if TOOLS
-                            YarnProjectEditorUtility.ClearJSONCache();
-            #endif
+
+            _stringTableJSON =
+                JsonSerializer.Serialize(_stringTable, YarnJSONContext.Default.DictionaryStringStringTableEntry);
         }
     }
-    
+
     private System.Collections.Generic.Dictionary<string, string> _runtimeStringTable =
         new();
 
@@ -97,7 +98,7 @@ public partial class Localization : Resource
 
         if (stringTable.ContainsKey(key))
         {
-            return ((StringTableEntry) stringTable[key]).Text;
+            return ((StringTableEntry)stringTable[key]).Text;
         }
 
         return null;
@@ -109,7 +110,7 @@ public partial class Localization : Resource
     /// <returns></returns>
     public List<StringTableEntry> GetStringTableEntries()
     {
-        return (from object key in stringTable.Keys select (StringTableEntry) stringTable[key.ToString()]).ToList();
+        return (from object key in stringTable.Keys select (StringTableEntry)stringTable[key.ToString()]).ToList();
     }
 
     /// <summary>
@@ -186,6 +187,7 @@ public partial class Localization : Resource
     }
 
     #endregion
+
     public virtual void Clear()
     {
         stringTable.Clear();

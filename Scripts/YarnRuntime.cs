@@ -220,11 +220,38 @@ public partial class YarnRuntime : IActionRegistration
         _dialogue.Continue();
     }
 
-    private bool _scriptDefine;
-    public string script;
-
     public Action<string>            OnLineArrival;
     public Action<DialogueOption[]> OnOptionsArrival;
+    
+    /// <summary>
+    /// 捕获模式开关，开启时自动跳过行，并将跳过的行收集起来，直到此标签关闭时停止自动跳过
+    /// </summary>
+    /// <para>收集的行存放于captureLine</para>
+    private bool captureMode = false;
+    private List<LocalizedLine> captureLines = new List<LocalizedLine>();
+
+    /// <summary>
+    /// 启动捕获模式
+    /// </summary>
+    public void StartCaptureMode()
+    {
+        captureLines.Clear();
+        captureMode = true;
+    }
+
+    
+    /// <summary>
+    /// 停止捕获模式
+    /// </summary>
+    public void StopCaptureMode()
+    {
+        captureMode = false;
+    }
+    
+    public List<LocalizedLine> GetCaptureLines()
+    {
+        return captureLines;
+    }
     
     public void Init(YarnProject yarnProject)
     {
@@ -256,9 +283,9 @@ public partial class YarnRuntime : IActionRegistration
         _dialogue.LineHandler += async void (line) =>
         {
             var localisedLine = await GetLocalizedLineAsync(line);
-            if (_scriptDefine)
+            if (captureMode)
             {
-                script +=  localisedLine.TextWithoutCharacterName.Text + "\n";
+                captureLines.Add(localisedLine);
                 Continue();
                 return;
             }
@@ -267,7 +294,7 @@ public partial class YarnRuntime : IActionRegistration
             
             GD.Print(localisedLine.TextWithoutCharacterName.Text);
             // UIRoot.DialoguePanel.Refresh(localisedLine.TextWithoutCharacterName.Text,null);
-            Continue();
+            // Continue();
         };
         
         // 执行-选项

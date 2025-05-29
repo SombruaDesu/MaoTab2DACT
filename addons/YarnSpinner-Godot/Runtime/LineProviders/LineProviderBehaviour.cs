@@ -4,7 +4,6 @@ Yarn Spinner is licensed to you under the terms found in the file LICENSE.md.
 
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Godot;
 using Yarn;
 using Yarn.Markup;
@@ -51,7 +50,7 @@ public interface ILineProvider
     /// name="line"/> should be cancelled.</param>
     /// <returns>A localized line, ready to be presented to the
     /// player.</returns>
-    public Task<LocalizedLine> GetLocalizedLineAsync(Line line, CancellationToken cancellationToken);
+    public YarnTask<LocalizedLine> GetLocalizedLineAsync(Line line, CancellationToken cancellationToken);
 
     /// <summary>
     /// Signals to the line provider that lines with the provided line IDs may
@@ -72,7 +71,7 @@ public interface ILineProvider
     /// should prepare for.</param>
     /// <param name="cancellationToken">A cancellation token that indicates
     /// whether the operation should be cancelled.</param>
-    public Task PrepareForLinesAsync(IEnumerable<string> lineIDs, CancellationToken cancellationToken);
+    public YarnTask PrepareForLinesAsync(IEnumerable<string> lineIDs, CancellationToken cancellationToken);
 
     /// <summary>
     /// Adds a new marker processor to the line provider.
@@ -104,16 +103,16 @@ public interface ILineProvider
 public abstract partial class LineProviderBehaviour : Godot.Node, ILineProvider
 {
     /// <inheritdoc/>
-    public abstract Task<LocalizedLine> GetLocalizedLineAsync(Line line, CancellationToken cancellationToken);
+    public abstract YarnTask<LocalizedLine> GetLocalizedLineAsync(Line line, CancellationToken cancellationToken);
 
     /// <inheritdoc/>
     [Export] public YarnProject? YarnProject { get; set; }
 
     /// <inheritdoc/>
-    public virtual Task PrepareForLinesAsync(IEnumerable<string> lineIDs, CancellationToken cancellationToken)
+    public virtual YarnTask PrepareForLinesAsync(IEnumerable<string> lineIDs, CancellationToken cancellationToken)
     {
         // No-op by default.
-        return Task.CompletedTask;
+        return YarnTask.CompletedTask;
     }
 
     /// <inheritdoc/>

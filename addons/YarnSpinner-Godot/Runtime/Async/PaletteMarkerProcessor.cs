@@ -98,4 +98,29 @@ public partial class PaletteMarkerProcessor : AttributeMarkerProcessor
         // now
         return NoDiagnostics;
     }
+
+    /// <summary>
+    /// Called by Godot when this node is fully set up in the scene tree
+    /// to register itself with <see
+    /// cref="lineProvider"/>.
+    /// </summary>
+    public override void _Ready()
+    {
+        if (!IsInstanceValid(lineProvider))
+        {
+            lineProvider = (LineProviderBehaviour) ((DialogueRunner) (DialogueRunner.FindChild(nameof(DialogueRunner))))
+                .LineProvider;
+        }
+
+        if (palette == null)
+        {
+            GD.PushError($"No palette is set on {nameof(PaletteMarkerProcessor)}");
+            return;
+        }
+
+        foreach (var colour in palette.FormatMarkers)
+        {
+            lineProvider!.RegisterMarkerProcessor(colour.Marker, this);
+        }
+    }
 }

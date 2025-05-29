@@ -1,7 +1,6 @@
 #nullable disable
 
 using System.Threading;
-using System.Threading.Tasks;
 using Godot;
 using Yarn.Markup;
 
@@ -15,9 +14,9 @@ public partial class TextLineProvider : LineProviderBehaviour
     /// </summary>
     [Language] [Export] public string textLanguageCode = System.Globalization.CultureInfo.CurrentCulture.Name;
     
-    private Task? prepareForLinesTask = null;
+    private YarnTask? prepareForLinesTask = null;
 
-    public override bool LinesAvailable => prepareForLinesTask?.IsCompletedSuccessfully ?? false;
+    public override bool LinesAvailable => prepareForLinesTask?.IsCompletedSuccessfully() ?? false;
 
     private LineParser lineParser = new LineParser();
     private BuiltInMarkupReplacer builtInReplacer = new BuiltInMarkupReplacer();
@@ -54,7 +53,7 @@ public partial class TextLineProvider : LineProviderBehaviour
         }
     }
 
-    public override Task<LocalizedLine> GetLocalizedLineAsync(Yarn.Line line,
+    public override YarnTask<LocalizedLine> GetLocalizedLineAsync(Yarn.Line line,
         CancellationToken cancellationToken)
     {
         string text;
@@ -97,13 +96,13 @@ public partial class TextLineProvider : LineProviderBehaviour
         {
             // No line available.
             GD.PushWarning($"Can't locate the text for the line: {line.ID}", this);
-            return Task.FromResult(LocalizedLine.InvalidLine);
+            return YarnTask.FromResult(LocalizedLine.InvalidLine);
         }
 
         var parseResult = lineParser.ParseString(LineParser.ExpandSubstitutions(text, line.Substitutions),
             this.LocaleCode);
 
-        return Task.FromResult(new LocalizedLine()
+        return YarnTask.FromResult(new LocalizedLine()
         {
             TextID = line.ID,
             Text = parseResult,

@@ -34,19 +34,6 @@ public partial class Root : Node
     {
         Instance = this;
         
-        // ReSharper disable once JoinDeclarationAndInitializer
-        YarnProject yarnProject;
-        // yarnProject = ResourceLoader.Load<YarnProject>("res://Story.yarnproject");
-        
-        // 运行时编译 Yarn
-        var yarnCompiler = new YarnCompiler();
-        yarnProject = yarnCompiler.Compile("title: Node_Start\nposition: 273,433\n---\nNull\n===\n\n\ntitle: Node_A\nposition: 273,433\n---\nHello\n===\n");
-        
-        var yarn = new YarnRuntime();
-        Game.Yarn = yarn;
-        yarn.Init(yarnProject);
-        yarn.PlayNode("Node_Start");
-        
         Game.SoundVolumeScale = 0.15f;
         _audioMixPlayer.Init();
         
@@ -55,6 +42,17 @@ public partial class Root : Node
 
         Game.Interface = _ui;
         Game.Interface.Init();
+        
+        // ReSharper disable once JoinDeclarationAndInitializer
+        YarnProject yarnProject;
+        yarnProject = ResourceLoader.Load<YarnProject>("res://Story.yarnproject");
+        // 运行时编译 Yarn
+        // var yarnCompiler = new YarnCompiler();
+        // yarnProject = yarnCompiler.Compile("title: Node_Start\nposition: 273,433\n---\nNull\n===\n\n\ntitle: Node_A\nposition: 273,433\n---\nHello\n===\n");
+        var yarn = new YarnRuntime();
+        Game.Yarn = yarn;
+        yarn.Init(yarnProject);
+        yarn.PlayNode("Node_Start");
         
         _logic.Init();
     }

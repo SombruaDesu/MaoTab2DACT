@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b12bvldcy3kts"]
+[gd_scene load_steps=10 format=3 uid="uid://b12bvldcy3kts"]
 
 [ext_resource type="Script" uid="uid://bdnmku7adl06u" path="res://Scripts/Root.cs" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://datqvqvw8l06i" path="res://Scripts/Scene.cs" id="2_trn2v"]
@@ -8,6 +8,16 @@
 [ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="5_3dxm6"]
 [ext_resource type="AudioStream" uid="uid://blobw6njkvn22" path="res://Audio/Mili - Old City Market.mp3" id="6_trn2v"]
 [ext_resource type="AudioStream" uid="uid://ci6xtwak1rqax" path="res://Audio/Mili - Old City ~ Respite.mp3" id="7_lgr22"]
+
+[sub_resource type="GDScript" id="GDScript_trn2v"]
+resource_name = "TEST"
+script/source = "extends Node
+func _ready():
+   var nodet = $\"../Level/TestLevel/ITestZone\" as Node2D;
+   print(GameState.GetGameLoop());
+   print(nodet);
+   queue_free();
+"
 
 [node name="Root" type="Node" node_paths=PackedStringArray("_scene", "_ui", "_audioMixPlayer")]
 script = ExtResource("1_glv2v")
@@ -52,3 +62,6 @@ script = ExtResource("5_3dxm6")
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Node"]
 stream = ExtResource("7_lgr22")
 script = ExtResource("5_3dxm6")
+
+[node name="TESTNODE" type="Node" parent="."]
+script = SubResource("GDScript_trn2v")

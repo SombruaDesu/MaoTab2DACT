@@ -5,8 +5,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Godot;
 using Google.Protobuf;
 using Microsoft.Extensions.FileSystemGlobbing;
@@ -388,11 +391,11 @@ public static class YarnProjectEditorUtility
     /// </summary>
     public static void ClearJSONCache()
     {
-        // var assembly = typeof(JsonSerializerOptions).Assembly;
-        // var updateHandlerType = assembly.GetType("System.Text.Json.JsonSerializerOptionsUpdateHandler");
-        // var clearCacheMethod =
-        //     updateHandlerType?.GetMethod("ClearCache", BindingFlags.Static | BindingFlags.Public);
-        // clearCacheMethod?.Invoke(null, new object?[] { null });
+        var assembly = typeof(JsonSerializerOptions).Assembly;
+        var updateHandlerType = assembly.GetType("System.Text.Json.JsonSerializerOptionsUpdateHandler");
+        var clearCacheMethod =
+            updateHandlerType?.GetMethod("ClearCache", BindingFlags.Static | BindingFlags.Public);
+        clearCacheMethod?.Invoke(null, new object?[] { null });
     }
 
     public static void SaveYarnProject(YarnProject project)
@@ -410,9 +413,7 @@ public static class YarnProjectEditorUtility
         {
             project.JSONProjectPath = project.DefaultJSONProjectPath;
         }
-
-        // Prevent plugin failing to load when code is rebuilt
-        ClearJSONCache();
+        
         var saveErr = ResourceSaver.Save(project, project.ImportPath);
         if (saveErr != Error.Ok)
         {
@@ -465,10 +466,9 @@ public static class YarnProjectEditorUtility
                 errors = compilationResult.Diagnostics.Where(d =>
                     d.Severity == Diagnostic.DiagnosticSeverity.Error);
 
-                var diagnostics = errors as Diagnostic[] ?? errors.ToArray();
-                if (diagnostics.Any())
+                if (errors.Any())
                 {
-                    var errorGroups = diagnostics.GroupBy(e => e.FileName);
+                    var errorGroups = errors.GroupBy(e => e.FileName);
                     foreach (var errorGroup in errorGroups)
                     {
                         var errorMessages = errorGroup.Select(e => e.ToString());
@@ -479,7 +479,7 @@ public static class YarnProjectEditorUtility
                         }
                     }
 
-                    var projectErrors = diagnostics.ToList().ConvertAll(e =>
+                    var projectErrors = errors.ToList().ConvertAll(e =>
                         new YarnProjectError
                         {
                             Context = e.Context,
@@ -972,7 +972,7 @@ public static class YarnProjectEditorUtility
         {
             var toolName = "YarnSpinner";
             var toolVersion = YarnSpinnerPlugin.VersionString;
-            WriteLine($"[System.CodeDom.Compile.GeneratedCode(\"{toolName}\", \"{toolVersion}\")]");
+            WriteLine($"[System.CodeDom.Compiler.GeneratedCode(\"{toolName}\", \"{toolVersion}\")]");
         }
 
         // For each user-defined enum, create a C# enum type

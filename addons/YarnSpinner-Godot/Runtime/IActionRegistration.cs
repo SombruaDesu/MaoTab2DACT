@@ -16,33 +16,36 @@ namespace YarnSpinnerGodot;
 public interface IActionRegistration
 {
     /// <summary>
-    /// 添加一个命令处理器。在调用命令后，对话将暂停执行。
+    /// Adds a command handler. Dialogue will pause execution after the
+    /// command is called.
     /// </summary>
     /// <remarks>
-    /// <para>当这个命令处理器被添加后，可以通过以下方式在你的Yarn脚本中调用：</para>
+    /// <para>When this command handler has been added, it can be called
+    /// from your Yarn scripts like so:</para>
     ///
     /// <code lang="yarn">
     /// &lt;&lt;commandName param1 param2&gt;&gt;
     /// </code>
     ///
-    /// <para>如果<paramref name="handler"/>是一个返回<see
-    /// cref="Coroutine"/>的方法，当命令被执行时，<see
-    /// cref="DialogueRunner"/>会等待返回的协程停止后再继续交付更多内容。</para>
-    /// <para>如果<paramref name="handler"/>是一个返回<see
-    /// cref="IEnumerator"/>的方法，当命令被执行时，<see
-    /// cref="DialogueRunner"/>会使用该方法启动一个协程，并在协程停止后再交付更多内容。
+    /// <para>If <paramref name="handler"/> is a method that returns a <see
+    /// cref="Coroutine"/>, when the command is run, the <see
+    /// cref="DialogueRunner"/> will wait for the returned coroutine to stop
+    /// before delivering any more content.</para>
+    /// <para>If <paramref name="handler"/> is a method that returns an <see
+    /// cref="IEnumerator"/>, when the command is run, the <see
+    /// cref="DialogueRunner"/> will start a coroutine using that method and
+    /// wait for that coroutine to stop before delivering any more content.
     /// </para>
     /// </remarks>
-    /// <param name="commandName">命令的名称。</param>
-    /// <param name="handler">当调用命令时将被调用的<see cref="CommandHandler"/>。</param>
+    /// <param name="commandName">The name of the command.</param>
+    /// <param name="handler">The <see cref="CommandHandler"/> that will be
+    /// invoked when the command is called.</param>
     void AddCommandHandler(string commandName, Delegate handler);
 
     /// <inheritdoc cref="AddCommandHandler(string, Delegate)"/>
-    /// <summary>
-    /// 此方法使用反射，请勿使用。
-    /// </summary>
-    /// <param name="commandName">命令的名称。</param>
-    /// <param name="methodInfo">当调用命令时将被调用的方法。</param>
+    /// <param name="commandName">The name of the command.</param>
+    /// <param name="methodInfo">The method that will be invoked when the
+    /// command is called.</param>
     void AddCommandHandler(string commandName, MethodInfo methodInfo);
 
     /// <summary>
@@ -196,6 +199,58 @@ public static class ActionRegistrationExtension
         string commandName,
         System.Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, System.Threading.Tasks.Task> handler) =>
         registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler(this IActionRegistration registration, string commandName,
+        System.Func<YarnTask> handler) => registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1>(this IActionRegistration registration, string commandName,
+        System.Func<T1, YarnTask> handler) => registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2>(this IActionRegistration registration, string commandName,
+        System.Func<T1, T2, YarnTask> handler) => registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3>(this IActionRegistration registration, string commandName,
+        System.Func<T1, T2, T3, YarnTask> handler) => registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4>(this IActionRegistration registration, string commandName,
+        System.Func<T1, T2, T3, T4, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5>(this IActionRegistration registration, string commandName,
+        System.Func<T1, T2, T3, T4, T5, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5, T6>(this IActionRegistration registration,
+        string commandName, System.Func<T1, T2, T3, T4, T5, T6, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5, T6, T7>(this IActionRegistration registration,
+        string commandName, System.Func<T1, T2, T3, T4, T5, T6, T7, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5, T6, T7, T8>(this IActionRegistration registration,
+        string commandName, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5, T6, T7, T8, T9>(this IActionRegistration registration,
+        string commandName, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+
+    /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
+    public static void AddCommandHandler<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(this IActionRegistration registration,
+        string commandName, System.Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, YarnTask> handler) =>
+        registration.AddCommandHandler(commandName, (Delegate) handler);
+    // GYB11 END
 
     /// <inheritdoc cref="IActionRegistration.AddCommandHandler(string, Delegate)"/>
     public static void AddCommandHandler<T1>(this IActionRegistration registration, string commandName,

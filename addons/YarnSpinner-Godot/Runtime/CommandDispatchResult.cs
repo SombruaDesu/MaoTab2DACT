@@ -3,8 +3,6 @@ Yarn Spinner is licensed to you under the terms found in the file LICENSE.md.
 */
 
 using System;
-using System.Threading.Tasks;
-using Yarn;
 
 #nullable enable
 
@@ -48,15 +46,15 @@ internal struct CommandDispatchResult
 
     internal string? Message;
 
-    internal Task Task;
+    internal YarnTask Task;
 
     public CommandDispatchResult(StatusType status)
     {
         Status = status;
-        Task = Task.CompletedTask;
+        Task = YarnTask.CompletedTask;
         Message = null;
     }
-    public CommandDispatchResult(StatusType status, Task task)
+    public CommandDispatchResult(StatusType status, YarnTask task)
     {
         Status = status;
         Task = task;

@@ -2,13 +2,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Text.Json;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 using Godot;
+using Godot.Collections;
 using Yarn;
+using Yarn.Compiler;
 using Array = System.Array;
 #if TOOLS
+using YarnSpinnerGodot;
 #endif
 
 namespace YarnSpinnerGodot;
@@ -114,15 +118,11 @@ public partial class YarnProject : Resource
     /// <seealso cref="variablesClassName"/>
     /// <seealso cref="variablesClassNamespace"/>
     [Export] public string variablesClassParent = typeof(InMemoryVariableStorage).FullName;
-    
+
+#if TOOLS
     public string DefaultJSONProjectPath => new Regex(@"\.tres$").Replace(ResourcePath, ".yarnproject");
     private Yarn.Compiler.Project _jsonProject;
 
-    /// <summary>
-    /// 运行时编译的
-    /// </summary>
-    public bool isRuntimeCompiler;
-    
     /// <summary>
     /// Information available in the editor via the .yarnproject file,
     /// parsed from JSON into a <see cref="Yarn.Compiler.Project"/>
@@ -141,8 +141,7 @@ public partial class YarnProject : Resource
                 if (!File.Exists(ProjectSettings.GlobalizePath(JSONProjectPath)))
                 {
                     _jsonProject = new Yarn.Compiler.Project();
-                    if(!isRuntimeCompiler)
-                        SaveJSONProject();
+                    SaveJSONProject();
                 }
                 else
                 {
@@ -166,6 +165,7 @@ public partial class YarnProject : Resource
     /// Stored in the .yarnproject file
     /// </summary>
     public string defaultLanguage => JSONProject.BaseLanguage;
+#endif
 
     private LineMetadata _lineMetadata;
 
@@ -182,7 +182,8 @@ public partial class YarnProject : Resource
             {
                 try
                 {
-                    _lineMetadata = JsonConvert.DeserializeObject<LineMetadata>(_lineMetadataJSON);
+                    _lineMetadata =
+                        JsonSerializer.Deserialize(_lineMetadataJSON, YarnJSONContext.Default.LineMetadata);
                 }
                 catch (Exception e)
                 {
@@ -201,10 +202,7 @@ public partial class YarnProject : Resource
         set
         {
             _lineMetadata = value;
-            _lineMetadataJSON = JsonConvert.SerializeObject(_lineMetadata);
-#if TOOLS
-            YarnProjectEditorUtility.ClearJSONCache();
-#endif
+            _lineMetadataJSON = JsonSerializer.Serialize(_lineMetadata, YarnJSONContext.Default.LineMetadata);
         }
     }
 
@@ -225,7 +223,8 @@ public partial class YarnProject : Resource
             {
                 try
                 {
-                    _listOfFunctions = JsonConvert.DeserializeObject<FunctionInfo[]>(_listOfFunctionsJSON);
+                    _listOfFunctions = JsonSerializer.Deserialize(_listOfFunctionsJSON,
+                        YarnJSONContext.Default.FunctionInfoArray);
                 }
                 catch (Exception e)
                 {
@@ -243,10 +242,8 @@ public partial class YarnProject : Resource
         set
         {
             _listOfFunctions = value;
-            _listOfFunctionsJSON = JsonConvert.SerializeObject(_listOfFunctions);
-#if TOOLS
-            YarnProjectEditorUtility.ClearJSONCache();
-#endif
+            _listOfFunctionsJSON =
+                JsonSerializer.Serialize(_listOfFunctions, YarnJSONContext.Default.FunctionInfoArray);
         }
     }
 
@@ -267,7 +264,9 @@ public partial class YarnProject : Resource
             {
                 try
                 {
-                    _serializedDeclarations = JsonConvert.DeserializeObject<SerializedDeclaration[]>(_serializedDeclarationsJSON);
+                    _serializedDeclarations =
+                        JsonSerializer.Deserialize(_serializedDeclarationsJSON,
+                            YarnJSONContext.Default.SerializedDeclarationArray);
                 }
                 catch (Exception e)
                 {
@@ -285,10 +284,8 @@ public partial class YarnProject : Resource
         set
         {
             _serializedDeclarations = value;
-            _serializedDeclarationsJSON = JsonConvert.SerializeObject(_serializedDeclarations);
-#if TOOLS
-            YarnProjectEditorUtility.ClearJSONCache();
-#endif
+            _serializedDeclarationsJSON = JsonSerializer.Serialize(_serializedDeclarations,
+                YarnJSONContext.Default.SerializedDeclarationArray);
         }
     }
 

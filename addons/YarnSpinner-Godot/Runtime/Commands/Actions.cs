@@ -11,7 +11,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using MaoTab.Scripts;
 using Yarn;
 using Node = Godot.Node;
 
@@ -248,8 +247,7 @@ public class Actions : ICommandDispatcher
                     var parameterArrayElementType = parameters[i].ParameterType.GetElementType();
                     var paramIndex = i;
                     // var paramsArray = new List<object?>();
-                    // var paramsArray = Array.CreateInstance(parameterArrayElementType!, argumentCount - i);
-                    var paramsArray = new object?[argumentCount - i];
+                    var paramsArray = Array.CreateInstance(parameterArrayElementType!, argumentCount - i);
                     while (i < argumentCount)
                     {
                         arg = args[i];
@@ -299,10 +297,9 @@ public class Actions : ICommandDispatcher
                     }
                 }
             }
-            
+
             for (int i = argumentCount; i < finalArgs.Length; i++)
             {
-                
                 var parameter = parameters[i];
                 if (parameter.IsOptional)
                 {
@@ -314,11 +311,7 @@ public class Actions : ICommandDispatcher
                 {
                     // If the parameter is a params array, provide an empty
                     // array of the appropriate type.
-                    GD.PushWarning("检测到发布版可能会发生的异常，已跳过，请检查代码");
-                    // BUG: 下面的代码会发生异常，并且仅在发布版中会发生，故屏蔽
-                    // 如果推送了上方的报警再进行处理
-                    
-                    // finalArgs[i] = Array.CreateInstance(parameter.ParameterType!.GetElementType()!, 0);
+                    finalArgs[i] = Array.CreateInstance(parameter.ParameterType!.GetElementType()!, 0);
                 }
                 else
                 {
@@ -384,7 +377,7 @@ public class Actions : ICommandDispatcher
                     // We need at least one parameter, which is the
                     // component to look for
                     return new CommandDispatchResult(CommandDispatchResult.StatusType.InvalidParameterCount,
-                        Task.CompletedTask)
+                        YarnTask.CompletedTask)
                     {
                         Message = $"{this.Name} needs a target, but none was specified",
                     };
@@ -397,12 +390,35 @@ public class Actions : ICommandDispatcher
 
                 parameters.RemoveAt(0);
 
-               
-                // We couldn't find a target with this name.
-                return new CommandDispatchResult(CommandDispatchResult.StatusType.TargetMissingComponent)
+                var gameObject = gameObjectName.Contains('/')
+                    ? DialogueRunner.FindNodeByPath(gameObjectName)
+                    : DialogueRunner.FindChild(gameObjectName);
+
+                if (gameObject == null)
                 {
-                    Message = $"No game object named \"{gameObjectName}\" exists",
-                };
+                    // We couldn't find a target with this name.
+                    return new CommandDispatchResult(CommandDispatchResult.StatusType.TargetMissingComponent)
+                    {
+                        Message = $"No game object named \"{gameObjectName}\" exists",
+                    };
+                }
+
+                // We've found a target.  Does it have a childthat's
+                // the right type of object to call the method on?
+                var targetComponent = gameObject.GetType().IsAssignableTo(this.DeclaringType)
+                    ? gameObject
+                    : FindTypedNodeInChildren(gameObject, this.DeclaringType);
+
+                if (!GodotObject.IsInstanceValid(targetComponent))
+                {
+                    return new CommandDispatchResult(CommandDispatchResult.StatusType.TargetMissingComponent)
+                    {
+                        Message =
+                            $"{this.Name} can't be called on {gameObjectName}, because it doesn't have a {this.DeclaringType.Name}",
+                    };
+                }
+
+                target = targetComponent;
             }
             else if (Method.IsStatic)
             {
@@ -502,12 +518,12 @@ public class Actions : ICommandDispatcher
 
         readonly Dictionary<Type, string> TypeFriendlyNames = new Dictionary<Type, string>
         {
-            {typeof(int), "number"},
-            {typeof(float), "number"},
-            {typeof(double), "number"},
-            {typeof(Decimal), "number"},
-            {typeof(string), "string"},
-            {typeof(bool), "bool"},
+            { typeof(int), "number" },
+            { typeof(float), "number" },
+            { typeof(double), "number" },
+            { typeof(Decimal), "number" },
+            { typeof(string), "string" },
+            { typeof(bool), "bool" },
         };
     }
 
@@ -610,13 +626,13 @@ public class Actions : ICommandDispatcher
 
     CommandDispatchResult ICommandDispatcher.DispatchCommand(string command, Godot.Node coroutineHost)
     {
-        var commandPieces = new List<string>(YarnRuntime.SplitCommandText(command));
+        var commandPieces = new List<string>(DialogueRunner.SplitCommandText(command));
 
         if (commandPieces.Count == 0)
         {
             // No text was found inside the command, so we won't be able to
             // find it.
-            return new CommandDispatchResult(CommandDispatchResult.StatusType.CommandUnknown, Task.CompletedTask);
+            return new CommandDispatchResult(CommandDispatchResult.StatusType.CommandUnknown, YarnTask.CompletedTask);
         }
 
         if (_commands.TryGetValue(commandPieces[0], out var registration))
@@ -686,7 +702,17 @@ public class Actions : ICommandDispatcher
         // find the Node with the handler
         if (typeof(Node).IsAssignableFrom(targetType))
         {
-            return (arg, i) => null;
+            return (arg, i) =>
+            {
+                Node gameObject =
+                    arg.Contains('/') ? DialogueRunner.FindNodeByPath(arg) : DialogueRunner.FindChild(arg);
+                if (!GodotObject.IsInstanceValid(gameObject))
+                {
+                    return null;
+                }
+
+                return FindTypedNodeInChildren(gameObject, targetType);
+            };
         }
 
         // bools can take "true" or "false", or the parameter name.
@@ -727,6 +753,7 @@ public class Actions : ICommandDispatcher
                     {
                         return Variant.From(arg);
                     }
+
                     // It's nullable, convert it to non-nullable for GDScript compatibility.
                     return Variant.From(Convert.ChangeType(arg, nullableType));
                 }
@@ -787,7 +814,7 @@ public class Actions : ICommandDispatcher
 
     public void AddCommandHandler(string commandName, Func<object> handler)
     {
-        this.AddCommandHandler(commandName, (Delegate) handler);
+        this.AddCommandHandler(commandName, (Delegate)handler);
     }
 
     /// <summary>
