@@ -4,18 +4,12 @@ using Godot;
 
 namespace MaoTab.Scripts.Component;
 
-public partial class TypingEffectText : RichTextLabel
+public partial class TypingEffectText : Control
 {
     /// <summary>
     /// 逐段打印时使用的结束符
     /// </summary>
     private string _typingText = "_";
-
-    /// <summary>
-    /// 水平框，用于规范文本靠左还是靠右
-    /// </summary>
-    [Export]
-    private Control HBox { get; set; }
 
     /// <summary>
     /// 占位配置边距的文本

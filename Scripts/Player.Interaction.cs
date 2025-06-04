@@ -27,15 +27,16 @@ public partial class Player
     
     public void InteractionInput()
     {
-        if (_curInteractionAction != null)
+        if (_curInteractionAction == null) return;
+        
+        switch (_curInteractionAction.Type)
         {
-            switch (_curInteractionAction.Type)
-            {
-                case InteractionType.Yarn:
-                    if(_curInteractionAction.Info != string.Empty)
-                        Game.Yarn.PlayNode(_curInteractionAction.Info);
-                    break;
-            }
+            case InteractionType.Once:
+                if (_curInteractionAction.Info != string.Empty)
+                {
+                    Game.Yarn.PlayNode(_curInteractionAction.Info);
+                }
+                break;
         }
     }
 }

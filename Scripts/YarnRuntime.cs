@@ -61,7 +61,7 @@ public partial class YarnRuntime : IActionRegistration
         else
         {
             text = Root.Instance.Tr($"{line.ID}");
-            // fall back to base locale
+            // 回退到基本区域设置
             if (text.Equals(line.ID))
             {
                 if (_yarnProject != null) text = _yarnProject.baseLocalization.GetLocalizedString(sourceLineID);
@@ -89,13 +89,21 @@ public partial class YarnRuntime : IActionRegistration
         });
     }
 
+    public void SelectedOption(int optionId)
+    {
+        _dialogue.SetSelectedOption(optionId);
+        Continue();
+    }
+    
     public void PlayNode(string node)
     {
+        if(IsRunning) return;
         _dialogue.SetNode(node);
         Continue();
     }
-
+    
     private ICommandDispatcher CommandDispatcher { get; set; } = null!;
+    
     private async Task OnCommandReceivedAsync(Command command)
     {
         CommandDispatchResult dispatchResult = CommandDispatcher!.DispatchCommand(command.Text, null);
@@ -220,7 +228,7 @@ public partial class YarnRuntime : IActionRegistration
         _dialogue.Continue();
     }
 
-    public Action<string>            OnLineArrival;
+    public Action<string>           OnLineArrival;
     public Action<DialogueOption[]> OnOptionsArrival;
     
     /// <summary>
@@ -252,6 +260,8 @@ public partial class YarnRuntime : IActionRegistration
     {
         return captureLines;
     }
+
+    public bool IsRunning;
     
     public void Init(YarnProject yarnProject)
     {
@@ -263,25 +273,17 @@ public partial class YarnRuntime : IActionRegistration
         CommandDispatcher = actions;
         actions.RegisterActions();
         
-        // 预测-行
-        _dialogue.PrepareForLinesHandler += async void (lines) =>
-        {
-            foreach (var line in lines)
-            {
-                var localisedLine = await GetLocalizedLineAsync(line);
-                
-            }
-        };
-        
         // 执行-指令
         _dialogue.CommandHandler += command =>
         {
-            _ = OnCommandReceivedAsync(command);
+            IsRunning = true;
+            _         = OnCommandReceivedAsync(command);
         };
         
         // 执行-行
         _dialogue.LineHandler += async void (line) =>
         {
+            IsRunning = true;
             var localisedLine = await GetLocalizedLineAsync(line);
             if (captureMode)
             {
@@ -300,6 +302,7 @@ public partial class YarnRuntime : IActionRegistration
         // 执行-选项
         _dialogue.OptionsHandler += async void (data) =>
         {
+            IsRunning = true;
             DialogueOption[] localisedOptions = new DialogueOption[data.Options.Length];
             for (int i = 0; i < data.Options.Length; i++)
             {
@@ -329,18 +332,6 @@ public partial class YarnRuntime : IActionRegistration
         };
         
         BindCommand();
-        
-        /*CommandDispatcher.AddCommandHandler("run" , () =>
-        {
-            LuaRuntime.ExecuteLuaScript(script);
-            scriptDefine = false;
-            Continue();
-        });
-        CommandDispatcher.AddCommandHandler("script" , (string s) =>
-        {
-            LuaRuntime.ExecuteLuaScript(s);
-            Continue();
-        });*/
         
         _dialogue.SetProgram(yarnProject.Program);
     }

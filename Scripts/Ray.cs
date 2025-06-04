@@ -16,7 +16,7 @@ public partial class Ray : RayCast2D
         TargetPosition     = pos;
         _debugLine.Points  = [Position, pos];
     }
-
+    
     public void Init()
     {
         _debugLine.Visible = false;

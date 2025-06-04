@@ -1,6 +1,5 @@
 ﻿using Godot;
-using MaoTab.Scripts.Component;
-using MaoTab.Scripts.System;
+using YarnSpinnerGodot;
 
 namespace MaoTab.Scripts;
 
@@ -14,6 +13,29 @@ public partial class YarnRuntime
         {
             StartCaptureMode();
             Continue();
+        });
+        
+        CommandDispatcher.AddCommandHandler("end", () =>
+        {
+            Game.Interface.DlgPanel.Hide(false);
+            IsRunning = false;
+        });
+        
+        CommandDispatcher.AddCommandHandler("pass", () =>
+        {
+            Game.Interface.DlgPanel.Hide(false);
+            Continue();
+        });
+        
+        CommandDispatcher.AddCommandHandler<string,string>("add_level_tag", (scene,tag) =>
+        {
+            Game.Scene.AddTag(scene,tag);
+            Continue();
+        });
+        
+        CommandDispatcher.AddFunction<string,string,bool>("has_level_tag", (scene,tag) =>
+        {
+            return Game.Scene.HasTag(scene,tag);
         });
         
         CommandDispatcher.AddCommandHandler("do", () =>

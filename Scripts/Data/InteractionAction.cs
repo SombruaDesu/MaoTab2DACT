@@ -21,5 +21,6 @@ public partial class InteractionAction : GodotObject
 
 public enum InteractionType
 {
-    Yarn
+    Once,
+    Repeated
 }

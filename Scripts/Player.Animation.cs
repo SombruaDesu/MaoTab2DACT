@@ -18,6 +18,7 @@ public partial class Player
     {
         None,
         /*站立*/ Idle,
+        /*挂墙*/ WallHang,
         /*起走*/ WalkStart, /*走路循环*/ Walk,    /*走路结束*/ WalkEnd,
         /*起跑*/ RunStart,  /*跑步循环*/ Run,     /*刹车*/     RunEnd,
         /*跳*/   Jump,      /*坠落*/     Falling, /*落地*/     Landing,
@@ -43,6 +44,7 @@ public partial class Player
             { EAnimationState.Jump, 1f },
             { EAnimationState.Falling, 1f },
             { EAnimationState.Landing, 1f },
+            { EAnimationState.WallHang, 1f },
             { EAnimationState.Attack, 1f }
         };
     }
@@ -66,6 +68,9 @@ public partial class Player
             case EAnimationState.Falling:
                 _animationPlayer.PlayNotAsync("Falling");
                 break;
+            case EAnimationState.WallHang:
+                _animationPlayer.PlayNotAsync("WallHang");
+                break;
             case EAnimationState.Attack:
                 await _animationPlayer.PlayAsync("Attack");
                 AttackOver();
@@ -85,6 +90,10 @@ public partial class Player
         if (_isAttack)
         {
             newState = EAnimationState.Attack;
+        }
+        else if (_isWallHanging)
+        {
+            newState = EAnimationState.WallHang;
         }
         else
         {

@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnxsvbj2ivcxw"]
+
+[ext_resource type="Script" uid="uid://cj0nuvyfni6" path="res://Scripts/Panel/DlgOpt.cs" id="1_nfghm"]
+
+[node name="DlgOpt" type="MarginContainer" node_paths=PackedStringArray("label", "button")]
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+script = ExtResource("1_nfghm")
+label = NodePath("MarginContainer/RichTextLabel")
+button = NodePath("Button")
+
+[node name="Button" type="Button" parent="."]
+show_behind_parent = true
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+text = "Button
+"
+fit_content = true

@@ -3,6 +3,8 @@
  * @Description: 游戏管理器
  */
 
+using System.Collections.Generic;
+
 namespace MaoTab.Scripts;
 
 public static partial class Game
@@ -20,6 +22,8 @@ public static partial class Game
     public static Player MainPlayer;
     
     public static Player OtherPlayer;
+    
+    public static HashSet<string> Tags = new();
     
     public static void Tick(double delta)
     {

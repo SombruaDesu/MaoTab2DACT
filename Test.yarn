@@ -1,19 +1,58 @@
 title: Node_Start
 position: 273,433
 ---
-NULL
+<<end>>
 ===
 
-title: Node_A
+title: Node_TestDlg
 position: 273,433
 ---
+<<if has_level_tag("this","已经跟Fox对话了")>>
+    <<end>>
+<<endif>>
+// 调用GDS检测玩家是在NPC的前面还是后面
 <<define>>
 ·extends Node
 ·func _ready():
-·   var nodet = $"../Level/TestLevel/ITestZone" as Node2D;
-·   print(GameState.GetGameLoop());
-·   print(GameState.GetPlayer().position);
-·   print(nodet);
-·   queue_free();
+·   var node = GameState.GetLevelNode("Path2D/PathFollow2D/ITestZone/Sprite2D") as Node2D
+·   GameState.StorageNode("fox",node)
+·   if GameState.GetPlayer().position.x < node.global_position.x:
+·       GameState.AddLevelTag("this","玩家在Fox的身后")
+·   queue_free()
+<<do>>
+<<if has_level_tag("this","玩家在Fox的身后")>>
+    唔，是谁在我后面？
+    // 调用GDS让NPC的模型翻转面向玩家
+    <<define>>
+    ·extends Node
+    ·func _ready():
+    ·   var node = GameState.PeekNode("fox") as AnimatedSprite2D
+    ·   node.flip_h = true
+    ·   queue_free()
+    <<do>>
+    啊，是你啊，早上好！
+    <<jump Node_TestDlg2>>
+<<endif>>
+早上好！
+<<jump Node_TestDlg2>>
+===
+
+title: Node_TestDlg2
+position: 275,720
+---
+->Player:你这是怎么了？
+哦！不用在意，那是我在练习单脚站立！
+说到这个，我最近感觉又提升了不少，我们赶快去试试吧。
+<<add_level_tag "this" "已经跟Fox对话了">>
+<<pass>>
+<<define>>
+·extends Node
+·func _ready():
+·   var node = GameState.PeekNode("fox") as AnimatedSprite2D;
+·   if GameState.HasLevelTag("this","玩家在Fox的身后"):
+·       node.flip_h = false
+·   var player = GameState.GetLevelNode("Path2D/PathFollow2D/ITestZone/AnimationAsyncPlayer") as AnimationAsyncPlayer;
+·   player.Play("Move",1)
+·   queue_free()
 <<do>>
 ===

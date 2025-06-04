@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * @Author: MaoT
+ * @Description: 主菜单界面
+ */
+
+using System;
 using Godot;
 
 namespace MaoTab.Scripts.Panel;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=56 format=3 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -157,17 +157,18 @@ func _on_body_exited(body: Node2D) -> void: # 当有玩家“离开”当前脚�
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u18fy"]
 size = Vector2(1135.5, 286)
 
+[sub_resource type="Curve2D" id="Curve2D_7x0wu"]
+_data = {
+"points": PackedVector2Array(-23.1133, -0.212044, 0, 0, -82, -31, 0, 0, 0, 0, -23.825, -31, -15.2866, -2.53122, 15.2866, 2.53122, 32, -93, 2.61, 4.665, -2.61, -4.665, 55, -62, -15.551663, 0.19686863, 15.551663, -0.19686863, 100, -91, -0.07320249, -27.59734, 0.07320249, 27.59734, 148, -31, 0, 0, 0, 0, 148, -31, 0, 0, 0, 0, 327, -31)
+}
+point_count = 8
+
 [sub_resource type="GDScript" id="GDScript_7x0wu"]
 resource_name = "Box"
 script/source = "extends Area2D
 
 func _ready() -> void: #当游戏开始时
 	var a = $Sprite2D/AnimationPlayer as AnimationAsyncPlayer; # 获取场景里的人物模型
-	
-	a.Play(\"Idle\",1);    			# 播放Idle动画，一次性
-	await a.OnAnimationFinished;	# 等待上面的动画播放完毕
-	print(\"Idle ok\")				# 输出日志 待机的动画播完了
-	
 	a.Play(\"Run\",1); 				# 播放Idle动画，一次性
 	await a.OnAnimationFinished;	# 再次等待上面触发的动画播放完毕
 	print(\"Run ok\")					# 输出日志 跑的动画播完了
@@ -176,9 +177,8 @@ func _ready() -> void: #当游戏开始时
 func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
-		
 	var p = body as Player;
-	p.SetInteractionAction(InteractionAction.Create(0, \"Node_A\"));
+	p.SetInteractionAction(InteractionAction.Create(0, \"Node_TestDlg\"));
 	pass
 "
 
@@ -448,6 +448,54 @@ _data = {
 &"Walk": SubResource("Animation_3ug3b")
 }
 
+[sub_resource type="Animation" id="Animation_7x0wu"]
+resource_name = "Move"
+length = 3.9999995
+step = 0.0333333
+tracks/0/type = "animation"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D/AnimationPlayer")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"clips": PackedStringArray("Run", "Jump", "Falling", "Idle", "Jump", "Falling", "Idle", "Run"),
+"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9, 1, 1.2666667, 1.7333333, 1.8000001)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("..:progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9006362, 1, 1.2666667, 1.7333333, 2.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 57.400005, 141.41309, 184.9796, 184.9796, 231.68571, 323.67383, 499.74945]
+}
+
+[sub_resource type="Animation" id="Animation_xhnlc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hh7ik"]
+_data = {
+&"Move": SubResource("Animation_7x0wu"),
+&"RESET": SubResource("Animation_xhnlc")
+}
+
 [sub_resource type="GDScript" id="GDScript_u18fy"]
 resource_name = "Box"
 script/source = "extends Area2D
@@ -533,10 +581,11 @@ size = Vector2(30, 30)
 
 [node name="TestLevel" type="Node2D" node_paths=PackedStringArray("SpawnPoint")]
 script = ExtResource("1_1yrnh")
+LevelName = "TestLevel"
 SpawnPoint = NodePath("SpawnPoint")
 
 [node name="SpawnPoint" type="Node2D" parent="."]
-position = Vector2(777, 423)
+position = Vector2(418, 423)
 
 [node name="Plan3" type="Sprite2D" parent="."]
 modulate = Color(0.43, 0.43, 0.43, 1)
@@ -546,7 +595,7 @@ texture = ExtResource("2_u18fy")
 
 [node name="Plan7" type="Sprite2D" parent="."]
 modulate = Color(0.493545, 0.493546, 0.493546, 1)
-position = Vector2(606.5, 476)
+position = Vector2(607, 470)
 scale = Vector2(1179, 328)
 texture = ExtResource("2_u18fy")
 
@@ -569,16 +618,6 @@ autowrap_mode = 0
 
 [node name="Plan" type="Node2D" parent="."]
 position = Vector2(515, 236)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Plan"]
-offset_left = -42.0
-offset_top = -65.0
-offset_right = 48.0
-offset_bottom = -42.0
-theme_override_font_sizes/normal_font_size = 16
-text = "在这切音频1"
-fit_content = true
-autowrap_mode = 0
 
 [node name="StaticBody2D" type="AnimatableBody2D" parent="Plan"]
 scale = Vector2(206.01, 16.556)
@@ -605,16 +644,6 @@ shape = SubResource("RectangleShape2D_trn2v")
 
 [node name="Plan2" type="Node2D" parent="."]
 position = Vector2(778, 236)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Plan2"]
-offset_left = -52.0
-offset_top = -64.0
-offset_right = 54.0
-offset_bottom = -41.0
-theme_override_font_sizes/normal_font_size = 16
-text = "跳到这切音频2"
-fit_content = true
-autowrap_mode = 0
 
 [node name="StaticBody2D" type="AnimatableBody2D" parent="Plan2"]
 scale = Vector2(206.01, 16.556)
@@ -657,6 +686,45 @@ texture = ExtResource("2_u18fy")
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan5/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
 
+[node name="Plan10" type="Node2D" parent="."]
+position = Vector2(302, 593)
+
+[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan10"]
+scale = Vector2(206.01, 16.556)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan10/StaticBody2D"]
+shape = SubResource("RectangleShape2D_woh3p")
+debug_color = Color(0, 0.815545, 0.194183, 1)
+
+[node name="Plan" type="Sprite2D" parent="Plan10/StaticBody2D"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+texture = ExtResource("2_u18fy")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan10/StaticBody2D/Plan"]
+occluder = SubResource("OccluderPolygon2D_wkp8b")
+
+[node name="墙" type="Node2D" parent="."]
+position = Vector2(396, 459)
+rotation = -1.5707941
+scale = Vector2(1.2, 1)
+
+[node name="碰撞器" type="AnimatableBody2D" parent="墙"]
+scale = Vector2(206.01, 16.556)
+collision_layer = 3
+collision_mask = 0
+
+[node name="碰撞范围" type="CollisionShape2D" parent="墙/碰撞器"]
+shape = SubResource("RectangleShape2D_woh3p")
+debug_color = Color(0, 0.815545, 0.194183, 1)
+
+[node name="精灵贴图" type="Sprite2D" parent="墙/碰撞器"]
+modulate = Color(0.796243, 0.796243, 0.796243, 1)
+texture = ExtResource("2_u18fy")
+
+[node name="光照遮挡器" type="LightOccluder2D" parent="墙/碰撞器/精灵贴图"]
+occluder = SubResource("OccluderPolygon2D_wkp8b")
+
 [node name="Plan6" type="Node2D" parent="."]
 position = Vector2(772, 515)
 
@@ -695,16 +763,6 @@ occluder = SubResource("OccluderPolygon2D_wkp8b")
 
 [node name="Plan4" type="Node2D" parent="."]
 position = Vector2(829, 128)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Plan4"]
-offset_left = -120.0
-offset_top = -64.0
-offset_right = 129.0
-offset_bottom = -41.0
-theme_override_font_sizes/normal_font_size = 16
-text = "试试长按跳跃，或者..别的方法？"
-fit_content = true
-autowrap_mode = 0
 
 [node name="StaticBody2D" type="AnimatableBody2D" parent="Plan4"]
 scale = Vector2(206.01, 16.556)
@@ -772,37 +830,59 @@ lifetime = 5.73
 visibility_rect = Rect2(-100, -100, 2000, 2000)
 draw_order = 0
 process_material = SubResource("ParticleProcessMaterial_03owx")
+metadata/_edit_lock_ = true
 
-[node name="WindZone" type="Area2D" parent="."]
-position = Vector2(102, 84)
+[node name="WindZone" type="Area2D" parent="WindParticles"]
+position = Vector2(173, 22)
 script = SubResource("GDScript_1yrnh")
+metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WindZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WindParticles/WindZone"]
 position = Vector2(506.25, 66)
 shape = SubResource("RectangleShape2D_u18fy")
+metadata/_edit_lock_ = true
 
-[node name="ITestZone" type="Area2D" parent="."]
-position = Vector2(499, 477)
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(544, 508)
+curve = SubResource("Curve2D_7x0wu")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-82, -31)
+rotates = false
+loop = false
+metadata/_edit_lock_ = true
+
+[node name="ITestZone" type="Area2D" parent="Path2D/PathFollow2D"]
 rotation = 1.5708
 script = SubResource("GDScript_7x0wu")
+metadata/_edit_lock_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ITestZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/ITestZone"]
 shape = SubResource("RectangleShape2D_xhnlc")
+metadata/_edit_lock_ = true
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="ITestZone"]
+[node name="Sprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D/ITestZone"]
 texture_filter = 1
 position = Vector2(14, -5.06799e-05)
 rotation = -1.5708
 sprite_frames = SubResource("SpriteFrames_hh7ik")
 animation = &"Idle"
+metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="ITestZone/Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D/ITestZone/Sprite2D"]
 root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_gfhe8")
 }
 speed_scale = 0.25
 script = ExtResource("4_xhnlc")
+
+[node name="AnimationAsyncPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D/ITestZone"]
+libraries = {
+&"": SubResource("AnimationLibrary_hh7ik")
+}
+script = ExtResource("4_xhnlc")
+metadata/_custom_type_script = "uid://dblixk680ddgk"
 
 [node name="Wind" type="Node2D" parent="."]
 position = Vector2(1026, 466)
@@ -826,36 +906,8 @@ trail_enabled = true
 trail_lifetime = 0.02
 process_material = SubResource("ParticleProcessMaterial_hh7ik")
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2(811, 479)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-shape = SubResource("RectangleShape2D_7x0wu")
-
-[node name="Plan" type="Sprite2D" parent="RigidBody2D"]
-modulate = Color(0.608302, 0.824233, 1, 1)
-scale = Vector2(30, 30)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="RigidBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="RigidBody2D2" type="RigidBody2D" parent="."]
-position = Vector2(747, 476)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
-shape = SubResource("RectangleShape2D_7x0wu")
-
-[node name="Plan" type="Sprite2D" parent="RigidBody2D2"]
-modulate = Color(0.608302, 0.824233, 1, 1)
-scale = Vector2(30, 30)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="RigidBody2D2/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
 [node name="RigidBody2D3" type="RigidBody2D" parent="."]
-position = Vector2(611, 484)
+position = Vector2(597, 491)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D3"]
 shape = SubResource("RectangleShape2D_7x0wu")
@@ -872,9 +924,9 @@ occluder = SubResource("OccluderPolygon2D_wkp8b")
 [connection signal="body_entered" from="Plan2/Area2D" to="Plan2/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="Plan4/Area2D" to="Plan4/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="Plan8/Area2D" to="Plan8/Area2D" method="_on_body_entered"]
-[connection signal="body_entered" from="WindZone" to="WindZone" method="_on_body_entered"]
-[connection signal="body_exited" from="WindZone" to="WindZone" method="_on_body_exited"]
-[connection signal="body_entered" from="ITestZone" to="ITestZone" method="_on_body_entered"]
-[connection signal="body_exited" from="ITestZone" to="ITestZone" method="_on_body_exited"]
+[connection signal="body_entered" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_entered"]
+[connection signal="body_exited" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_exited"]
+[connection signal="body_entered" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_entered"]
+[connection signal="body_exited" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_exited"]
 [connection signal="body_entered" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_entered"]
 [connection signal="body_exited" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_exited"]

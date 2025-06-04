@@ -13,9 +13,6 @@
 resource_name = "TEST"
 script/source = "extends Node
 func _ready():
-   var nodet = $\"../Level/TestLevel/ITestZone\" as Node2D;
-   print(GameState.GetGameLoop());
-   print(nodet);
    queue_free();
 "
 

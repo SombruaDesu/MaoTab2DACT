@@ -16,10 +16,14 @@ namespace MaoTab.Scripts;
 public partial class Interface : Control
 {
     public HomePanel HomePanel;
+    public DlgPanel DlgPanel;
     
     public async Task Init()
     {
         HomePanel = await ResourceHelper.LoadPacked<HomePanel>("res://Panel/HomePanel.tscn",this);
         HomePanel.Init();
+        
+        DlgPanel = await ResourceHelper.LoadPacked<DlgPanel>("res://Panel/Dlg/DlgPanel.tscn", Game.Interface);
+        DlgPanel.Init();
     }
 }

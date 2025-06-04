@@ -3,6 +3,7 @@
  * @Description: 场景对象，用于管理、加载关卡等
  */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 using MaoTab.Scripts.System;
@@ -20,13 +21,83 @@ public partial class Scene : Node2D
     /// 当前生效关卡（整个游戏同时只有一个）
     /// </summary>
     public Level CurLevel;
-    
+
+    public Dictionary<string, LevelData> AllLevelData = new();
+
+    /// <summary>
+    /// 向指定关卡数据添加标签
+    /// </summary>
+    /// <param name="levelName">关卡名称</param>
+    /// <param name="tagName">标签名称</param>
+    public void AddTag(string levelName, string tagName)
+    {
+        GD.Print("AddTag"+ levelName + tagName);
+        if (levelName == "this")
+        {
+            if (CurLevel == null)
+            {
+                return;
+            }
+
+            levelName = CurLevel.Data.Name;
+        }
+
+        // 检测是否已经存在关卡数据，如果存在则向现有数据插入标签
+        if (AllLevelData.TryGetValue(levelName, out var data))
+        {
+            data.Tags.Add(tagName);
+        }
+        // 如果不存在关卡数据，则新建关卡数据，并插入标签（即使是关卡没有被生成也能提前定义数据）
+        else
+        {
+            AllLevelData.Add(levelName, new LevelData
+            {
+                Tags = { tagName }
+            });
+        }
+    }
+
+    /// <summary>
+    /// 检测指定关卡数据是否存在标签
+    /// </summary>
+    /// <param name="levelName">关卡名称</param>
+    /// <param name="tagName">标签名称</param>
+    /// <returns>true存在</returns>
+    public bool HasTag(string levelName, string tagName)
+    {
+        if (levelName == "this")
+        {
+            if (CurLevel == null)
+            {
+                return false;
+            }
+
+            levelName = CurLevel.Data.Name;
+        }
+        
+        if (AllLevelData.TryGetValue(levelName, out var data))
+        {
+            return data.Tags.Contains(tagName);
+        }
+
+        return false;
+    }
+
     public async Task LoadLevel(string levelName)
     {
         CurLevel = await ResourceHelper.LoadPacked<Level>($"res://Level/{levelName}.tscn", Level);
-        if (CurLevel != null)
+
+        if (CurLevel == null) return;
+        // 检测是否存在（未生成时的）关卡数据，如果存在，则把刚生成的关卡数据与（未生成时的）关卡数据合并
+        if (AllLevelData.TryGetValue(levelName, out var data))
+        {
+            CurLevel.Data.Merge(data);
+        }
+        // 如果不存在数据，则正常初始化关卡
+        else
         {
             CurLevel.Init();
+            AllLevelData.Add(levelName, CurLevel.Data);
         }
     }
 }

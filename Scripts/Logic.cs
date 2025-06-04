@@ -38,17 +38,22 @@ public partial class Logic
             networkManager.Init(true);
 
             gameStarted = true;
-
-            var dlg = await ResourceHelper.LoadPacked<DlgPanel>("res://Panel/DlgPanel.tscn", Game.Interface);
-            dlg.Init();
             
-            /*Game.Yarn.OnLineArrival += s => 
+            Game.Yarn.OnLineArrival += async void (s) => 
             { 
-                _ = dlg.FreshDlg(s, () =>
+                await Game.Interface.DlgPanel.FreshDlg(s, () =>
                 {
-                    
+                    Game.Yarn.Continue();
                 });
-            };*/
+            };
+
+            Game.Yarn.OnOptionsArrival += async void (s) =>
+            {
+                await Game.Interface.DlgPanel.FreshOpt(s, id =>
+                {
+                    Game.Yarn.SelectedOption(id);
+                });
+            };
         };
 
         home.OnJoinGame += async void () =>
@@ -97,12 +102,12 @@ public partial class Logic
             player.AttackInput();
         }
         
-        if (Input.IsActionPressed("f"))
+        if (Input.IsActionJustReleased("f"))
         {
             player.InteractionInput();
         }
 
-        player.Input(direction, Input.IsActionPressed("shift"));
+        player.Input(direction, Input.IsActionPressed("alt"),Input.IsActionPressed("shift"));
         player.Tick();
 
         if (Game.OtherPlayer != null)

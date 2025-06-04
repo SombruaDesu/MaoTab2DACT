@@ -10,7 +10,7 @@ namespace MaoTab.Scripts;
 [GlobalClass]
 public partial class Level : Node
 {
-    public LevelData Data;
+    public LevelData Data = new();
 
     public void AddTag(string tag)
     {

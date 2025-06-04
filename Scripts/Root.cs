@@ -11,7 +11,7 @@ using YarnSpinnerGodot;
 namespace MaoTab.Scripts;
 
 /// <summary>
-/// 根对象，游戏场景的最父级，程序的起点 
+/// 根对象，游戏场景的最父级，程序的起点
 /// </summary>
 public partial class Root : Node
 {
