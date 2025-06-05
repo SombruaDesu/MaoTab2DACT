@@ -450,7 +450,7 @@ _data = {
 
 [sub_resource type="Animation" id="Animation_7x0wu"]
 resource_name = "Move"
-length = 3.9999995
+length = 3.0000005
 step = 0.0333333
 tracks/0/type = "animation"
 tracks/0/imported = false
@@ -460,7 +460,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "clips": PackedStringArray("Run", "Jump", "Falling", "Idle", "Jump", "Falling", "Idle", "Run"),
-"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9, 1, 1.2666667, 1.7333333, 1.8000001)
+"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9, 1, 1.2666667, 1.7333333, 1.7666667)
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -469,10 +469,10 @@ tracks/1/path = NodePath("..:progress")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9006362, 1, 1.2666667, 1.7333333, 2.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9006362, 1, 1.2666667, 1.7333333, 1.7666667, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.0, 57.400005, 141.41309, 184.9796, 184.9796, 231.68571, 323.67383, 499.74945]
+"values": [0.0, 57.400005, 141.41309, 184.9796, 184.9796, 231.68571, 323.67383, 323.67383, 499.74945]
 }
 
 [sub_resource type="Animation" id="Animation_xhnlc"]
@@ -592,6 +592,7 @@ modulate = Color(0.43, 0.43, 0.43, 1)
 position = Vector2(606.5, 148)
 scale = Vector2(1179, 328)
 texture = ExtResource("2_u18fy")
+metadata/_edit_lock_ = true
 
 [node name="Plan7" type="Sprite2D" parent="."]
 modulate = Color(0.493545, 0.493546, 0.493546, 1)
@@ -615,6 +616,7 @@ theme_override_font_sizes/normal_font_size = 56
 text = "强风区"
 fit_content = true
 autowrap_mode = 0
+metadata/_edit_use_anchors_ = true
 
 [node name="Plan" type="Node2D" parent="."]
 position = Vector2(515, 236)

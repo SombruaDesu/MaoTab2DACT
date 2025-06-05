@@ -3,6 +3,7 @@
  * @Description: 摄像机对象
  */
 
+using System;
 using Godot;
 
 namespace MaoTab.Scripts.Component;
@@ -18,8 +19,37 @@ public partial class Camera : Camera2D
     // 为避免当距离太小时速度过小，设置最小影响因子
     private const float MIN_FACTOR = 1f;
 
+    private float   decay     = 0.8f;
+    private Vector2 maxOffset = new(100,75);
+    private float   maxRoll   = 0.1f;
+    private float   trauma;
+    private int     traumaPower = 2;
+    
+    Random rand = new Random();
+    
+    private void Shake()
+    {
+        var    amout       = Mathf.Pow(trauma,traumaPower);
+        Rotation = maxRoll * amout * (rand.NextSingle() * 2 - 1);
+        Offset = new Vector2(
+            maxOffset.X * amout * (rand.NextSingle() * 2 - 1),
+            maxOffset.Y * amout * (rand.NextSingle() * 2 - 1));
+        
+    }
+
+    public void AddTrauma(float amount)
+    {
+        trauma = MathF.Min(trauma + amount,1);
+    }
+    
     public void Tick()
     {
+        if (trauma != 0)
+        {
+            trauma = Mathf.Max(trauma - decay * (float)Game.PhysicsDelta,0);
+            Shake();
+        }
+        
         if (FollowTarget == null)
         {
             return;

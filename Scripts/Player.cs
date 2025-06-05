@@ -151,10 +151,10 @@ public partial class Player : CharacterBody2D
         // 重置 _targetVelocity 为玩家输入决定的水平速度， 后续再叠加垂直与外力影响
         _targetVelocity.X = InputMoveDirection.X * (Run ? Data.RunSpeed : Data.WalkSpeed);
 
-        // ────────── 处理挂墙操作 ────────── 
+        // ────────── 处理挂墙操作 ──────────
         WallHang();
 
-        // ────────── 处理跳跃、重力 ────────── 
+        // ────────── 处理跳跃、重力 ──────────
         UpdateVertical(dt);
 
         // ────────── 处理角色翻转 ──────────
