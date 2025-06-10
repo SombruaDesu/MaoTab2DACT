@@ -86,7 +86,11 @@ public partial class Player : CharacterBody2D
 
     private float _currentJumpImpulse; // 记录当前跳跃的向上冲量
 
-    private float _coyoteTimer; // 狼跳计时器
+    /// <summary>
+    /// 狼跳计时器
+    /// </summary>
+    /// <para>为零时代表失效，随时间减少</para>
+    private float _coyoteTimer;
 
     private bool _wallHangRequested; //  挂墙请求标志
     private bool _isWallHanging;     // 是否挂墙
@@ -102,7 +106,7 @@ public partial class Player : CharacterBody2D
 
     // 常量因子，用于计算动态长跳时间
     // 当 Weight 为 100 且 JumpImpulse 为 400 时，dynamicJumpTime 约为 0.5 秒
-    private const float BASE_JUMP_TIME_FACTOR = 0.125f;
+    private const float BaseJumpTimeFactor = 0.125f;
 
     /// <summary>
     /// 最大狼跳有效时间
@@ -135,7 +139,12 @@ public partial class Player : CharacterBody2D
 
         InitAnimation();
     }
-
+    
+    public void Pause()
+    {
+        
+    }
+    
     /// <summary>
     /// 每帧调用，类似 _PhysicsProcess()
     /// </summary>
@@ -150,10 +159,10 @@ public partial class Player : CharacterBody2D
 
         // 重置 _targetVelocity 为玩家输入决定的水平速度， 后续再叠加垂直与外力影响
         _targetVelocity.X = InputMoveDirection.X * (Run ? Data.RunSpeed : Data.WalkSpeed);
-
+        
         // ────────── 处理挂墙操作 ──────────
         WallHang();
-
+        
         // ────────── 处理跳跃、重力 ──────────
         UpdateVertical(dt);
 
@@ -196,7 +205,7 @@ public partial class Player : CharacterBody2D
                 _targetVelocity.Y = 0;
             }
         }
-
+        
         // 执行移动
         Velocity = _targetVelocity;
         MoveAndSlide();
@@ -250,20 +259,31 @@ public partial class Player : CharacterBody2D
         Data.Facing = facing;
     }
 
+    /// <summary>
+    /// 挂墙检测
+    /// </summary>
     private void WallHang()
     {
-        // ────────── 挂墙检测 ──────────
+        // 挂墙时的逻辑
+        if(_isWallHanging)
+        {
+            // 挂墙时禁止左右移动
+            _targetVelocity.X = 0;
+            
+            // 如果没有挂墙输入则取消挂墙
+            if (!_wallHangRequested)
+            {
+                _isWallHanging = false;
+            }
+            return;
+        }
+        
+        // 你可能会问为什么上面的那段不直接写在下面的判断里（当然它现在可能已经不是判断块，但是未来肯定会有）
+        // 1. 它能减少不必要的碰撞检测
+        // 2. 避免高频物理判断带来的几帧的状态变化，这样会使人物动画鬼畜
+        
         // 当角色头部和脚部射线均检测到墙体，并且玩家按住挂墙键时，则进入挂墙状态
-        if (_headHRay.IsColliding() && _footHRay.IsColliding() && _wallHangRequested)
-        {
-            _isWallHanging = true;
-            // 重置跳跃
-            Landing();
-        }
-        else
-        {
-            _isWallHanging = false;
-        }
+        _isWallHanging = _headHRay.IsColliding() && _footHRay.IsColliding() && _wallHangRequested;
     }
 
     /// <summary>
@@ -282,6 +302,7 @@ public partial class Player : CharacterBody2D
     /// </summary>
     private void UpdateVertical(float dt)
     {
+        // ────────── 处理非常规重力 ──────────
         // 挂墙时冻结垂直移动，并且不处理重力
         if (_isWallHanging)
         {
@@ -316,6 +337,7 @@ public partial class Player : CharacterBody2D
             return;
         }
 
+        // ────────── 处理常规重力、跳跃逻辑 ──────────
         // 若在地面，则重置狼跳计时器和跳跃时间
         if (IsOnFloor())
         {
@@ -327,7 +349,7 @@ public partial class Player : CharacterBody2D
         }
 
         // 计算动态长跳有效时间
-        float dynamicJumpTime = BASE_JUMP_TIME_FACTOR * Data.JumpImpulse / Weight;
+        float dynamicJumpTime = BaseJumpTimeFactor * Data.JumpImpulse / Weight;
 
         // 处理跳跃请求（包括初始跳跃和空中跳跃）
         if (_jumpRequested)
@@ -336,8 +358,8 @@ public partial class Player : CharacterBody2D
             bool hasJumped = false;
             // 记录跳跃冲力（绝对值）
             _currentJumpImpulse = EffectiveJumpImpulse;
-
-            // 如果在地面或者在狼跳时间内，则启动第一次跳跃
+            
+            // 起跳：在地面或者在狼跳时间内
             if (IsOnFloor() || _coyoteTimer > 0)
             {
                 _targetVelocity.Y = -EffectiveJumpImpulse;
@@ -345,7 +367,7 @@ public partial class Player : CharacterBody2D
                 _coyoteTimer      = 0; // 使用后失效
                 hasJumped         = true;
             }
-            // 如果不在地面，并且允许二段跳（只有 MaxJumpCount>=2 时才允许空中跳）
+            // 多段跳：不在地面，并且 MaxJumpCount>=2 时才允许空中进行多段跳跃
             else if (MaxJumpCount > 1 && _jumpCount < MaxJumpCount && AllowJumpWhileFalling && Velocity.Y > 0)
             {
                 _targetVelocity.Y = -EffectiveJumpImpulse;
@@ -364,6 +386,7 @@ public partial class Player : CharacterBody2D
             _jumpRequested = false;
             _jumpTime      = 0;
         }
+        // 处理长按跳跃，以及下坠
         else
         {
             if (!IsOnFloor())
@@ -410,7 +433,7 @@ public partial class Player : CharacterBody2D
     /// <param name="isWallHang">isWallHang 为 true 时表示爬墙</param>
     public void Input(Vector2 direction, bool isRun, bool isWallHang)
     {
-        if (Data.Movable == false) return;
+        if (!Data.Movable) return;
 
         // 只使用 X 分量处理左右移动
         InputMoveDirection = new Vector2(direction.X, 0);
@@ -422,8 +445,13 @@ public partial class Player : CharacterBody2D
         {
             if (_jumpKeyReleased)
             {
-                if (IsOnFloor() || _jumpCount < MaxJumpCount || _coyoteTimer > 0)
-                    _jumpRequested = true;
+                // 只有在...
+                if (IsOnFloor() || // 地板上
+                    _jumpCount < MaxJumpCount || // 或 还有多段跳跃的次数时
+                    _coyoteTimer > 0 || // 或 狼跳生效时间内
+                    _isWallHanging) // 或 挂墙时
+                    _jumpRequested = true; // 才处理跳跃输入
+                
                 _jumpKeyReleased = false;
             }
 
@@ -440,7 +468,7 @@ public partial class Player : CharacterBody2D
     }
 
     /// <summary>
-    /// 施加一瞬间外力（例如后坐力）。
+    /// 施加瞬间的外力（例如后坐力）。
     /// 该外力将在下一帧 Tick 时被添加并立即清除。
     /// </summary>
     /// <param name="impulse">施加的外力向量</param>

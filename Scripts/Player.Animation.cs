@@ -22,7 +22,8 @@ public partial class Player
         /*起走*/ WalkStart, /*走路循环*/ Walk,    /*走路结束*/ WalkEnd,
         /*起跑*/ RunStart,  /*跑步循环*/ Run,     /*刹车*/     RunEnd,
         /*跳*/   Jump,      /*坠落*/     Falling, /*落地*/     Landing,
-        /*攻击*/ Attack
+        /*攻击*/ Attack,
+        /*受伤*/ Injury,
     }
     
     /// <summary>
@@ -51,6 +52,7 @@ public partial class Player
     
     private async void PlayAnimation()
     {
+        
         switch (Data.State)
         {
             case EAnimationState.Idle:

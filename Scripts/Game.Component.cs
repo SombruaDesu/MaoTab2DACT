@@ -3,6 +3,8 @@
  * @Description: 游戏管理器，组件托管部分
  */
 
+using MaoTab.Scripts.Panel;
+
 namespace MaoTab.Scripts;
 
 public static partial class Game

@@ -1,11 +1,12 @@
 title: Node_Start
-position: 273,433
+position: 250,148
 ---
 <<end>>
 ===
 
 title: Node_TestDlg
-position: 273,433
+position: 271,421
+group: TestLevel
 ---
 <<if has_level_tag("this","已经跟Fox对话了")>>
     <<end>>
@@ -39,6 +40,7 @@ position: 273,433
 
 title: Node_TestDlg2
 position: 275,720
+group: TestLevel
 ---
 ->Player:你这是怎么了？
 哦！不用在意，那是我在练习单脚站立！
@@ -53,6 +55,26 @@ position: 275,720
 ·       node.flip_h = false
 ·   var player = GameState.GetLevelNode("Path2D/PathFollow2D/ITestZone/AnimationAsyncPlayer") as AnimationAsyncPlayer;
 ·   player.Play("Move",1)
+·   GameState.AddLevelTag("this","Fox走到边上");
+·   await player.OnAnimationFinished;
+·   queue_free()
+<<do>>
+===
+
+title: Node_GoTest2
+position: 14,561
+group: TestLevel
+---
+<<define>>
+·extends Node
+·func _ready():
+·   var node = GameState.PeekNode("fox") as AnimatedSprite2D;
+·   if GameState.HasLevelTag("this","玩家在Fox的身后"):
+·       node.flip_h = false
+·   var player = GameState.GetLevelNode("Path2D/PathFollow2D/ITestZone/AnimationAsyncPlayer") as AnimationAsyncPlayer;
+·   player.Play("Move",1)
+·   GameState.AddLevelTag("this","Fox走到边上");
+·   await player.OnAnimationFinished;
 ·   queue_free()
 <<do>>
 ===

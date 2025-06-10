@@ -1,9 +1,9 @@
-[gd_scene load_steps=58 format=3 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=58 format=3 uid="uid://d2a6wwofpe4hi"]
 
-[ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
-[ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
-[ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_7x0wu"]
-[ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_xhnlc"]
+[ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_i0eq3"]
+[ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_ptkd6"]
+[ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_a8tq4"]
+[ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_on546"]
 
 [sub_resource type="Animation" id="Animation_1yrnh"]
 resource_name = "new_animation"
@@ -22,18 +22,18 @@ script/source = "extends Area2D
 func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
-	var p = body as Player
-	p.SetGdsAction(a)
+	var p = body as Player;
+	p.SetGdsAction(a);
 	pass
 
 func a():
-	GameState.ChangeLevel(\"TestLevel2\")
+	GameState.ChangeLevel(\"TestLevel\")
 	pass
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is not Player:
 		return
-	var p = body as Player
+	var p = body as Player;
 	p.ClearAction()
 	pass
 "
@@ -220,51 +220,51 @@ func _on_body_exited(body: Node2D) -> void:
 size = Vector2(37.88, 35.545)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yitnd"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(33, 160, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xmq01"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(0, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g126i"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(33, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8vbp2"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(66, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gfhe8"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(99, 0, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p78xu"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(0, 160, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ijo77"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(0, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3ug3b"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(33, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mfa3w"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(66, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kdf0d"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(99, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qf4bv"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(132, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mxv3s"]
-atlas = ExtResource("3_7x0wu")
+atlas = ExtResource("3_a8tq4")
 region = Rect2(165, 32, 33, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hh7ik"]
@@ -548,7 +548,7 @@ tracks/2/keys = {
 "values": [0]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hh7ik"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i0eq3"]
 _data = {
 &"Move": SubResource("Animation_7x0wu"),
 &"RESET": SubResource("Animation_xhnlc")
@@ -637,9 +637,9 @@ collision_bounce = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7x0wu"]
 size = Vector2(30, 30)
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("SpawnPoint")]
-script = ExtResource("1_1yrnh")
-LevelName = "TestLevel"
+[node name="TestLevel2" type="Node2D" node_paths=PackedStringArray("SpawnPoint")]
+script = ExtResource("1_i0eq3")
+LevelName = "TestLevel2"
 SpawnPoint = NodePath("SpawnPoint")
 
 [node name="SpawnPoint" type="Node2D" parent="."]
@@ -649,14 +649,14 @@ position = Vector2(418, 423)
 modulate = Color(0.43, 0.43, 0.43, 1)
 position = Vector2(606.5, 148)
 scale = Vector2(1179, 328)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 metadata/_edit_lock_ = true
 
 [node name="Plan7" type="Sprite2D" parent="."]
 modulate = Color(0.493545, 0.493546, 0.493546, 1)
 position = Vector2(607, 470)
 scale = Vector2(1179, 328)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Plan7"]
 libraries = {
@@ -667,7 +667,7 @@ libraries = {
 modulate = Color(0.81237876, 0.3017064, 0, 1)
 position = Vector2(265, 509.00003)
 scale = Vector2(100, 150)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="门"]
 libraries = {
@@ -709,7 +709,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -735,7 +735,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan2/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan2/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -761,7 +761,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan5/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan5/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -779,7 +779,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan10/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan10/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -800,7 +800,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="精灵贴图" type="Sprite2D" parent="墙/碰撞器"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="光照遮挡器" type="LightOccluder2D" parent="墙/碰撞器/精灵贴图"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -818,7 +818,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan6/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan6/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -836,7 +836,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan9/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan9/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -854,7 +854,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan4/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan4/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -890,7 +890,7 @@ debug_color = Color(0, 0.815545, 0.194183, 1)
 
 [node name="Plan" type="Sprite2D" parent="Plan8/StaticBody2D"]
 modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Plan8/StaticBody2D/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
@@ -957,13 +957,13 @@ libraries = {
 }
 playback_auto_capture = false
 speed_scale = 0.25
-script = ExtResource("4_xhnlc")
+script = ExtResource("4_on546")
 
 [node name="AnimationAsyncPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D/ITestZone"]
 libraries = {
-&"": SubResource("AnimationLibrary_hh7ik")
+&"": SubResource("AnimationLibrary_i0eq3")
 }
-script = ExtResource("4_xhnlc")
+script = ExtResource("4_on546")
 metadata/_custom_type_script = "uid://dblixk680ddgk"
 
 [node name="Wind" type="Node2D" parent="."]
@@ -997,7 +997,7 @@ shape = SubResource("RectangleShape2D_7x0wu")
 [node name="Plan" type="Sprite2D" parent="RigidBody2D3"]
 modulate = Color(0.608302, 0.824233, 1, 1)
 scale = Vector2(30, 30)
-texture = ExtResource("2_u18fy")
+texture = ExtResource("2_ptkd6")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="RigidBody2D3/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")

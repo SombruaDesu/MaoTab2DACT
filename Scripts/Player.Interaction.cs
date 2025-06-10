@@ -4,39 +4,69 @@
  */
 
 using System;
+using Godot;
 
 namespace MaoTab.Scripts;
 
 public partial class Player
 {
-    private InteractionAction _curInteractionAction;
+    private YarnAction _curYarnAction;
+    
+    private string _curGdsTag = string.Empty;
+    private Callable _curGdsAction;
 
-    public void SetInteractionAction(InteractionAction interactionAction)
+    public void ClearAction()
     {
-        // 角色没有事件时才挂载
-        if (_curInteractionAction == null)
-            _curInteractionAction = interactionAction;
+        _curYarnAction = null;
+        _curGdsTag =  string.Empty;
     }
     
-    public void DoInteractionAction(InteractionAction action)
+    public void SetYarnAction(YarnAction yarnAction)
     {
         // 角色没有事件时才挂载
-        if (_curInteractionAction == null)
-            _curInteractionAction = action;
+        if (_curYarnAction == null)
+        {
+            _curYarnAction = yarnAction;
+        }
+    }
+
+    public void SetGdsAction(Callable callable)
+    {
+        if (_curGdsTag == string.Empty)
+        {
+            _curGdsTag  = callable.Method.ToString();
+            _curGdsAction = callable;
+        }
+    }
+
+    public void DoGdsAction(Callable callable)
+    {
+        callable.Call();
+        ClearAction();
+    }
+    
+    public void DoYarnAction(YarnAction action)
+    {
+        if (action.Info != string.Empty)
+        {
+            Game.Yarn.PlayNode(_curYarnAction.Info);
+        }
+        ClearAction();
     }
     
     public void InteractionInput()
     {
-        if (_curInteractionAction == null) return;
-        
-        switch (_curInteractionAction.Type)
+        if (_curYarnAction != null)
         {
-            case InteractionType.Once:
-                if (_curInteractionAction.Info != string.Empty)
-                {
-                    Game.Yarn.PlayNode(_curInteractionAction.Info);
-                }
-                break;
+            if (_curYarnAction.Info != string.Empty)
+                Game.Yarn.PlayNode(_curYarnAction.Info);
+            
+        }
+
+        if (_curGdsTag != string.Empty)
+        {
+            if(_curGdsAction.Target != null)
+                _curGdsAction.Call();
         }
     }
 }

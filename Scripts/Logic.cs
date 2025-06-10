@@ -30,13 +30,15 @@ public partial class Logic
         {
             home.Visible = false;
             
+            await Game.Interface.LoadStart();
+            
             await Game.Scene.LoadLevel("TestLevel");
             var level = Game.Scene.CurLevel;
             
             player.Init(level.SpawnPoint.Position, true);
 
             networkManager.Init(true);
-
+            
             gameStarted = true;
             
             Game.Yarn.OnLineArrival += async void (s) => 
@@ -54,6 +56,8 @@ public partial class Logic
                     Game.Yarn.SelectedOption(id);
                 });
             };
+            
+            await Game.Interface.LoadOver();
         };
 
         home.OnJoinGame += async void () =>

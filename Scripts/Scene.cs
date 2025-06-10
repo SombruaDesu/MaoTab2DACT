@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
+using MaoTab.Scripts.Component;
 using MaoTab.Scripts.System;
 
 namespace MaoTab.Scripts;
@@ -22,6 +23,11 @@ public partial class Scene : Node2D
     /// </summary>
     public Level CurLevel;
 
+    /// <summary>
+    ///  加载前的上一个关卡
+    /// </summary>
+    public Level PrvLevel;
+    
     public Dictionary<string, LevelData> AllLevelData = new();
 
     /// <summary>
@@ -31,7 +37,6 @@ public partial class Scene : Node2D
     /// <param name="tagName">标签名称</param>
     public void AddTag(string levelName, string tagName)
     {
-        GD.Print("AddTag"+ levelName + tagName);
         if (levelName == "this")
         {
             if (CurLevel == null)
@@ -47,7 +52,7 @@ public partial class Scene : Node2D
         {
             data.Tags.Add(tagName);
         }
-        // 如果不存在关卡数据，则新建关卡数据，并插入标签（即使是关卡没有被生成也能提前定义数据）
+        // 如果不存在关卡数据，则新建关卡数据，并插入标签（即使是关卡没有生成也能提前定义数据）
         else
         {
             AllLevelData.Add(levelName, new LevelData
@@ -55,6 +60,8 @@ public partial class Scene : Node2D
                 Tags = { tagName }
             });
         }
+        
+        GD.Print("AddTag"+ levelName + tagName);
     }
 
     /// <summary>
@@ -83,11 +90,41 @@ public partial class Scene : Node2D
         return false;
     }
 
-    public async Task LoadLevel(string levelName)
+    public async Task ChangeLevel(string levelName)
+    {
+        if(CurLevel.Data.Name == levelName) return;
+        
+        PrvLevel = CurLevel; // 缓存上一个关卡对象，方便加载关卡后卸载
+        
+        await Game.Interface.LoadStart();
+
+        if (await LoadLevel(levelName))
+        {
+            GameState.ClearCacheData(); // 清理上一个关卡内产生的缓存数据
+            await UnloadLevel();
+        }
+        
+        await Game.Interface.LoadOver();
+    }
+
+    private Task UnloadLevel()
+    {
+        if (PrvLevel == null)
+        {
+           return Task.CompletedTask;
+        }
+        
+        PrvLevel.QueueFree();
+        PrvLevel = null;
+        return Task.CompletedTask;
+    }
+    
+    public async Task<bool> LoadLevel(string levelName,string spawnPointName = "")
     {
         CurLevel = await ResourceHelper.LoadPacked<Level>($"res://Level/{levelName}.tscn", Level);
 
-        if (CurLevel == null) return;
+        if (CurLevel == null) return false;
+        
         // 检测是否存在（未生成时的）关卡数据，如果存在，则把刚生成的关卡数据与（未生成时的）关卡数据合并
         if (AllLevelData.TryGetValue(levelName, out var data))
         {
@@ -99,5 +136,16 @@ public partial class Scene : Node2D
             CurLevel.Init();
             AllLevelData.Add(levelName, CurLevel.Data);
         }
+
+        // 如果玩家存在则把它丢到关卡的刷新点位
+        if (Game.MainPlayer != null)
+        {
+            if (spawnPointName == "")
+            {
+                Game.MainPlayer.Position = CurLevel.SpawnPoint.Position;
+            }
+        }
+        
+        return true;
     }
 }

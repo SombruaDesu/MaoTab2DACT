@@ -17,13 +17,27 @@ public partial class Interface : Control
 {
     public HomePanel HomePanel;
     public DlgPanel DlgPanel;
+    public LoadingPanel LoadingPanel;
+    
+    public async Task LoadStart()
+    {
+        await  LoadingPanel.Load();
+    }
+
+    public async Task LoadOver()
+    {
+        await LoadingPanel.LoadOver();
+    }
     
     public async Task Init()
     {
         HomePanel = await ResourceHelper.LoadPacked<HomePanel>("res://Panel/HomePanel.tscn",this);
         HomePanel.Init();
         
-        DlgPanel = await ResourceHelper.LoadPacked<DlgPanel>("res://Panel/Dlg/DlgPanel.tscn", Game.Interface);
+        DlgPanel = await ResourceHelper.LoadPacked<DlgPanel>("res://Panel/Dlg/DlgPanel.tscn", this);
         DlgPanel.Init();
+        
+        LoadingPanel = await ResourceHelper.LoadPacked<LoadingPanel>("res://Panel/LoadingPanel.tscn", this);
+        LoadingPanel.Init();
     }
 }

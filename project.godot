@@ -87,6 +87,3 @@ alt={
 
 rendering_device/driver="d3d12"
 rendering_device/driver.windows="d3d12"
-anti_aliasing/quality/msaa_2d=3
-anti_aliasing/quality/msaa_3d=3
-anti_aliasing/quality/use_debanding=true

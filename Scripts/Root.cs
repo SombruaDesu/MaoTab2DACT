@@ -22,13 +22,13 @@ public partial class Root : Node
     [Export] private Scene _scene;
     [Export] private Interface _ui;
     
-    [Export] private Component.AudioMixPlayer _audioMixPlayer;    // 临时
+    [Export] private Component.AudioMixPlayer _audioMixPlayer;  // 临时在这里控制音效节点
     
     private bool gameStarted = false;
     
     private NetworkManager _networkManager;
     
-    private Logic _logic = new Logic();
+    private Logic _logic = new();
     
     public override async void _Ready()
     {

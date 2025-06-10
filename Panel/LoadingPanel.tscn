@@ -1,0 +1,142 @@
+[gd_scene load_steps=10 format=3 uid="uid://c3n2viemmjepx"]
+
+[ext_resource type="Script" uid="uid://b6wlx0tbyrmni" path="res://Scripts/Panel/LoadingPanel.cs" id="1_ts4us"]
+[ext_resource type="Shader" uid="uid://dnck02e7uqjl4" path="res://DiamondDissolveTransition..gdshader" id="2_0oesa"]
+[ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="3_0oesa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_20pc6"]
+shader = ExtResource("2_0oesa")
+shader_parameter/progress = 0.0
+shader_parameter/reverse = false
+shader_parameter/diamondPixelSize = 11.205000000001746
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0oesa"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Animation" id="Animation_0oesa"]
+resource_name = "Show"
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.22531264, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Panel:material:shader_parameter/reverse")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_d7q1n"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:material:shader_parameter/progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Panel:material:shader_parameter/reverse")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_7xpho"]
+resource_name = "Leave"
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel:material:shader_parameter/reverse")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Panel:material:shader_parameter/progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.25881636, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7xpho"]
+_data = {
+&"Leave": SubResource("Animation_7xpho"),
+&"RESET": SubResource("Animation_d7q1n"),
+&"Show": SubResource("Animation_0oesa")
+}
+
+[node name="LoadingPanel" type="Control" node_paths=PackedStringArray("animationPlayer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ts4us")
+animationPlayer = NodePath("AnimationAsyncPlayer")
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_20pc6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0oesa")
+
+[node name="AnimationAsyncPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7xpho")
+}
+script = ExtResource("3_0oesa")
+metadata/_custom_type_script = "uid://dblixk680ddgk"

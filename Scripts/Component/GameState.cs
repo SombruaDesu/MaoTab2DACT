@@ -16,8 +16,16 @@ namespace MaoTab.Scripts.Component;
 [GlobalClass]
 public partial class GameState : Node
 {
-    public static Dictionary<string,Node> Nodes = new();
+    public static Dictionary<string,Node> CacheNodes = new();
 
+    /// <summary>
+    /// 清除缓存数据
+    /// </summary>
+    public static void ClearCacheData()
+    {
+        CacheNodes.Clear();
+    }
+    
     /// <summary>
     /// 存储节点
     /// </summary>
@@ -25,12 +33,17 @@ public partial class GameState : Node
     /// <param name="node">节点对象</param>
     public static void StorageNode(string name,Node node)
     {
-        Nodes.TryAdd(name, node);
+        CacheNodes.TryAdd(name, node);
     }
 
+    /// <summary>
+    /// 从缓存堆里获取节点
+    /// </summary>
+    /// <param name="name">命名</param>
+    /// <returns>对象</returns>
     public static Node PeekNode(string name)
     {
-        if (Nodes.TryGetValue(name, out var node))
+        if (CacheNodes.TryGetValue(name, out var node))
         {
             return node;
         }
@@ -38,13 +51,17 @@ public partial class GameState : Node
         GD.PrintErr($"从缓存获取节点失败，名称：{name}");
         return null;
     }
+
+    public static void ChangeLevel(string levelName)
+    {
+        _ = Game.Scene.ChangeLevel(levelName);
+    }
     
     public static int GetGameLoop() { return Game.Loop; }
     public static Player GetPlayer() { return Game.MainPlayer; }
 
     public static bool HasLevelTag(string scene,string tag)
     {
-        GD.Print(Game.Scene.HasTag(scene,tag));
         return Game.Scene.HasTag(scene,tag);
     }
 
