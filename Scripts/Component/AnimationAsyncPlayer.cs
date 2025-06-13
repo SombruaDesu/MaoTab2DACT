@@ -22,8 +22,7 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
     
     public async void Play(string animationName, EAnimationPlayerMode loopMode)
     {
-        // 取消当前异步播放任务
-        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Cancel(); // 取消当前异步播放任务
         _cancellationTokenSource = new CancellationTokenSource(); // 重置取消令牌
         await PlayAsync(animationName,loopMode);
         EmitSignal(SignalName.OnAnimationFinished);
@@ -31,8 +30,7 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
     
     public void PlayNotAsync(string animationName,double blend = -1D,float speed = 1f)
     {
-        // 取消当前异步播放任务
-        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Cancel(); // 取消当前异步播放任务
         _cancellationTokenSource = new CancellationTokenSource(); // 重置取消令牌
         Play(animationName,blend,speed);
     }
@@ -77,7 +75,8 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         PlaySection(animationName,length / 2,length);
     }
     
-    public async Task PlayAsync(string animationName, EAnimationPlayerMode loopMode = EAnimationPlayerMode.Null,double blend = -1D,float speed = 1f)
+    public async Task PlayAsync(string animationName, 
+        EAnimationPlayerMode loopMode = EAnimationPlayerMode.Null,double blend = -1D,float speed = 1f)
     {
         var animation = GetAnimation(animationName);
         
@@ -99,7 +98,8 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         try
         {
             // 持续循环，直到动画播放完毕或异步播放被取消
-            while (!token.IsCancellationRequested && IsQueuedForDeletion() && IsPlaying() && GetCurrentAnimation() == animationName)
+            while (!token.IsCancellationRequested && 
+                   IsQueuedForDeletion() && IsPlaying() && GetCurrentAnimation() == animationName)
             {
                 // 等待下一帧
                 await Task.Delay(10, token); // 使用取消令牌来支持任务取消

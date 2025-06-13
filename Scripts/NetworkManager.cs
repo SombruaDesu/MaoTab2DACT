@@ -91,7 +91,7 @@ public class NetworkManager
             peer.Send(writer, DeliveryMethod.ReliableOrdered);
             
             Game.OtherPlayer = await ResourceHelper.LoadPacked<Player>("res://ScenePacked/Fox.tscn", Game.Scene);
-            Game.OtherPlayer.Init(Vector2.Zero,false);
+            Game.OtherPlayer.Init(false);
         };
 
         int syncFrame = 0;
@@ -190,7 +190,7 @@ public class NetworkManager
                 GD.Print("收到来自 " + fromPeer.RemoteId + " 的问候: " + greeting);
                 
                 Game.OtherPlayer  = await ResourceHelper.LoadPacked<Player>("res://ScenePacked/Fox.tscn", Game.Scene);
-                Game.OtherPlayer .Init(Vector2.Zero,false);
+                Game.OtherPlayer .Init(false);
             }
             else if (messageType == (byte)MessageType.SyncData)
             {

@@ -1,9 +1,13 @@
-[gd_scene load_steps=58 format=3 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=54 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
-[ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_7x0wu"]
-[ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_xhnlc"]
+[ext_resource type="PackedScene" uid="uid://botlly1ekj8vw" path="res://ScenePacked/Component/TileMapPathFind.tscn" id="5_xhnlc"]
+[ext_resource type="Texture2D" uid="uid://bssesavjaf227" path="res://Texture/Path.webp" id="6_evpmb"]
+[ext_resource type="Texture2D" uid="uid://dhevo683jceh0" path="res://Texture/tileset.png" id="6_hh7ik"]
+[ext_resource type="Script" uid="uid://bq7dxbbsoe3ku" path="res://Scripts/Role.cs" id="8_msip7"]
+[ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
+[ext_resource type="Texture2D" uid="uid://bdfw3fqylyd6e" path="res://Texture/Fx_Rain.webp" id="10_mpica"]
 
 [sub_resource type="Animation" id="Animation_1yrnh"]
 resource_name = "new_animation"
@@ -41,79 +45,8 @@ func _on_body_exited(body: Node2D) -> void:
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xhnlc"]
 size = Vector2(1, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_woh3p"]
-size = Vector2(1, 1)
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wkp8b"]
-polygon = PackedVector2Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5)
-
-[sub_resource type="GDScript" id="GDScript_uu6xs"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-func _on_body_entered(body: Node2D) -> void:
-	# 检测发生碰撞的是否是玩家
-	if body is not Player:
-		# 如果不是就跳过 
-		pass
-
-	# 获取场景的音频控制器
-	var node = get_node(\"/root/Root/Node\");
-	var audio = node as AudioMixPlayer;
-	# 判断播放器是否在播放中
-	if audio.IsPlaying:
-		# 如果在播放就切到1号，3秒完成
-		audio.SwitchPlayerTo(0,3);
-	else:
-		# 如果没有播放就播放！
-		audio.Play();
-	
-	pass
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_trn2v"]
-size = Vector2(203, 20)
-
-[sub_resource type="GDScript" id="GDScript_3dxm6"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is not Player: 
-		pass
-		
-	var node = get_node(\"/root/Root/Node\");
-	var audio = node as AudioMixPlayer;
-	if audio:
-		if audio.IsPlaying:
-			audio.SwitchPlayerTo(1,3);
-		else:
-			audio.Play();
-	
-	pass
-"
-
-[sub_resource type="GDScript" id="GDScript_lgr22"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is not Player: 
-		pass
-		
-	var node = get_node(\"/root/Root/Node\");
-	var audio = node as AudioMixPlayer;
-	if audio:
-		if audio.IsPlaying:
-			audio.SwitchPlayerTo(2,3);
-		else:
-			audio.Play();
-	
-	pass
-"
-
 [sub_resource type="Curve" id="Curve_lgr22"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0874317, 1), 0.0, 0.0, 0, 0, Vector2(0.677596, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_trn2v"]
@@ -183,376 +116,6 @@ func _on_body_exited(body: Node2D) -> void: # 当有玩家“离开”当前脚�
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u18fy"]
 size = Vector2(1135.5, 286)
-
-[sub_resource type="Curve2D" id="Curve2D_7x0wu"]
-_data = {
-"points": PackedVector2Array(-23.1133, -0.212044, 0, 0, -82, -31, 0, 0, 0, 0, -23.825, -31, -15.2866, -2.53122, 15.2866, 2.53122, 32, -93, 2.61, 4.665, -2.61, -4.665, 55, -62, -15.551663, 0.19686863, 15.551663, -0.19686863, 100, -91, -0.07320249, -27.59734, 0.07320249, 27.59734, 148, -31, 0, 0, 0, 0, 148, -31, 0, 0, 0, 0, 327, -31)
-}
-point_count = 8
-
-[sub_resource type="GDScript" id="GDScript_7x0wu"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-func _ready() -> void: #当游戏开始时
-	var a = $AnimationAsyncPlayer as AnimationAsyncPlayer; # 获取场景里的人物模型
-	if(GameState.HasLevelTag(\"this\",\"Fox走到边上\")):
-		a.PlayToEnd(\"Move\");
-		return
-	pass
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is not Player:
-		return
-	var p = body as Player;
-	p.SetYarnAction(YarnAction.Create(\"Node_TestDlg\"));
-	pass
-
-func _on_body_exited(body: Node2D) -> void:
-	if body is not Player:
-		return
-	var p = body as Player;
-	p.ClearAction();
-	pass
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hh7ik"]
-size = Vector2(37.88, 35.545)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yitnd"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(33, 160, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xmq01"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(0, 0, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g126i"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(33, 0, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8vbp2"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(66, 0, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gfhe8"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(99, 0, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p78xu"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(0, 160, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ijo77"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(0, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ug3b"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(33, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mfa3w"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(66, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kdf0d"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(99, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qf4bv"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(132, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mxv3s"]
-atlas = ExtResource("3_7x0wu")
-region = Rect2(165, 32, 33, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_hh7ik"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yitnd")
-}],
-"loop": true,
-"name": &"Falling",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xmq01")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g126i")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8vbp2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gfhe8")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p78xu")
-}],
-"loop": true,
-"name": &"Jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ijo77")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3ug3b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mfa3w")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kdf0d")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qf4bv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mxv3s")
-}],
-"loop": true,
-"name": &"Run",
-"speed": 5.0
-}]
-
-[sub_resource type="Animation" id="Animation_ijo77"]
-resource_name = "Falling"
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Falling"]
-}
-
-[sub_resource type="Animation" id="Animation_8vbp2"]
-resource_name = "Idle"
-length = 0.100003
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Idle"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.100003),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
-[sub_resource type="Animation" id="Animation_gfhe8"]
-resource_name = "Jump"
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Jump"]
-}
-
-[sub_resource type="Animation" id="Animation_xmq01"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Idle"]
-}
-
-[sub_resource type="Animation" id="Animation_g126i"]
-resource_name = "Idle"
-length = 0.16667
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Run"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.16667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5]
-}
-
-[sub_resource type="Animation" id="Animation_3ug3b"]
-resource_name = "Walk"
-length = 0.16667
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Run"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.16667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_gfhe8"]
-_data = {
-&"Falling": SubResource("Animation_ijo77"),
-&"Idle": SubResource("Animation_8vbp2"),
-&"Jump": SubResource("Animation_gfhe8"),
-&"RESET": SubResource("Animation_xmq01"),
-&"Run": SubResource("Animation_g126i"),
-&"Walk": SubResource("Animation_3ug3b")
-}
-
-[sub_resource type="Animation" id="Animation_7x0wu"]
-resource_name = "Move"
-length = 2160000.0
-step = 0.0333333
-tracks/0/type = "animation"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D/AnimationPlayer")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"clips": PackedStringArray("Run", "Jump", "Falling", "Idle", "Jump", "Falling", "Idle", "Run", "Idle"),
-"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9, 1, 1.2666667, 1.7333333, 1.7666667, 3)
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("..:progress")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.33333334, 0.6666666, 0.9006362, 1, 1.2666667, 1.7333333, 1.7666667, 3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 57.400005, 141.41309, 184.9796, 184.9796, 231.68571, 323.67383, 323.67383, 499.74945]
-}
-
-[sub_resource type="Animation" id="Animation_xhnlc"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("..:progress")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Run"]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_hh7ik"]
-_data = {
-&"Move": SubResource("Animation_7x0wu"),
-&"RESET": SubResource("Animation_xhnlc")
-}
 
 [sub_resource type="GDScript" id="GDScript_u18fy"]
 resource_name = "Box"
@@ -634,39 +197,325 @@ collision_mode = 1
 collision_friction = 0.0
 collision_bounce = 0.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7x0wu"]
-size = Vector2(30, 30)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xmwv1"]
+texture = ExtResource("6_evpmb")
+0:0/0 = 0
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("SpawnPoint")]
+[sub_resource type="TileSet" id="TileSet_evpmb"]
+sources/1 = SubResource("TileSetAtlasSource_xmwv1")
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_xmwv1"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_msip7"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_mpica"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_hh7ik"]
+vertices = PackedVector2Array(8, 0, 8, 8, -8, 8, -8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, 0, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_pudhq"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_evpmb"]
+vertices = PackedVector2Array(0, 4, 8, 8, -8, 8, -8, 0)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, 0, 0, 4, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_urqq3"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_ljrhq"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_vxmux"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_5bqlb"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_rkfdh"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1nl4h"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_y0u32"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_evpmb"]
+texture = ExtResource("6_hh7ik")
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_xmwv1")
+3:1/0 = 0
+3:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_ljrhq")
+5:1/0 = 0
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:1/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_rkfdh")
+7:1/0 = 0
+9:1/0 = 0
+10:1/0 = 0
+11:1/0 = 0
+13:1/0 = 0
+14:1/0 = 0
+16:1/0 = 0
+17:1/0 = 0
+19:1/0 = 0
+19:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 0, 8, 8, -8, 8)
+20:1/0 = 0
+20:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, 0)
+22:1/0 = 0
+22:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, 0, 8, 8, -8, 8)
+22:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_hh7ik")
+23:1/0 = 0
+23:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 0, 8, 8, -8, 8)
+23:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_evpmb")
+13:2/0 = 0
+14:2/0 = 0
+16:2/0 = 0
+17:2/0 = 0
+19:2/0 = 0
+19:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+20:2/0 = 0
+20:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, -8, 8, 8, -8, 8, -8, -8)
+22:2/0 = 0
+22:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+22:2/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_pudhq")
+23:2/0 = 0
+23:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+23:2/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_urqq3")
+1:3/0 = 0
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:3/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_msip7")
+3:3/0 = 0
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_vxmux")
+5:3/0 = 0
+5:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:3/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_1nl4h")
+7:3/0 = 0
+8:3/0 = 0
+10:3/0 = 0
+11:3/0 = 0
+14:4/0 = 0
+16:4/0 = 0
+20:4/0 = 0
+22:4/0 = 0
+1:5/0 = 0
+1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:5/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_mpica")
+3:5/0 = 0
+3:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_5bqlb")
+5:5/0 = 0
+5:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:5/0/physics_layer_1/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:5/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_y0u32")
+7:5/0 = 0
+8:5/0 = 0
+9:5/0 = 0
+14:5/0 = 0
+16:5/0 = 0
+20:5/0 = 0
+22:5/0 = 0
+1:7/0 = 0
+3:7/0 = 0
+5:7/0 = 0
+7:7/0 = 0
+9:7/0 = 0
+11:7/0 = 0
+15:7/0 = 0
+17:7/0 = 0
+19:7/0 = 0
+15:9/0 = 0
+17:9/0 = 0
+19:9/0 = 0
+1:10/0 = 0
+2:10/0 = 0
+4:10/0 = 0
+5:10/0 = 0
+7:10/0 = 0
+10:10/0 = 0
+11:10/0 = 0
+2:11/0 = 0
+4:11/0 = 0
+15:11/0 = 0
+17:11/0 = 0
+19:11/0 = 0
+7:13/0 = 0
+9:13/0 = 0
+11:13/0 = 0
+13:13/0 = 0
+7:14/0 = 0
+9:14/0 = 0
+11:14/0 = 0
+15:14/0 = 0
+17:14/0 = 0
+19:14/0 = 0
+1:15/0 = 0
+2:15/0 = 0
+4:15/0 = 0
+5:15/0 = 0
+9:15/0 = 0
+2:16/0 = 0
+4:16/0 = 0
+11:16/0 = 0
+14:16/0 = 0
+15:16/0 = 0
+17:16/0 = 0
+18:16/0 = 0
+19:16/0 = 0
+1:17/0 = 0
+2:17/0 = 0
+4:17/0 = 0
+5:17/0 = 0
+11:17/0 = 0
+14:17/0 = 0
+15:17/0 = 0
+1:18/0 = 0
+2:18/0 = 0
+4:18/0 = 0
+5:18/0 = 0
+10:18/0 = 0
+11:18/0 = 0
+12:18/0 = 0
+14:18/0 = 0
+15:18/0 = 0
+17:18/0 = 0
+19:18/0 = 0
+21:18/0 = 0
+1:20/0 = 0
+3:20/0 = 0
+4:20/0 = 0
+9:20/0 = 0
+10:20/0 = 0
+11:20/0 = 0
+13:20/0 = 0
+14:20/0 = 0
+15:20/0 = 0
+17:20/0 = 0
+3:21/0 = 0
+4:21/0 = 0
+9:21/0 = 0
+10:21/0 = 0
+11:21/0 = 0
+13:21/0 = 0
+14:21/0 = 0
+15:21/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_hh7ik"]
+physics_layer_0/collision_layer = 1
+physics_layer_1/collision_layer = 3
+navigation_layer_0/layers = 1
+sources/0 = SubResource("TileSetAtlasSource_evpmb")
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_hh7ik"]
+polygon = PackedVector2Array(384, 512, 384, 592, 656, 592, 656, 512)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_evpmb"]
+polygon = PackedVector2Array(688, 480, 688, 592, 864, 592, 864, 464, 816, 464, 784, 480)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_xmwv1"]
+polygon = PackedVector2Array(544, 400, 544, 432, 672, 432, 672, 400)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_msip7"]
+polygon = PackedVector2Array(96, 464, 96, 592, 336, 592, 336, 480, 240, 480, 208, 464, 208, 464, 208, 464, 208, 464)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ljrhq"]
+size = Vector2(25, 25)
+
+[sub_resource type="CurveTexture" id="CurveTexture_mpica"]
+curve = SubResource("Curve_lgr22")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_msip7"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(500, 1, 1)
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+gravity = Vector3(200, 500, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 99.99999
+scale_min = 0.5
+scale_max = 0.79999995
+alpha_curve = SubResource("CurveTexture_mpica")
+turbulence_noise_speed = Vector3(0, 9.825, 0)
+turbulence_influence_min = 0.072
+turbulence_influence_max = 0.078
+turbulence_initial_displacement_min = -31.5
+turbulence_initial_displacement_max = 12.2
+turbulence_influence_over_life = SubResource("CurveTexture_03owx")
+collision_mode = 2
+sub_emitter_mode = 3
+sub_emitter_amount_at_collision = 32
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljrhq"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_trn2v")
+
+[node name="TestLevel" type="Node2D"]
 script = ExtResource("1_1yrnh")
 LevelName = "TestLevel"
-SpawnPoint = NodePath("SpawnPoint")
+_spawnPoint = Dictionary[String, NodePath]({
+"A": NodePath("SpawnPoint")
+})
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 position = Vector2(418, 423)
 
-[node name="Plan3" type="Sprite2D" parent="."]
-modulate = Color(0.43, 0.43, 0.43, 1)
-position = Vector2(606.5, 148)
-scale = Vector2(1179, 328)
-texture = ExtResource("2_u18fy")
-metadata/_edit_lock_ = true
-
-[node name="Plan7" type="Sprite2D" parent="."]
-modulate = Color(0.493545, 0.493546, 0.493546, 1)
-position = Vector2(607, 470)
-scale = Vector2(1179, 328)
-texture = ExtResource("2_u18fy")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Plan7"]
-libraries = {
-&"": SubResource("AnimationLibrary_u18fy")
-}
-
 [node name="门" type="Sprite2D" parent="."]
 modulate = Color(0.81237876, 0.3017064, 0, 1)
-position = Vector2(265, 509.00003)
-scale = Vector2(100, 150)
+position = Vector2(132, 432)
+scale = Vector2(40.000008, 64.00001)
 texture = ExtResource("2_u18fy")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="门"]
@@ -682,226 +531,6 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="门/门Zone"]
 shape = SubResource("RectangleShape2D_xhnlc")
 metadata/_edit_lock_ = true
-
-[node name="Node2D2" type="Node2D" parent="."]
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Node2D2"]
-offset_left = 171.0
-offset_top = 98.0
-offset_right = 339.0
-offset_bottom = 164.0
-theme_override_font_sizes/normal_font_size = 56
-text = "强风区"
-fit_content = true
-autowrap_mode = 0
-metadata/_edit_use_anchors_ = true
-
-[node name="Plan" type="Node2D" parent="."]
-position = Vector2(515, 236)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Area2D" type="Area2D" parent="Plan"]
-position = Vector2(1, -23)
-script = SubResource("GDScript_uu6xs")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan/Area2D"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_trn2v")
-
-[node name="Plan2" type="Node2D" parent="."]
-position = Vector2(778, 236)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan2"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan2/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan2/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan2/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Area2D" type="Area2D" parent="Plan2"]
-position = Vector2(1, -23)
-script = SubResource("GDScript_3dxm6")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan2/Area2D"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_trn2v")
-
-[node name="Plan5" type="Node2D" parent="."]
-position = Vector2(509, 515)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan5"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan5/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan5/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan5/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Plan10" type="Node2D" parent="."]
-position = Vector2(302, 593)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan10"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan10/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan10/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan10/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="墙" type="Node2D" parent="."]
-position = Vector2(396, 459)
-rotation = -1.5707941
-scale = Vector2(1.2, 1)
-
-[node name="碰撞器" type="AnimatableBody2D" parent="墙"]
-scale = Vector2(206.01, 16.556)
-collision_layer = 3
-collision_mask = 0
-
-[node name="碰撞范围" type="CollisionShape2D" parent="墙/碰撞器"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="精灵贴图" type="Sprite2D" parent="墙/碰撞器"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="光照遮挡器" type="LightOccluder2D" parent="墙/碰撞器/精灵贴图"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Plan6" type="Node2D" parent="."]
-position = Vector2(772, 515)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan6"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan6/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan6/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan6/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Plan9" type="Node2D" parent="."]
-position = Vector2(1028, 651)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan9"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan9/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan9/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan9/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Plan4" type="Node2D" parent="."]
-position = Vector2(829, 128)
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan4"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan4/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan4/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan4/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Area2D" type="Area2D" parent="Plan4"]
-position = Vector2(1, -23)
-script = SubResource("GDScript_lgr22")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan4/Area2D"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_trn2v")
-
-[node name="Plan8" type="Node2D" parent="."]
-position = Vector2(731, -196)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Plan8"]
-offset_left = -48.0
-offset_top = -67.0
-offset_right = 52.0
-offset_bottom = -44.0
-theme_override_font_sizes/normal_font_size = 16
-text = "借助风的力量"
-fit_content = true
-autowrap_mode = 0
-
-[node name="StaticBody2D" type="AnimatableBody2D" parent="Plan8"]
-scale = Vector2(206.01, 16.556)
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan8/StaticBody2D"]
-shape = SubResource("RectangleShape2D_woh3p")
-debug_color = Color(0, 0.815545, 0.194183, 1)
-
-[node name="Plan" type="Sprite2D" parent="Plan8/StaticBody2D"]
-modulate = Color(0.796243, 0.796243, 0.796243, 1)
-texture = ExtResource("2_u18fy")
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="Plan8/StaticBody2D/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
-
-[node name="Area2D" type="Area2D" parent="Plan8"]
-position = Vector2(1, -23)
-script = SubResource("GDScript_lgr22")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Plan8/Area2D"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_trn2v")
 
 [node name="WindParticles" type="GPUParticles2D" parent="."]
 position = Vector2(-71, 62)
@@ -921,50 +550,6 @@ metadata/_edit_lock_ = true
 position = Vector2(506.25, 66)
 shape = SubResource("RectangleShape2D_u18fy")
 metadata/_edit_lock_ = true
-
-[node name="Path2D" type="Path2D" parent="."]
-position = Vector2(544, 508)
-curve = SubResource("Curve2D_7x0wu")
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
-position = Vector2(-82, -31)
-rotates = false
-loop = false
-metadata/_edit_lock_ = true
-
-[node name="ITestZone" type="Area2D" parent="Path2D/PathFollow2D"]
-rotation = 1.5708
-script = SubResource("GDScript_7x0wu")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/ITestZone"]
-position = Vector2(9.34, 0)
-shape = SubResource("RectangleShape2D_hh7ik")
-metadata/_edit_lock_ = true
-
-[node name="Sprite2D" type="AnimatedSprite2D" parent="Path2D/PathFollow2D/ITestZone"]
-texture_filter = 1
-position = Vector2(14, -5.06799e-05)
-rotation = -1.5708
-sprite_frames = SubResource("SpriteFrames_hh7ik")
-animation = &"Run"
-metadata/_edit_lock_ = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D/ITestZone/Sprite2D"]
-root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_gfhe8")
-}
-playback_auto_capture = false
-speed_scale = 0.25
-script = ExtResource("4_xhnlc")
-
-[node name="AnimationAsyncPlayer" type="AnimationPlayer" parent="Path2D/PathFollow2D/ITestZone"]
-libraries = {
-&"": SubResource("AnimationLibrary_hh7ik")
-}
-script = ExtResource("4_xhnlc")
-metadata/_custom_type_script = "uid://dblixk680ddgk"
 
 [node name="Wind" type="Node2D" parent="."]
 position = Vector2(1026, 466)
@@ -988,29 +573,79 @@ trail_enabled = true
 trail_lifetime = 0.02
 process_material = SubResource("ParticleProcessMaterial_hh7ik")
 
-[node name="RigidBody2D3" type="RigidBody2D" parent="."]
-position = Vector2(597, 491)
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+debug_enabled = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D3"]
-shape = SubResource("RectangleShape2D_7x0wu")
+[node name="TileMapPathFind" parent="." instance=ExtResource("5_xhnlc")]
+tile_map_data = PackedByteArray("AAAGAB0AAQAAAAAAAAAHAB0AAQAAAAAAAAAIAB0AAQAAAAAAAAAJAB0AAQAAAAAAAAAKAB0AAQAAAAAAAAALAB0AAQAAAAAAAAAMAB0AAQAAAAAAAAANAB0AAQAAAAAAAAAOAB4AAQAAAAAAAAAPAB4AAQAAAAAAAAAQAB4AAQAAAAAAAAARAB4AAQAAAAAAAAASAB4AAQAAAAAAAAATAB4AAQAAAAAAAAAUAB4AAQAAAAAAAAAYACAAAQAAAAAAAAAZACAAAQAAAAAAAAAaACAAAQAAAAAAAAAbACAAAQAAAAAAAAAcACAAAQAAAAAAAAAdACAAAQAAAAAAAAAeACAAAQAAAAAAAAAfACAAAQAAAAAAAAAgACAAAQAAAAAAAAAhACAAAQAAAAAAAAAiACAAAQAAAAAAAAAjACAAAQAAAAAAAAAkACAAAQAAAAAAAAAlACAAAQAAAAAAAAAmACAAAQAAAAAAAAAnACAAAQAAAAAAAAAoACAAAQAAAAAAAAArAB4AAQAAAAAAAAAtAB4AAQAAAAAAAAAuAB4AAQAAAAAAAAAvAB4AAQAAAAAAAAAwAB4AAQAAAAAAAAAxAB4AAQAAAAAAAAAsAB4AAQAAAAAAAAAoABkAAQAAAAAAAAAnABkAAQAAAAAAAAAmABkAAQAAAAAAAAAlABkAAQAAAAAAAAAkABkAAQAAAAAAAAAjABkAAQAAAAAAAAAiABkAAQAAAAAAAAAiABoAAQAAAAAAAAAjABoAAQAAAAAAAAAkABoAAQAAAAAAAAAlABoAAQAAAAAAAAAmABoAAQAAAAAAAAAnABoAAQAAAAAAAAAoABoAAQAAAAAAAAApABkAAQAAAAAAAAApABoAAQAAAAAAAAAyAB0AAQAAAAAAAAAzAB0AAQAAAAAAAAA0AB0AAQAAAAAAAAA1AB0AAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_evpmb")
+JumpDistance = 6
 
-[node name="Plan" type="Sprite2D" parent="RigidBody2D3"]
-modulate = Color(0.608302, 0.824233, 1, 1)
-scale = Vector2(30, 30)
-texture = ExtResource("2_u18fy")
+[node name="TileMap" type="TileMapLayer" parent="."]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAAZACAAAAADAAEAAAAaACAAAAADAAEAAAAbACAAAAADAAEAAAAcACAAAAADAAEAAAAdACAAAAADAAEAAAAeACAAAAADAAEAAAAfACAAAAADAAEAAAAgACAAAAADAAEAAAAhACAAAAADAAEAAAAiACAAAAADAAEAAAAjACAAAAADAAEAAAAkACAAAAADAAEAAAAlACAAAAADAAEAAAAmACAAAAADAAEAAAAnACAAAAADAAEAAAAoACAAAAAFAAEAAAAYACAAAAABAAEAAAAYACEAAAABAAMAAAAYACIAAAABAAMAAAAYACMAAAABAAMAAAAYACQAAAABAAMAAAAoACEAAAAFAAMAAAAoACIAAAAFAAMAAAAoACMAAAAFAAMAAAAoACQAAAAFAAMAAAAZACEAAAADAAMAAAAaACEAAAADAAMAAAAaACIAAAADAAMAAAAbACIAAAADAAMAAAAcACIAAAADAAMAAAAdACIAAAADAAMAAAAeACIAAAADAAMAAAAfACIAAAADAAMAAAAgACIAAAADAAMAAAAhACIAAAADAAMAAAAiACIAAAADAAMAAAAjACIAAAADAAMAAAAkACIAAAADAAMAAAAlACEAAAADAAMAAAAmACEAAAADAAMAAAAnACEAAAADAAMAAAAkACEAAAADAAMAAAAjACEAAAADAAMAAAAiACEAAAADAAMAAAAhACEAAAADAAMAAAAgACEAAAADAAMAAAAfACEAAAADAAMAAAAeACEAAAADAAMAAAAdACEAAAADAAMAAAAcACEAAAADAAMAAAAbACEAAAADAAMAAAAZACIAAAADAAMAAAAlACIAAAADAAMAAAAmACIAAAADAAMAAAAnACIAAAADAAMAAAAnACMAAAADAAMAAAAmACMAAAADAAMAAAAlACMAAAADAAMAAAAkACMAAAADAAMAAAAjACMAAAADAAMAAAAiACMAAAADAAMAAAAhACMAAAADAAMAAAAgACMAAAADAAMAAAAfACMAAAADAAMAAAAeACMAAAADAAMAAAAdACMAAAADAAMAAAAcACMAAAADAAMAAAAbACMAAAADAAMAAAAaACMAAAADAAMAAAAZACMAAAADAAMAAAAZACQAAAADAAMAAAAaACQAAAADAAMAAAAbACQAAAADAAMAAAAcACQAAAADAAMAAAAdACQAAAADAAMAAAAeACQAAAADAAMAAAAfACQAAAADAAMAAAAgACQAAAADAAMAAAAhACQAAAADAAMAAAAiACQAAAADAAMAAAAjACQAAAADAAMAAAAkACQAAAADAAMAAAAlACQAAAADAAMAAAAmACQAAAADAAMAAAAnACQAAAADAAMAAAArAB4AAAABAAEAAAArAB8AAAABAAMAAAArACAAAAABAAMAAAArACEAAAABAAMAAAArACIAAAABAAMAAAArACMAAAABAAMAAAArACQAAAABAAMAAAAsAB4AAAADAAEAAAAtAB4AAAADAAEAAAAuAB4AAAADAAEAAAAvAB4AAAADAAEAAAAwAB4AAAADAAEAAAAsAB8AAAADAAMAAAAsACAAAAADAAMAAAAsACEAAAADAAMAAAAsACIAAAADAAMAAAAsACMAAAADAAMAAAAsACQAAAADAAMAAAAtAB8AAAADAAMAAAAtACAAAAADAAMAAAAtACEAAAADAAMAAAAtACIAAAADAAMAAAAtACMAAAADAAMAAAAtACQAAAADAAMAAAAuAB8AAAADAAMAAAAuACAAAAADAAMAAAAuACEAAAADAAMAAAAuACIAAAADAAMAAAAuACMAAAADAAMAAAAuACQAAAADAAMAAAAvAB8AAAADAAMAAAAvACAAAAADAAMAAAAvACEAAAADAAMAAAAvACIAAAADAAMAAAAvACMAAAADAAMAAAAvACQAAAADAAMAAAAwAB8AAAADAAMAAAAwACAAAAADAAMAAAAwACEAAAADAAMAAAAwACIAAAADAAMAAAAwACMAAAADAAMAAAAwACQAAAADAAMAAAAjABoAAAADAAUAAAAkABoAAAADAAUAAAAlABoAAAADAAUAAAAmABoAAAADAAUAAAAnABoAAAADAAUAAAAoABoAAAADAAUAAAApABoAAAAFAAUAAAApABkAAAAFAAEAAAAjABkAAAADAAEAAAAkABkAAAADAAEAAAAlABkAAAADAAEAAAAmABkAAAADAAEAAAAnABkAAAADAAEAAAAoABkAAAADAAEAAAAiABkAAAABAAEAAAAiABoAAAABAAUAAAAUAB4AAAAFAAEAAAAUACQAAAAFAAMAAAAUACMAAAAFAAMAAAAUACIAAAAFAAMAAAAUACEAAAAFAAMAAAAUACAAAAAFAAMAAAAUAB8AAAAFAAMAAAATAB4AAAADAAEAAAASAB4AAAADAAEAAAARAB4AAAADAAEAAAAQAB4AAAADAAEAAAAPAB4AAAADAAEAAAAOAB4AAAAXAAIAAAAOAB0AAAAXAAEAAAANAB0AAAAWAAEAAAANAB4AAAAWAAIAAAAMAB0AAAADAAEAAAALAB0AAAADAAEAAAAKAB0AAAADAAEAAAAJAB0AAAADAAEAAAAIAB0AAAADAAEAAAAHAB0AAAADAAEAAAAGAB0AAAABAAEAAAAGAB4AAAABAAMAAAAGAB8AAAABAAMAAAAGACAAAAABAAMAAAAGACEAAAABAAMAAAAGACIAAAABAAMAAAAGACMAAAABAAMAAAAGACQAAAABAAMAAAAHAB4AAAADAAMAAAAHAB8AAAADAAMAAAAHACAAAAADAAMAAAAHACEAAAADAAMAAAAHACIAAAADAAMAAAAHACMAAAADAAMAAAAHACQAAAADAAMAAAAIAB4AAAADAAMAAAAIAB8AAAADAAMAAAAIACAAAAADAAMAAAAIACEAAAADAAMAAAAIACIAAAADAAMAAAAIACMAAAADAAMAAAAIACQAAAADAAMAAAAJAB4AAAADAAMAAAAJAB8AAAADAAMAAAAJACAAAAADAAMAAAAJACEAAAADAAMAAAAJACIAAAADAAMAAAAJACMAAAADAAMAAAAJACQAAAADAAMAAAAKAB4AAAADAAMAAAAKAB8AAAADAAMAAAAKACAAAAADAAMAAAAKACEAAAADAAMAAAAKACIAAAADAAMAAAAKACMAAAADAAMAAAAKACQAAAADAAMAAAALAB4AAAADAAMAAAALAB8AAAADAAMAAAALACAAAAADAAMAAAALACEAAAADAAMAAAALACIAAAADAAMAAAALACMAAAADAAMAAAALACQAAAADAAMAAAAMAB4AAAADAAMAAAAMAB8AAAADAAMAAAAMACAAAAADAAMAAAAMACEAAAADAAMAAAAMACIAAAADAAMAAAAMACMAAAADAAMAAAAMACQAAAADAAMAAAANAB8AAAADAAMAAAANACAAAAADAAMAAAANACEAAAADAAMAAAANACIAAAADAAMAAAANACMAAAADAAMAAAANACQAAAADAAMAAAAOAB8AAAADAAMAAAAOACAAAAADAAMAAAAOACEAAAADAAMAAAAOACIAAAADAAMAAAAOACMAAAADAAMAAAAOACQAAAADAAMAAAAPAB8AAAADAAMAAAAPACAAAAADAAMAAAAPACEAAAADAAMAAAAPACIAAAADAAMAAAAPACMAAAADAAMAAAAPACQAAAADAAMAAAAQAB8AAAADAAMAAAAQACAAAAADAAMAAAAQACEAAAADAAMAAAAQACIAAAADAAMAAAAQACMAAAADAAMAAAAQACQAAAADAAMAAAARAB8AAAADAAMAAAARACAAAAADAAMAAAARACEAAAADAAMAAAARACIAAAADAAMAAAARACMAAAADAAMAAAARACQAAAADAAMAAAASAB8AAAADAAMAAAASACAAAAADAAMAAAASACEAAAADAAMAAAASACIAAAADAAMAAAASACMAAAADAAMAAAASACQAAAADAAMAAAATAB8AAAADAAMAAAATACAAAAADAAMAAAATACEAAAADAAMAAAATACIAAAADAAMAAAATACMAAAADAAMAAAATACQAAAADAAMAAAAxAB4AAAATAAIAAAAxAB0AAAATAAEAAAAyAB0AAAAUAAEAAAAzAB0AAAADAAEAAAA0AB0AAAADAAEAAAA1AB0AAAAFAAEAAAA1AB4AAAAFAAMAAAA1AB8AAAAFAAMAAAA1ACAAAAAFAAMAAAA1ACEAAAAFAAMAAAA1ACIAAAAFAAMAAAA1ACMAAAAFAAMAAAA1ACQAAAAFAAMAAAA0ACQAAAADAAMAAAAzACQAAAADAAMAAAAyACQAAAADAAMAAAAyACMAAAADAAMAAAAzACMAAAADAAMAAAA0ACMAAAADAAMAAAA0ACIAAAADAAMAAAA0ACEAAAADAAMAAAAzACIAAAADAAMAAAAyACIAAAADAAMAAAAyACEAAAADAAMAAAAyACAAAAADAAMAAAAzACAAAAADAAMAAAAzACEAAAADAAMAAAA0ACAAAAADAAMAAAA0AB8AAAADAAMAAAAzAB8AAAADAAMAAAAzAB4AAAADAAMAAAAyAB4AAAADAAMAAAA0AB4AAAADAAMAAAAyAB8AAAADAAMAAAAxAB8AAAADAAMAAAAxACAAAAADAAMAAAAxACEAAAADAAMAAAAxACIAAAADAAMAAAAxACMAAAADAAMAAAAxACQAAAADAAMAAAA=")
+tile_set = SubResource("TileSet_hh7ik")
+navigation_visibility_mode = 1
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="RigidBody2D3/Plan"]
-occluder = SubResource("OccluderPolygon2D_wkp8b")
+[node name="LightOccluder2D" type="LightOccluder2D" parent="TileMap"]
+occluder = SubResource("OccluderPolygon2D_hh7ik")
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="TileMap"]
+occluder = SubResource("OccluderPolygon2D_evpmb")
+
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="TileMap"]
+occluder = SubResource("OccluderPolygon2D_xmwv1")
+
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="TileMap"]
+occluder = SubResource("OccluderPolygon2D_msip7")
+
+[node name="Node2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("_pathFind2D")]
+position = Vector2(276, 426)
+script = ExtResource("8_msip7")
+_pathFind2D = NodePath("../TileMapPathFind")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D"]
+shape = SubResource("RectangleShape2D_ljrhq")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_mpica")
+
+[node name="PathFindTimer" type="Timer" parent="Node2D"]
+wait_time = 0.5
+
+[node name="RainLine" type="GPUParticles2D" parent="."]
+position = Vector2(440, 17)
+amount = 266
+amount_ratio = 0.2019
+sub_emitter = NodePath("RainPoint")
+texture = ExtResource("10_mpica")
+lifetime = 2.0
+speed_scale = 2.5
+explosiveness = 0.01
+collision_base_size = 61.08
+visibility_rect = Rect2(-499.33676, -1.9952393, 1344.6393, 2786.775)
+draw_order = 0
+trail_enabled = true
+trail_lifetime = 0.08
+trail_sections = 2
+trail_section_subdivisions = 1
+process_material = SubResource("ParticleProcessMaterial_msip7")
+
+[node name="RainPoint" type="GPUParticles2D" parent="RainLine"]
+amount = 600
+lifetime = 0.25
+explosiveness = 0.24
+interpolate = false
+fract_delta = false
+visibility_rect = Rect2(-1000, 0, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_ljrhq")
 
 [connection signal="body_entered" from="门/门Zone" to="门/门Zone" method="_on_body_entered"]
 [connection signal="body_exited" from="门/门Zone" to="门/门Zone" method="_on_body_exited"]
-[connection signal="body_entered" from="Plan/Area2D" to="Plan/Area2D" method="_on_body_entered"]
-[connection signal="body_entered" from="Plan2/Area2D" to="Plan2/Area2D" method="_on_body_entered"]
-[connection signal="body_entered" from="Plan4/Area2D" to="Plan4/Area2D" method="_on_body_entered"]
-[connection signal="body_entered" from="Plan8/Area2D" to="Plan8/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_entered"]
 [connection signal="body_exited" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_exited"]
-[connection signal="body_entered" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_entered"]
-[connection signal="body_exited" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_exited"]
 [connection signal="body_entered" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_entered"]
 [connection signal="body_exited" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_exited"]
+[connection signal="timeout" from="Node2D/PathFindTimer" to="Node2D" method="OnPathFindTimerTimeout"]

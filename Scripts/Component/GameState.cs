@@ -60,6 +60,7 @@ public partial class GameState : Node
     public static int GetGameLoop() { return Game.Loop; }
     public static Player GetPlayer() { return Game.MainPlayer; }
 
+    /// <inheritdoc cref="Scene.HasTag"/>
     public static bool HasLevelTag(string scene,string tag)
     {
         return Game.Scene.HasTag(scene,tag);

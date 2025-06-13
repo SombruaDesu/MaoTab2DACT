@@ -4,6 +4,7 @@
  */
 
 using Godot;
+using Godot.Collections;
 
 namespace MaoTab.Scripts;
 
@@ -25,9 +26,23 @@ public partial class Level : Node
     public void Init()
     {
         Data.Name = LevelName;
-        Data.Tags = [];
+
+        foreach (var point in _spawnPoint)
+        {
+            var path = point.Value;
+            
+            if (path != null)
+            {
+                if (GetNode(path) != null && GetNode(path) is Node2D node)
+                {
+                    SpawnPoint.Add(point.Key, node);
+                }
+            }
+        }
+        
     }
 
     [Export] private string LevelName;
-    [Export] public Node2D SpawnPoint;
+    [Export] private Dictionary<string,NodePath> _spawnPoint;
+    public Dictionary<string, Node2D> SpawnPoint = new();
 }

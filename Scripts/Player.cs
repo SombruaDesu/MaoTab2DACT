@@ -119,7 +119,7 @@ public partial class Player : CharacterBody2D
     /// <summary>
     /// 初始化玩家状态（游戏本地生成时调用，仅会调用一次类似 _Ready ）
     /// </summary>
-    public void Init(Vector2 spawnPos, bool isEntity)
+    public void Init(bool isEntity)
     {
         Data.Player = this;
 
@@ -127,16 +127,16 @@ public partial class Player : CharacterBody2D
         {
             CollisionLayer = 0;
         }
-
-        Position        = spawnPos;
+        
         _targetVelocity = Vector2.Zero;
         _jumpRequested  = false;
         _coyoteTimer    = CoyoteTime;
         _initialized    = true;
-
+        
         _footHRay.Init();
         _headHRay.Init();
-
+        
+        SetFacing(Data.Facing);
         InitAnimation();
     }
     
@@ -479,7 +479,7 @@ public partial class Player : CharacterBody2D
 
     /// <summary>
     /// 设置/增加持续外力（例如风力）。
-    /// 注意：持续外力不会自动清除，需要外部代码持续更新或手动归零。
+    /// 注意：持续外力不会自动清除，需要手动归零。
     /// </summary>
     /// <param name="force">施加的持续外力向量</param>
     public void AddExternalForce(Vector2 force)

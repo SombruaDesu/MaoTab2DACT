@@ -294,7 +294,6 @@ public partial class YarnRuntime : IActionRegistration
             
             OnLineArrival?.Invoke(localisedLine.TextWithoutCharacterName.Text);
             
-            GD.Print(localisedLine.TextWithoutCharacterName.Text);
             // UIRoot.DialoguePanel.Refresh(localisedLine.TextWithoutCharacterName.Text,null);
             // Continue();
         };

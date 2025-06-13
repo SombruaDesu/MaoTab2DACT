@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://botlly1ekj8vw"]
+
+[ext_resource type="Script" uid="uid://brto5ruogns27" path="res://Scripts/Component/TileMapPathFind.cs" id="1_ga2dp"]
+
+[node name="TileMapPathFind" type="TileMapLayer"]
+script = ExtResource("1_ga2dp")

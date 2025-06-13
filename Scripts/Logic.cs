@@ -32,10 +32,9 @@ public partial class Logic
             
             await Game.Interface.LoadStart();
             
-            await Game.Scene.LoadLevel("TestLevel");
-            var level = Game.Scene.CurLevel;
+            player.Init(true);
             
-            player.Init(level.SpawnPoint.Position, true);
+            await Game.Scene.LoadLevel("TestLevel");
 
             networkManager.Init(true);
             
@@ -64,11 +63,10 @@ public partial class Logic
         {
             home.Visible = false;
 
-            await Game.Scene.LoadLevel("TestLevel");
-            var level = Game.Scene.CurLevel;
+            player.Init(true);
             
-            player.Init(level.SpawnPoint.Position, true);
-
+            await Game.Scene.LoadLevel("TestLevel");
+            
             Game.Camera.FollowTarget = player;
 
             networkManager.Init(false);

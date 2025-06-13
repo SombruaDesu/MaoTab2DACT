@@ -40,6 +40,7 @@ public partial class YarnRuntime
         
         CommandDispatcher.AddCommandHandler("do", () =>
         {
+            GD.Print("----\n开始执行位于 " + _dialogue.CurrentNode + " 节点处的脚本");
             StopCaptureMode();
             
             var code = "";
@@ -63,7 +64,7 @@ public partial class YarnRuntime
 
             init.TreeExited += () =>
             {
-                GD.Print("脚本执行完毕");
+                GD.Print("----\n位于 " +  _dialogue.CurrentNode  + " 节点处的脚本执行完毕");
                 Continue();
             };
         

@@ -637,10 +637,12 @@ collision_bounce = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7x0wu"]
 size = Vector2(30, 30)
 
-[node name="TestLevel2" type="Node2D" node_paths=PackedStringArray("SpawnPoint")]
+[node name="TestLevel2" type="Node2D"]
 script = ExtResource("1_i0eq3")
 LevelName = "TestLevel2"
-SpawnPoint = NodePath("SpawnPoint")
+_spawnPoint = Dictionary[String, NodePath]({
+"A": NodePath("SpawnPoint")
+})
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 position = Vector2(418, 423)

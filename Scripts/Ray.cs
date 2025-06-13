@@ -14,11 +14,11 @@ public partial class Ray : RayCast2D
     public new void SetTargetPosition(Vector2 pos)
     {
         TargetPosition     = pos;
-        _debugLine.Points  = [Position, pos];
+        _debugLine.Points  = [new Vector2(0,0), pos];
     }
     
-    public void Init()
+    public void Init(bool debug = false)
     {
-        _debugLine.Visible = false;
+       _debugLine.Visible = debug;
     }
 }
