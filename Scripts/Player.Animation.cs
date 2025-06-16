@@ -23,7 +23,7 @@ public partial class Player
         /*起跑*/ RunStart,  /*跑步循环*/ Run,     /*刹车*/     RunEnd,
         /*跳*/   Jump,      /*坠落*/     Falling, /*落地*/     Landing,
         /*攻击*/ Attack,
-        /*受伤*/ Injury,
+        /*受伤*/ Harm,
     }
     
     /// <summary>
@@ -77,6 +77,9 @@ public partial class Player
                 await _animationPlayer.PlayAsync("Attack");
                 AttackOver();
                 break;
+            case EAnimationState.Harm:
+                await _animationPlayer.PlayAsync("Harm");
+                break;
             case EAnimationState.None:
             default: break;
         }
@@ -92,6 +95,10 @@ public partial class Player
         if (_isAttack)
         {
             newState = EAnimationState.Attack;
+        }
+        else if(_isHarm)
+        {
+            newState = EAnimationState.Harm;
         }
         else if (_isWallHanging)
         {

@@ -8,6 +8,7 @@ using Godot;
 
 namespace MaoTab.Scripts.Component;
 
+[GlobalClass]
 public partial class Camera : Camera2D
 {
     // 摄像机跟踪对象

@@ -78,11 +78,11 @@ public partial class TileMapPathFind : TileMapLayer
         return newInfoPoint;
     }
 
-    private System.Collections.Generic.Stack<PointInfo> ReversePathStack(
-        System.Collections.Generic.Stack<PointInfo> pathStack)
+    private Stack<PointInfo> ReversePathStack(
+        Stack<PointInfo> pathStack)
     {
-        System.Collections.Generic.Stack<PointInfo> pathStackReversed =
-            new System.Collections.Generic.Stack<PointInfo>();
+        Stack<PointInfo> pathStackReversed =
+            new Stack<PointInfo>();
         // 反转路径栈。这就像将一桶石头从一个桶倒入另一个桶。
         // 顶部的石头将位于另一个桶的底部。
         while (pathStack.Count != 0)
@@ -93,9 +93,9 @@ public partial class TileMapPathFind : TileMapLayer
         return pathStackReversed;
     }
 
-    public System.Collections.Generic.Stack<PointInfo> GetPlaform2DPath(Vector2 startPos, Vector2 endPos)
+    public Stack<PointInfo> GetPlanform2DPath(Vector2 startPos, Vector2 endPos)
     {
-        System.Collections.Generic.Stack<PointInfo> pathStack = new System.Collections.Generic.Stack<PointInfo>();
+        Stack<PointInfo> pathStack = new Stack<PointInfo>();
         // 查找起始位置和结束位置之间的路径
         var idPath = _astarGraph.GetIdPath(_astarGraph.GetClosestPoint(startPos), _astarGraph.GetClosestPoint(endPos));
 
@@ -104,14 +104,14 @@ public partial class TileMapPathFind : TileMapLayer
             return pathStack;
         } // 如果路径已到达目标，返回空路径栈
 
-        var startPoint = GetPointInfoAtPosition(startPos); // 创建起始位置的点		
-        var endPoint = GetPointInfoAtPosition(endPos); // 创建结束位置的点		
+        var startPoint = GetPointInfoAtPosition(startPos); // 创建起始位置的点
+        var endPoint = GetPointInfoAtPosition(endPos); // 创建结束位置的点
         var numPointsInPath = idPath.Count(); // 获取astar路径中的点数
 
         // 遍历路径中的所有点
         for (int i = 0; i < numPointsInPath; ++i)
         {
-            var currPoint = GetInfoPointByPointId(idPath[i]); // 获取idPath中的当前点		
+            var currPoint = GetInfoPointByPointId(idPath[i]); // 获取idPath中的当前点
 
             // 如果路径中只有一个点
             if (numPointsInPath == 1)
@@ -266,9 +266,9 @@ public partial class TileMapPathFind : TileMapLayer
         // 遍历点信息列表中的所有点
         foreach (var p1 in _pointInfoList)
         {
-            ConnectHorizontalPoints(p1); // 连接图中的水平点			
-            ConnectJumpPoints(p1); // 连接图中的跳跃点	
-            ConnectFallPoint(p1); // 连接图中的下落点					
+            ConnectHorizontalPoints(p1); // 连接图中的水平点
+            ConnectJumpPoints(p1); // 连接图中的跳跃点
+            ConnectFallPoint(p1); // 连接图中的下落点
             ConnectStepPoints(p1); // 新增：连接步上点，允许角色直接“踩”上相邻高台
         }
     }

@@ -21,7 +21,7 @@ public partial class Interface : Control
     
     public async Task LoadStart()
     {
-        await  LoadingPanel.Load();
+        await LoadingPanel.Load();
     }
 
     public async Task LoadOver()

@@ -3,6 +3,8 @@
  * @Description: 玩家对象，战斗部分
  */
 
+using Godot;
+
 namespace MaoTab.Scripts;
 
 public partial class Player
@@ -11,6 +13,32 @@ public partial class Player
     private       float _attackCooldownTimer;          // 冷却计时器
     private const float AttackCooldownDuration = 0.1f; // 攻击冷却时间（秒）
 
+    private bool _isHarm;
+    
+    public void HarmFromPoint(Vector2  point,Vector2 power)
+    {
+        _isHarm               = true;
+        _sprite.Modulate = new Color(Colors.Red);
+        
+        var imp = point.LookAt(Position);
+        if (imp.X > 0)
+        {
+            SetFacing(true);
+            ApplyImpulse(new Vector2(power.X, -power.Y));
+        }
+        else
+        {
+            SetFacing(false);
+            ApplyImpulse(new Vector2(power.X * -1, -power.Y));
+        }
+        
+        OnExternalImpulseDissipate += () =>
+        {
+            _sprite.Modulate = new Color(Colors.White);
+            _isHarm          = false;
+        };
+    }
+    
     public void AttackInput()
     {
         // 如果正在攻击或冷却中，不能发起新的攻击

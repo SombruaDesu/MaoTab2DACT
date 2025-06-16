@@ -3,6 +3,7 @@
  * @Description: 玩家对象，核心移动部分
  */
 
+using System;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -14,7 +15,7 @@ namespace MaoTab.Scripts;
 public partial class Player : CharacterBody2D
 {
     public int Id;
-
+    
     // 玩家输入：仅取 X 分量指示左右移动；Y 分量（大于 0）用于跳跃
     public Vector2 InputMoveDirection = Vector2.Zero;
 
@@ -48,7 +49,9 @@ public partial class Player : CharacterBody2D
     private Vector2 _externalImpulse        = Vector2.Zero; // 瞬时外力（一次性施加，例如后坐力）
     private Vector2 _externalForce          = Vector2.Zero; // 持续施加，不自动清除
     private Vector2 _pendingExternalImpulse = Vector2.Zero;
-        
+
+    private Action OnExternalImpulseDissipate;
+    
     // 摩擦力属性：
     // 地面摩擦力，值越大表示当前角色所站立的地面越“粗糙”，实际摩擦效果越强，
     // 但同时受到角色 Weight 的影响：角色越重，越容易站稳（外力影响衰减越大），默认 100
@@ -152,9 +155,9 @@ public partial class Player : CharacterBody2D
     {
         if (!_initialized)
             return;
-
+        
         float dt = (float)Game.PhysicsDelta; // 缓存每帧物理时间增量
-
+        
         UpdateBattleSystem();
 
         // 重置 _targetVelocity 为玩家输入决定的水平速度， 后续再叠加垂直与外力影响
@@ -170,15 +173,66 @@ public partial class Player : CharacterBody2D
         Flip();
 
         // ────────── 添加瞬时外力效果 ──────────
-        // 将待施加的外力平滑过渡到 _externalImpulse，这里可以调节 smoothingFactor 控制插值速度
-        float smoothingFactor = 0.2f;  // 数值越小，外力施加越慢
-        _externalImpulse += (_pendingExternalImpulse - _externalImpulse) * smoothingFactor;
-        
-        _targetVelocity  += _externalImpulse;
-        _externalImpulse =  Vector2.Zero; // 施加后清零
+        if (_isHarm)
+        {
+            // ------- 复杂效果处理 -------
+            // 当需要冲力在x，y轴几乎同时完成时使用复杂效果
+            // 如果不需要平滑且大幅度的冲量时用下面的处理效果
+            const float SX                = 0.2f; // 横向固定平滑系数
+            const float MIN_LIFT_VELOCITY = 60f;  // 最低竖直速度
 
-        // 每帧衰减待施加外力（避免累积过多）
-        _pendingExternalImpulse = _pendingExternalImpulse.Lerp(Vector2.Zero, smoothingFactor);
+            // ------- 计算本帧应该使用的 sy（越大越“立刻”） -------
+            float absImpY = Mathf.Abs(_pendingExternalImpulse.Y);
+
+            // 如果没有竖直冲量或角色已离地，就跟 X 一样平滑
+            float sy;
+            if (absImpY < 0.01f)
+            {
+                sy = SX;
+            }
+            else
+            {
+                // 期望第一帧就能产生的竖直速度占比
+                // ratio = MIN_LIFT_VELOCITY / absImpY
+                // 再保证 sy ∈ [SX, 1]
+                sy = Mathf.Clamp(MIN_LIFT_VELOCITY / absImpY, SX, 1f);
+            }
+
+            // ------- 按两个不同系数把冲量加入 _externalImpulse -------
+            _externalImpulse.X += (_pendingExternalImpulse.X - _externalImpulse.X) * SX;
+            _externalImpulse.Y += (_pendingExternalImpulse.Y - _externalImpulse.Y) * sy;
+
+            // 叠加到目标速度（立即生效）
+            _targetVelocity += _externalImpulse;
+
+            // ------- 把尚未消耗完的冲量继续衰减 -------
+            _pendingExternalImpulse.X = Mathf.Lerp(_pendingExternalImpulse.X, 0, SX);
+            _pendingExternalImpulse.Y = Mathf.Lerp(_pendingExternalImpulse.Y, 0, sy);
+        
+            // 当一次性冲力衰竭到一定程度时，视为完成
+            if (_pendingExternalImpulse.X.AetF(0, 15f) &&
+                _pendingExternalImpulse.Y.AetF(0, 15f))
+            {
+                _externalImpulse        = Vector2.Zero;
+                _pendingExternalImpulse = Vector2.Zero;
+                
+                OnExternalImpulseDissipate?.Invoke();
+                OnExternalImpulseDissipate = null;
+            }
+        }
+        else
+        {
+            // ------- 简单效果处理 ------- 
+            // 将待施加的外力平滑过渡到 _externalImpulse，这里可以调节 smoothingFactor 控制插值速度
+            float smoothingFactor = 0.2f;  // 数值越小，外力施加越慢
+            _externalImpulse += (_pendingExternalImpulse - _externalImpulse) * smoothingFactor;
+        
+            _targetVelocity += _externalImpulse;
+            _externalImpulse =  Vector2.Zero; // 施加后清零
+
+            // 每帧衰减待施加外力（避免累积过多）
+            _pendingExternalImpulse = _pendingExternalImpulse.Lerp(Vector2.Zero, smoothingFactor);
+        }
         
         // ────────── 添加持续外力（例如风力） ──────────
         float multiplier;
@@ -198,7 +252,7 @@ public partial class Player : CharacterBody2D
         _targetVelocity += _externalForce * dt * multiplier;
 
         // 在地面时，如果外力产生的向上（负 Y）速度不足以克服 Weight，则不使角色离地
-        if (IsOnFloor())
+        if (!_isHarm && IsOnFloor())
         {
             if (_targetVelocity.Y < 0 && Mathf.Abs(_targetVelocity.Y) < Weight)
             {
@@ -434,6 +488,15 @@ public partial class Player : CharacterBody2D
     public void Input(Vector2 direction, bool isRun, bool isWallHang)
     {
         if (!Data.Movable) return;
+        
+        if(_isHarm)
+        {
+            InputMoveDirection = Vector2.Zero;
+            _wallHangRequested = false;
+            _jumpKeyReleased   = true;
+            _jumpButtonHeld    = false;
+            return;
+        }
 
         // 只使用 X 分量处理左右移动
         InputMoveDirection = new Vector2(direction.X, 0);

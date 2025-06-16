@@ -25,6 +25,9 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         _cancellationTokenSource.Cancel(); // 取消当前异步播放任务
         _cancellationTokenSource = new CancellationTokenSource(); // 重置取消令牌
         await PlayAsync(animationName,loopMode);
+        
+        if(_isFree) return;
+        
         EmitSignal(SignalName.OnAnimationFinished);
     }
     
@@ -98,8 +101,8 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         try
         {
             // 持续循环，直到动画播放完毕或异步播放被取消
-            while (!token.IsCancellationRequested && 
-                   IsQueuedForDeletion() && IsPlaying() && GetCurrentAnimation() == animationName)
+            while (!_isFree && !token.IsCancellationRequested && 
+                   IsPlaying() && GetCurrentAnimation() == animationName)
             {
                 // 等待下一帧
                 await Task.Delay(10, token); // 使用取消令牌来支持任务取消
@@ -108,5 +111,12 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         catch (TaskCanceledException)
         {
         }
+    }
+
+    private bool _isFree;
+    
+    public override void _ExitTree()
+    {
+        _isFree = true;
     }
 }

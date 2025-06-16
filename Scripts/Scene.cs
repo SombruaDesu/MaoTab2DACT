@@ -110,9 +110,10 @@ public partial class Scene : Node2D
     {
         if(CurLevel.Data.Name == levelName) return;
         
-        PrvLevel  = CurLevel; // 缓存上一个关卡对象，方便加载关卡后卸载
+        PrvLevel = CurLevel; // 缓存上一个关卡对象，方便加载关卡后卸载
+        
         await Game.Interface.LoadStart();
-
+        
         if (await LoadLevel(levelName,spawnPointName))
         {
             GameState.ClearCacheData(); // 清理上一个关卡内产生的缓存数据
@@ -195,11 +196,11 @@ public partial class Scene : Node2D
             {
                 if (CurLevel.SpawnPoint.ContainsKey(spawnPointName))
                 {
-                    var pos = CurLevel.SpawnPoint.FirstOrDefault().Value.Position;
+                    var pos = CurLevel.SpawnPoint[spawnPointName].Position;
                     Game.MainPlayer.Position = pos;
                     GD.Print("----\n[color=#e16032]" +
                              "关卡加载完成：" + levelName + 
-                                 "，关卡加载完成，" + "，使用刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
+                                 "，关卡加载完成，" + "使用刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
                                  "，位置：" + pos);
                 }
                 else

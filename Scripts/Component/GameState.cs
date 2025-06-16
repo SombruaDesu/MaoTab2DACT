@@ -18,6 +18,11 @@ public partial class GameState : Node
 {
     public static Dictionary<string,Node> CacheNodes = new();
 
+    public static Camera GetCamera()
+    {
+        return Game.Camera;
+    }
+    
     /// <summary>
     /// 清除缓存数据
     /// </summary>
@@ -52,9 +57,9 @@ public partial class GameState : Node
         return null;
     }
 
-    public static void ChangeLevel(string levelName)
+    public static void ChangeLevel(string levelName,string pointName)
     {
-        _ = Game.Scene.ChangeLevel(levelName);
+        Game.Scene.ChangeLevel(levelName,pointName);
     }
     
     public static int GetGameLoop() { return Game.Loop; }

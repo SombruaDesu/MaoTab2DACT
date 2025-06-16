@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b0vvph0lcobbg"]
+[gd_scene load_steps=31 format=3 uid="uid://b0vvph0lcobbg"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_g126i"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_mu4ax"]
@@ -12,6 +12,10 @@ size = Vector2(20, 22)
 [sub_resource type="AtlasTexture" id="AtlasTexture_yitnd"]
 atlas = ExtResource("3_mu4ax")
 region = Rect2(33, 160, 33, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l83d4"]
+atlas = ExtResource("3_mu4ax")
+region = Rect2(0, 224, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xmq01"]
 atlas = ExtResource("3_mu4ax")
@@ -69,6 +73,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"Falling",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l83d4")
+}],
+"loop": true,
+"name": &"Harm",
 "speed": 5.0
 }, {
 "frames": [{
@@ -302,9 +314,38 @@ tracks/1/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_uorah"]
+resource_name = "Harm"
+length = 0.03333667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Harm"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gfhe8"]
 _data = {
 &"Falling": SubResource("Animation_ijo77"),
+&"Harm": SubResource("Animation_uorah"),
 &"Idle": SubResource("Animation_8vbp2"),
 &"Jump": SubResource("Animation_gfhe8"),
 &"RESET": SubResource("Animation_xmq01"),

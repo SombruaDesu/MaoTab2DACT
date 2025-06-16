@@ -27,7 +27,7 @@ func _on_body_entered(body: Node2D) -> void:
 	pass
 
 func a():
-	GameState.ChangeLevel(\"TestLevel\")
+	GameState.ChangeLevel(\"TestLevel\",\"Door\")
 	pass
 
 func _on_body_exited(body: Node2D) -> void:
@@ -645,7 +645,7 @@ _spawnPoint = Dictionary[String, NodePath]({
 })
 
 [node name="SpawnPoint" type="Node2D" parent="."]
-position = Vector2(418, 423)
+position = Vector2(266, 549)
 
 [node name="Plan3" type="Sprite2D" parent="."]
 modulate = Color(0.43, 0.43, 0.43, 1)

@@ -21,13 +21,21 @@ public static class MathfHelper
     }
     
     /// <summary>
+    /// 计算 current 指向 target 的单位方向向量。
+    /// </summary>
+    public static Vector2 LookAt(this Vector2 current, Vector2 target)
+    {
+        return (target - current).Normalized();
+    }
+    
+    /// <summary>
     /// 求近值
     /// </summary>
     /// <param name="a">值A</param>
     /// <param name="b">值B</param>
     /// <param name="tolerance">差量</param>
     /// <returns>a 近等于 b 时true</returns>
-    public static bool AetF(float a, float b, float tolerance = 0.1f)
+    public static bool AetF(this float a, float b, float tolerance = 0.1f)
     {
         return Math.Abs(a - b) < tolerance;
     }
