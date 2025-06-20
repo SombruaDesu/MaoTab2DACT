@@ -96,7 +96,7 @@ public partial class AnimationAsyncPlayer : AnimationPlayer
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource = new CancellationTokenSource(); // 重置取消令牌
         var token = _cancellationTokenSource.Token;
-        this.Play(animationName,blend,speed);
+        Play(animationName,blend,speed);
         
         try
         {

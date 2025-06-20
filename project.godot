@@ -84,12 +84,7 @@ g={
 ]
 }
 
-[physics]
-
-2d/run_on_separate_thread=true
-
 [rendering]
 
-rendering_device/driver="d3d12"
-rendering_device/driver.windows="d3d12"
+textures/canvas_textures/default_texture_filter=0
 anti_aliasing/quality/msaa_2d=3

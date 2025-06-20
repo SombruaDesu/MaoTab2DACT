@@ -94,6 +94,11 @@ public partial class AudioMixPlayer : Node
         ActiveAudioPlayer = playerIndex;
     }
 
+    public void Pause()
+    {
+        
+    }
+    
     public void SwitchPlayer(float duration = 3f)
     {
         if (!IsPlaying || Switching) return;

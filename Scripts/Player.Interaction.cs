@@ -1,9 +1,9 @@
 ﻿/*
  * @Author: MaoT
- * @Description: 玩家对象，交互接口部分
+ * @Description: 玩家对象，交互接口部分 Player.Interaction
  */
 
-using System;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -12,9 +12,16 @@ public partial class Player
 {
     private YarnAction _curYarnAction;
     
-    private string _curGdsTag = string.Empty;
-    private Callable _curGdsAction;
+    private string       _curGdsTag = string.Empty;
+    private Callable     _curGdsAction;
+    
+    /// <summary>
+    /// 当前可以拾取的物品
+    /// </summary>
+    private ItemInstance _canPickupItem;
 
+    private bool allowPickup = true;
+    
     public void ClearAction()
     {
         _curYarnAction = null;
@@ -30,6 +37,11 @@ public partial class Player
         }
     }
 
+    public void SetCanPickupItem(ItemInstance item)
+    {
+        _canPickupItem = item;
+    }
+    
     public void SetGdsAction(Callable callable)
     {
         if (_curGdsTag == string.Empty)
@@ -54,8 +66,15 @@ public partial class Player
         ClearAction();
     }
     
-    public void InteractionInput()
+    public async Task InteractionInput()
     {
+        if (_canPickupItem is { canPackup: true })
+        {
+            allowPickup = false;
+            await AutoPlace(_canPickupItem);
+            allowPickup = true;
+        }
+        
         if (_curYarnAction != null)
         {
             if (_curYarnAction.Info != string.Empty)

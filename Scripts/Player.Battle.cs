@@ -3,6 +3,7 @@
  * @Description: 玩家对象，战斗部分
  */
 
+using System.Linq;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -20,17 +21,22 @@ public partial class Player
         _isHarm               = true;
         _sprite.Modulate = new Color(Colors.Red);
         
-        var imp = point.LookAt(Position);
+        var imp     = point.LookAt(Position);
+        Vector2 rePower;
         if (imp.X > 0)
         {
             SetFacing(true);
-            ApplyImpulse(new Vector2(power.X, -power.Y));
+            rePower = new Vector2(power.X, -power.Y);
         }
         else
         {
             SetFacing(false);
-            ApplyImpulse(new Vector2(power.X * -1, -power.Y));
+            rePower = new Vector2(power.X * -1, -power.Y);
         }
+        
+        ApplyImpulse(rePower);
+        if(_items.Count > 0)
+            RemoveCascade(_items.Last(), new Vector2(rePower.X,rePower.Y * 5));
         
         OnExternalImpulseDissipate += () =>
         {

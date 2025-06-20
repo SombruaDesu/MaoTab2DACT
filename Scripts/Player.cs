@@ -139,6 +139,8 @@ public partial class Player : CharacterBody2D
         _footHRay.Init();
         _headHRay.Init();
         
+        InitBackpack(2,3);
+        
         SetFacing(Data.Facing);
         InitAnimation();
     }
@@ -302,12 +304,14 @@ public partial class Player : CharacterBody2D
             _sprite.FlipH = true;
             _footHRay.SetTargetPosition(new Vector2(-10.2f, 0));
             _headHRay.SetTargetPosition(new Vector2(-10.2f, 0));
+            _startTile.Scale = new Vector2(-1f, 1f);
         }
         else
         {
             _sprite.FlipH = false;
             _footHRay.SetTargetPosition(new Vector2(10.2f, 0));
             _headHRay.SetTargetPosition(new Vector2(10.2f, 0));
+            _startTile.Scale = new Vector2(1f, 1f);
         }
 
         Data.Facing = facing;
@@ -469,7 +473,6 @@ public partial class Player : CharacterBody2D
         for (int i = 0; i < GetSlideCollisionCount(); i++)
         {
             var collision = GetSlideCollision(i);
-
             if (collision.GetNormal().Dot(Vector2.Down) > 0.9f && _targetVelocity.Y < 0)
             {
                 _targetVelocity.Y   = Mathf.Max(_targetVelocity.Y + _currentJumpImpulse, 0);

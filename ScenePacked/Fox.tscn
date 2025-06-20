@@ -1,9 +1,10 @@
-[gd_scene load_steps=31 format=3 uid="uid://b0vvph0lcobbg"]
+[gd_scene load_steps=32 format=3 uid="uid://b0vvph0lcobbg"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_g126i"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_mu4ax"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_xmq01"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="6_mfa3w"]
+[ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="6_xmq01"]
 [ext_resource type="Script" uid="uid://c0gq0eowwx314" path="res://Scripts/Ray.cs" id="7_kdf0d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
@@ -154,6 +155,34 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [&"Falling"]
+}
+
+[sub_resource type="Animation" id="Animation_uorah"]
+resource_name = "Harm"
+length = 0.03333667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Harm"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_8vbp2"]
@@ -314,34 +343,6 @@ tracks/1/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_uorah"]
-resource_name = "Harm"
-length = 0.03333667
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:animation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [&"Harm"]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:frame")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_gfhe8"]
 _data = {
 &"Falling": SubResource("Animation_ijo77"),
@@ -354,9 +355,11 @@ _data = {
 &"WallHang": SubResource("Animation_mfa3w")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_sprite", "_headHRay", "_footHRay")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_startTile", "_sprite", "_headHRay", "_footHRay")]
+platform_floor_layers = 4294901761
 script = ExtResource("1_g126i")
 _animationPlayer = NodePath("Sprite2D/AnimationPlayer")
+_startTile = NodePath("Backpack")
 _sprite = NodePath("Sprite2D")
 _headHRay = NodePath("HeadRay")
 _footHRay = NodePath("FootRay")
@@ -364,6 +367,45 @@ _footHRay = NodePath("FootRay")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 5)
 shape = SubResource("RectangleShape2D_mu4ax")
+
+[node name="Backpack" type="Node2D" parent="."]
+position = Vector2(0, 16)
+
+[node name="BackpackTile" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -8)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile2" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-16, -8)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile3" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -16)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile4" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-16, -16)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile5" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -24)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile6" type="Sprite2D" parent="Backpack"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-16, -24)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

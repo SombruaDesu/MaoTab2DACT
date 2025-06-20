@@ -153,9 +153,9 @@ public partial class Scene : Node2D
             
             // BUG:
             // 这里有个非常操蛋的时序问题，主要由C#脚本与Gds的调用时序产生，
-            // 如果node被AddChild了，也就是被放到场景树内后，相当于完成了实例化，
+            // 如果node被AddChild了，也就是被放到场景树内后，相当于完成了实例化，加入了场景树
             // 导致CurLevel还没被更新就触发了这个才被实例化的关卡的所有节点脚本Ready，
-            // 但是没有AddChild先把node挂给了CurLevel的话，又会导致实例化后，所有场景的脚步失效
+            // 但是没有AddChild先把node挂给了CurLevel的话，又会导致实例化后，所有场景的脚本失效
             // 这里的解决方案就是使用一个标签（CurLevelName）作为key值，代表当前场景
             CurLevelName = levelName;
             Level.AddChild(level);
