@@ -1,14 +1,287 @@
-[gd_scene load_steps=32 format=3 uid="uid://b0vvph0lcobbg"]
+[gd_scene load_steps=46 format=3 uid="uid://b0vvph0lcobbg"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_g126i"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_mu4ax"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_xmq01"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="6_mfa3w"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="6_xmq01"]
+[ext_resource type="Texture2D" uid="uid://jxkyl6gwa4ua" path="res://Texture/Backpack/Backpack_bottom_01.png" id="7_8vbp2"]
 [ext_resource type="Script" uid="uid://c0gq0eowwx314" path="res://Scripts/Ray.cs" id="7_kdf0d"]
+[ext_resource type="Texture2D" uid="uid://dilvgymwfssgf" path="res://Texture/Backpack/Backpack_mid_02.png" id="8_gfhe8"]
+[ext_resource type="Texture2D" uid="uid://br07ssa3w6867" path="res://Texture/Backpack/Backpack_right_02.png" id="8_kdf0d"]
+[ext_resource type="Texture2D" uid="uid://dtpa1l5xsyfl5" path="res://Texture/Backpack/Backpack_mid_03.png" id="9_3ug3b"]
+[ext_resource type="Texture2D" uid="uid://b1v6bavb1vjob" path="res://Texture/Backpack/Backpack_top_01.png" id="9_gfhe8"]
+[ext_resource type="Texture2D" uid="uid://dmc1n0gw46i34" path="res://Texture/Backpack/Backpack_mid_01.png" id="9_ijo77"]
+[ext_resource type="Texture2D" uid="uid://udwoaixkyqsp" path="res://Texture/Backpack/Backpack_right_01.png" id="11_mfa3w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
 size = Vector2(20, 22)
+
+[sub_resource type="Animation" id="Animation_qf4bv"]
+resource_name = "Bottom_1"
+length = 0.033336636
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(5, 2)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Right2:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_mxv3s"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_yitnd"]
+resource_name = "Bottom_2"
+length = 0.033336636
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right2:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Right:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(13, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_kdf0d"]
+resource_name = "Top_1"
+length = 0.033336636
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mid3:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -11)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mid_C:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -9)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Mid_C:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 2)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Mid2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -9)]
+}
+
+[sub_resource type="Animation" id="Animation_p78xu"]
+resource_name = "Top_2"
+length = 0.033336636
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -26)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mid3:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -16)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mid_C:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -15)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Mid_C:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 3)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Mid2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -14)]
+}
+
+[sub_resource type="Animation" id="Animation_l83d4"]
+resource_name = "Top_3"
+length = 0.033336636
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -34)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mid3:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -20)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mid_C:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -19)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Mid_C:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 4)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Mid2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -18)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qf4bv"]
+_data = {
+&"Bottom_1": SubResource("Animation_qf4bv"),
+&"Bottom_2": SubResource("Animation_yitnd"),
+&"RESET": SubResource("Animation_mxv3s"),
+&"Top_1": SubResource("Animation_kdf0d"),
+&"Top_2": SubResource("Animation_p78xu"),
+&"Top_3": SubResource("Animation_l83d4")
+}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yitnd"]
 atlas = ExtResource("3_mu4ax")
@@ -355,11 +628,14 @@ _data = {
 &"WallHang": SubResource("Animation_mfa3w")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_startTile", "_sprite", "_headHRay", "_footHRay")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_startTile", "_instanceLayer", "_backpackTopAnimationPlayer", "_backpackBottomAnimationPlayer", "_sprite", "_headHRay", "_footHRay")]
 platform_floor_layers = 4294901761
 script = ExtResource("1_g126i")
 _animationPlayer = NodePath("Sprite2D/AnimationPlayer")
 _startTile = NodePath("Backpack")
+_instanceLayer = NodePath("Backpack/InstanceLayer")
+_backpackTopAnimationPlayer = NodePath("Backpack/TextrueLayer/Top-MidAnimation")
+_backpackBottomAnimationPlayer = NodePath("Backpack/TextrueLayer/BottomAnimation")
 _sprite = NodePath("Sprite2D")
 _headHRay = NodePath("HeadRay")
 _footHRay = NodePath("FootRay")
@@ -371,41 +647,143 @@ shape = SubResource("RectangleShape2D_mu4ax")
 [node name="Backpack" type="Node2D" parent="."]
 position = Vector2(0, 16)
 
-[node name="BackpackTile" type="Sprite2D" parent="Backpack"]
+[node name="DebugLayer" type="Node2D" parent="Backpack"]
+visible = false
+
+[node name="BackpackTile" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-8, -8)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
 
-[node name="BackpackTile2" type="Sprite2D" parent="Backpack"]
+[node name="BackpackTile2" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-16, -8)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
 
-[node name="BackpackTile3" type="Sprite2D" parent="Backpack"]
+[node name="BackpackTile3" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-8, -16)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
 
-[node name="BackpackTile4" type="Sprite2D" parent="Backpack"]
+[node name="BackpackTile4" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-16, -16)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
 
-[node name="BackpackTile5" type="Sprite2D" parent="Backpack"]
+[node name="BackpackTile5" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-8, -24)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
 
-[node name="BackpackTile6" type="Sprite2D" parent="Backpack"]
+[node name="BackpackTile6" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-16, -24)
 scale = Vector2(0.0625, 0.0625)
 texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile8" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-24, -16)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile10" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-24, -32)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile11" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-16, -32)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile12" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -32)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile13" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -40)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile14" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-16, -40)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile15" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-24, -40)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile9" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-24, -8)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="BackpackTile7" type="Sprite2D" parent="Backpack/DebugLayer"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-24, -24)
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("6_xmq01")
+
+[node name="InstanceLayer" type="Node2D" parent="Backpack"]
+
+[node name="TextrueLayer" type="Node2D" parent="Backpack"]
+position = Vector2(-6, -8)
+rotation = 3.1415927
+scale = Vector2(1, -1)
+
+[node name="Bottom" type="Sprite2D" parent="Backpack/TextrueLayer"]
+texture = ExtResource("7_8vbp2")
+
+[node name="Mid_C" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(0, -9)
+scale = Vector2(1, 2)
+texture = ExtResource("8_gfhe8")
+
+[node name="Mid2" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(0, -9)
+texture = ExtResource("9_ijo77")
+
+[node name="Mid3" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(0, -11)
+texture = ExtResource("9_3ug3b")
+
+[node name="Right" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(5, 2)
+texture = ExtResource("11_mfa3w")
+
+[node name="Right2" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(6, -3)
+texture = ExtResource("8_kdf0d")
+
+[node name="Top" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(0, -18)
+texture = ExtResource("9_gfhe8")
+
+[node name="Top-MidAnimation" type="AnimationPlayer" parent="Backpack/TextrueLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_qf4bv")
+}
+
+[node name="BottomAnimation" type="AnimationPlayer" parent="Backpack/TextrueLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_qf4bv")
+}
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1

@@ -11,6 +11,11 @@ public struct LevelData
 
     public string Name;
 
+    /// <summary>
+    /// 物品刷新日志
+    /// </summary>
+    public Dictionary<string,ItemSpawnData>  Items;
+    
     public LevelData()
     {
         Name = "NONE_NAME_LEVEL";

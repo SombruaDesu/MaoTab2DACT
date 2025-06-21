@@ -139,7 +139,7 @@ public partial class Player : CharacterBody2D
         _footHRay.Init();
         _headHRay.Init();
         
-        InitBackpack(2,3);
+        InitBackpack(3,5);
         
         SetFacing(Data.Facing);
         InitAnimation();

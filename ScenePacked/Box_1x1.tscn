@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cmb6d2da1bj1e"]
 
 [ext_resource type="Script" uid="uid://ccqy8wixsuy1w" path="res://Scripts/ItemInstance.cs" id="1_1es4a"]
-[ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="1_lv3k3"]
+[ext_resource type="Texture2D" uid="uid://d0ur42oeqqrpd" path="res://Texture/Box/Box_1x1.png" id="2_1es4a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xmq01"]
 size = Vector2(8, 8)
@@ -11,26 +11,26 @@ size = Vector2(8, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1es4a"]
 size = Vector2(8, 8)
 
-[node name="Item" type="RigidBody2D" node_paths=PackedStringArray("_interactionArea", "_collisionArea")]
+[node name="Box_1x1" type="RigidBody2D" node_paths=PackedStringArray("_interactionArea", "_collisionArea")]
 collision_layer = 8
 collision_mask = 8
-freeze = true
 script = ExtResource("1_1es4a")
 _interactionArea = NodePath("InteractionArea")
 _collisionArea = NodePath("CollisionArea")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="RigCollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xmq01")
+debug_color = Color(0, 0.6, 0.69803923, 0)
 
 [node name="Sp" type="Sprite2D" parent="."]
-scale = Vector2(0.0625, 0.0625)
-texture = ExtResource("1_lv3k3")
+texture = ExtResource("2_1es4a")
 
 [node name="InteractionArea" type="Area2D" parent="."]
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
 shape = SubResource("RectangleShape2D_lv3k3")
+debug_color = Color(0, 0.6, 0.69803923, 0)
 
 [node name="CollisionArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -38,3 +38,4 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea"]
 shape = SubResource("RectangleShape2D_1es4a")
+debug_color = Color(0, 0.6, 0.69803923, 0)

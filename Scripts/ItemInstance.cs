@@ -19,7 +19,7 @@ public partial class ItemInstance : RigidBody2D
     public           bool           canDrop;
     public override void _Ready()
     {
-        Init(new ItemDefinition("0",W,H,true));
+        Init(new ItemDefinition("0",W,H,1.0f,true));
     }
 
     public void Init(ItemDefinition def)
@@ -43,28 +43,36 @@ public partial class ItemInstance : RigidBody2D
         };
     }
 
-    public void DroppedFromBackpack(Vector2 power)
+    /// <summary>
+    /// 抛
+    /// </summary>
+    /// <param name="power">冲量</param>
+    public void Dropped(Vector2 power)
     {
         SetCollisionLayerValue(4,true);
         CallDeferred("reparent",Game.Scene.CurLevel);
         SetDeferred("freeze", false);
-        LinearVelocity  = (power);
+        LinearVelocity  = power;
         var a = new RandomNumberGenerator();
         AngularVelocity = a.RandfRange(0,90);
+        
+        canPackup                   = true;
+        _interactionArea.Monitoring = true;
     }
     
     const int CELL = 8;  // 一格 8px
     public async Task PickedUp(Node2D node,int x,int y,bool rotated)
     {
+        Freeze  = true;
         Rotated = rotated;
         X       = x;  Y = y;
         
         Reparent(node, true);
 
         // 实际占用的格子尺寸
-        var   sz    = GetSize(); // 已考虑旋转 (W,H)
-        float halfW = sz.W * CELL * 0.5f;
-        float halfH = sz.H * CELL * 0.5f;
+        var   sz    = GetSize(); // 已考虑旋转 (X,Y)
+        float halfW = sz.X * CELL * 0.5f;
+        float halfH = sz.Y * CELL * 0.5f;
 
         // 网格 → 像素；再减去半宽半高，让中心对到格子左下角
         float px = (x - 1) * CELL + halfW;
@@ -73,8 +81,15 @@ public partial class ItemInstance : RigidBody2D
         canPackup                   = false;
         _interactionArea.Monitoring = false;
         SetCollisionLayerValue(4,false);
-        
-        await SmoothMoveAndRotateAsync(new Vector2(-px - 4, py - 4), rotated ? 90 : 0, 0.20f);
+
+        if (rotated)
+        {
+            await SmoothMoveAndRotateAsync(new Vector2(-px - 4, py - 4), 90, 0.20f);
+        }
+        else
+        {
+            await SmoothMoveAndRotateAsync(new Vector2(-px - 4, py - 4), 0, 0.20f);
+        }
         
         // 位置完全就位后才可以丢下
         canDrop = true;
@@ -115,5 +130,11 @@ public partial class ItemInstance : RigidBody2D
         SetProcess(false); // 若不再需要 _Process，可关闭
     }
     
-    public Size GetSize() => Rotated ? new Size(Def.Size.H, Def.Size.W) : Def.Size;
+    public Vector2I GetSize()
+    {
+        // Rotated == true 说明物品在网格里是旋转 90° 的
+        return Rotated
+            ? new Vector2I(Def.Size.Y, Def.Size.X)   // 交换 X / Y
+            : Def.Size;
+    }
 }

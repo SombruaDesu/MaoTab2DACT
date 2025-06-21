@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=47 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -8,10 +8,13 @@
 [ext_resource type="Script" uid="uid://bq7dxbbsoe3ku" path="res://Scripts/RoleAgent.cs" id="7_xmwv1"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="8_msip7"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
-[ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Item.tscn" id="10_ljrhq"]
+[ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Box_1x1.tscn" id="10_ljrhq"]
 [ext_resource type="Texture2D" uid="uid://bdfw3fqylyd6e" path="res://Texture/Fx_Rain.webp" id="10_mpica"]
-[ext_resource type="Script" uid="uid://ccqy8wixsuy1w" path="res://Scripts/ItemInstance.cs" id="11_ljrhq"]
 [ext_resource type="Shader" uid="uid://b1nyiciuywxqs" path="res://Shader/Water.gdshader" id="12_vxmux"]
+[ext_resource type="Script" uid="uid://bxamsm6xbiexk" path="res://Scripts/Component/ItemSpawn.cs" id="13_5bqlb"]
+[ext_resource type="PackedScene" uid="uid://crckltxrgif68" path="res://ScenePacked/Box_2x2.tscn" id="14_1nl4h"]
+[ext_resource type="Script" uid="uid://cqcgo7aoahx60" path="res://Scripts/Data/ItemSpawnData.cs" id="14_rkfdh"]
+[ext_resource type="PackedScene" uid="uid://cu50upjhh4y2l" path="res://ScenePacked/Box_1x2.tscn" id="15_y0u32"]
 
 [sub_resource type="Animation" id="Animation_1yrnh"]
 resource_name = "new_animation"
@@ -49,158 +52,6 @@ func _on_body_exited(body: Node2D) -> void:
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xhnlc"]
 size = Vector2(1, 1)
-
-[sub_resource type="Curve" id="Curve_lgr22"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_trn2v"]
-curve = SubResource("Curve_lgr22")
-
-[sub_resource type="Curve" id="Curve_03owx"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.699454, 0.4381), -2.16281, -2.16281, 0, 0, Vector2(0.99999, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_wkp8b"]
-curve = SubResource("Curve_03owx")
-
-[sub_resource type="Curve" id="Curve_trn2v"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.348485, 0.59228), 1.63872, 1.63872, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_03owx"]
-curve = SubResource("Curve_trn2v")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_03owx"]
-particle_flag_disable_z = true
-emission_shape = 1
-emission_sphere_radius = 266.0
-spread = 7.273
-initial_velocity_min = 826.73
-initial_velocity_max = 3000.0
-gravity = Vector3(0, 100, 0)
-scale_min = 1.5
-scale_max = 1.5
-scale_curve = SubResource("CurveTexture_wkp8b")
-alpha_curve = SubResource("CurveTexture_trn2v")
-turbulence_enabled = true
-turbulence_noise_speed = Vector3(0, 9.825, 0)
-turbulence_influence_min = 0.04
-turbulence_influence_max = 0.04
-turbulence_initial_displacement_min = -31.5
-turbulence_initial_displacement_max = 12.2
-turbulence_influence_over_life = SubResource("CurveTexture_03owx")
-collision_mode = 1
-collision_friction = 0.0
-collision_bounce = 0.0
-
-[sub_resource type="GDScript" id="GDScript_1yrnh"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-# 定义风的力度 横向以及垂直
-var wind = Vector2(2400,0)
-
-func _on_body_entered(body: Node2D) -> void: # 当有玩家离开“进入”脚本所挂载的碰撞盒区域时
-	if body is not Player: # 先检测碰撞的对象是不是玩家
-		return # 不是则返回，跳过后面的功能，如果是则继续
-		
-	var p = body as Player;  # 把碰撞对象转换为玩家
-	p.AddExternalForce(wind);  # 给玩家增加持续施加的力
-	pass
-
-
-func _on_body_exited(body: Node2D) -> void: # 当有玩家“离开”当前脚本所挂载的碰撞盒区域时
-	if body is not Player: # 先检测碰撞的对象是不是玩家
-		return # 不是则返回，跳过后面的功能，如果是则继续
-		
-	var p = body as Player; # 把碰撞对象转换为玩家
-	p.AddExternalForce(-wind); # 给玩家清除持续施加的力
-	pass
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u18fy"]
-size = Vector2(1135.5, 286)
-
-[sub_resource type="GDScript" id="GDScript_u18fy"]
-resource_name = "Box"
-script/source = "extends Area2D
-
-
-var wind = Vector2(0,-2000)
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is RigidBody2D:
-		var r = body as RigidBody2D;
-		r.add_constant_force(wind);
-		pass
-	
-	if body is not Player: 
-		return
-		
-	var p = body as Player;
-	p.AddExternalForce(wind);
-	pass
-
-
-func _on_body_exited(body: Node2D) -> void:
-	if body is RigidBody2D:
-		var r = body as RigidBody2D;
-		r.add_constant_force(-wind);
-		pass
-	
-	if body is not Player: 
-		return
-		
-	var p = body as Player;
-	p.AddExternalForce(-wind);
-	pass
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1yrnh"]
-size = Vector2(497.5, 286)
-
-[sub_resource type="Curve" id="Curve_1yrnh"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0]
-point_count = 1
-
-[sub_resource type="Curve" id="Curve_u18fy"]
-_data = [Vector2(0, 0.0704377), 0.0, 0.0, 0, 0, Vector2(0.404372, 0.202241), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_7x0wu"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0]
-point_count = 1
-
-[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_xhnlc"]
-curve_x = SubResource("Curve_1yrnh")
-curve_y = SubResource("Curve_u18fy")
-curve_z = SubResource("Curve_7x0wu")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hh7ik"]
-lifetime_randomness = 1.0
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(72.35, 1, 1)
-direction = Vector3(0, -1, 0)
-spread = 0.0
-initial_velocity_min = 1686.02
-initial_velocity_max = 2000.0
-gravity = Vector3(300, 100, 0)
-scale_min = 0.0
-scale_max = 7.43
-scale_curve = SubResource("CurveXYZTexture_xhnlc")
-alpha_curve = SubResource("CurveTexture_trn2v")
-turbulence_enabled = true
-turbulence_noise_speed = Vector3(0, 9.825, 0)
-turbulence_influence_min = 0.072
-turbulence_influence_max = 0.078
-turbulence_initial_displacement_min = -31.5
-turbulence_initial_displacement_max = 12.2
-turbulence_influence_over_life = SubResource("CurveTexture_03owx")
-collision_mode = 1
-collision_friction = 0.0
-collision_bounce = 0.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xmwv1"]
 texture = ExtResource("6_evpmb")
@@ -432,8 +283,19 @@ func goToPlayer()-> void:
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ljrhq"]
 size = Vector2(25, 25)
 
+[sub_resource type="Curve" id="Curve_lgr22"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
 [sub_resource type="CurveTexture" id="CurveTexture_mpica"]
 curve = SubResource("Curve_lgr22")
+
+[sub_resource type="Curve" id="Curve_trn2v"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.348485, 0.59228), 1.63872, 1.63872, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_03owx"]
+curve = SubResource("Curve_trn2v")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_msip7"]
 lifetime_randomness = 1.0
@@ -459,6 +321,9 @@ collision_mode = 2
 sub_emitter_mode = 3
 sub_emitter_amount_at_collision = 32
 
+[sub_resource type="CurveTexture" id="CurveTexture_trn2v"]
+curve = SubResource("Curve_lgr22")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljrhq"]
 particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
@@ -481,11 +346,6 @@ func _on_body_entered(body: Node2D) -> void:
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msip7"]
 size = Vector2(16, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xmq01"]
-size = Vector2(8, 8)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lv3k3"]
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vxmux"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5bqlb"]
@@ -505,10 +365,10 @@ noise = SubResource("FastNoiseLite_rkfdh")
 shader = ExtResource("12_vxmux")
 shader_parameter/y_scale = 3.6450000000040745
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_5bqlb")
-shader_parameter/distortion_strength = 0.029999999998835847
-shader_parameter/distortion_speed = 0.014999999999417923
+shader_parameter/distortion_strength = 0.02999999999883584
+shader_parameter/distortion_speed = 0.01499999999941792
 shader_parameter/reflection_noise = SubResource("NoiseTexture2D_1nl4h")
-shader_parameter/reflection_speed = 0.010000000009313226
+shader_parameter/reflection_speed = 0.01000000000931322
 
 [sub_resource type="Gradient" id="Gradient_eatkd"]
 offsets = PackedFloat32Array(0, 0.10119, 1)
@@ -519,6 +379,13 @@ gradient = SubResource("Gradient_eatkd")
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 metadata/_snap_enabled = true
+
+[sub_resource type="Resource" id="Resource_1nl4h"]
+script = ExtResource("14_rkfdh")
+IdList = ""
+PreId = ""
+SpawnProbability = 0.0
+metadata/_custom_type_script = "uid://cqcgo7aoahx60"
 
 [node name="TestLevel" type="Node2D"]
 script = ExtResource("1_1yrnh")
@@ -552,47 +419,6 @@ script = SubResource("GDScript_xhnlc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="门/门Zone"]
 shape = SubResource("RectangleShape2D_xhnlc")
 metadata/_edit_lock_ = true
-
-[node name="WindParticles" type="GPUParticles2D" parent="."]
-position = Vector2(-71, 62)
-amount = 360
-lifetime = 5.73
-visibility_rect = Rect2(-100, -100, 2000, 2000)
-draw_order = 0
-process_material = SubResource("ParticleProcessMaterial_03owx")
-metadata/_edit_lock_ = true
-
-[node name="WindZone" type="Area2D" parent="WindParticles"]
-position = Vector2(173, 22)
-script = SubResource("GDScript_1yrnh")
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WindParticles/WindZone"]
-position = Vector2(506.25, 66)
-shape = SubResource("RectangleShape2D_u18fy")
-metadata/_edit_lock_ = true
-
-[node name="Wind" type="Node2D" parent="."]
-position = Vector2(1026, 466)
-
-[node name="WindZone2" type="Area2D" parent="Wind"]
-rotation = 1.5708
-script = SubResource("GDScript_u18fy")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wind/WindZone2"]
-position = Vector2(-81.25, 0)
-shape = SubResource("RectangleShape2D_1yrnh")
-
-[node name="GPUParticles2D3" type="GPUParticles2D" parent="Wind"]
-position = Vector2(0, 165)
-amount = 266
-amount_ratio = 0.2019
-lifetime = 1.91
-visibility_rect = Rect2(-1000, -1500, 2000, 2000)
-draw_order = 0
-trail_enabled = true
-trail_lifetime = 0.02
-process_material = SubResource("ParticleProcessMaterial_hh7ik")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
@@ -657,7 +483,7 @@ amount_ratio = 0.2019
 sub_emitter = NodePath("RainPoint")
 texture = ExtResource("10_mpica")
 lifetime = 2.0
-speed_scale = 2.5
+speed_scale = 3.75
 explosiveness = 0.01
 collision_base_size = 61.08
 visibility_rect = Rect2(-499.33676, -1.9952393, 1344.6393, 2786.775)
@@ -685,48 +511,6 @@ script = SubResource("GDScript_xmwv1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="伤害碰撞盒"]
 shape = SubResource("RectangleShape2D_msip7")
 
-[node name="Item" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(312, 472)
-
-[node name="Item2" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(264, 472)
-
-[node name="Item7" type="RigidBody2D" parent="." node_paths=PackedStringArray("_interactionArea", "_collisionArea")]
-position = Vector2(408, 504)
-collision_layer = 8
-collision_mask = 8
-freeze = true
-script = ExtResource("11_ljrhq")
-W = 2
-_interactionArea = NodePath("InteractionArea")
-_collisionArea = NodePath("")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Item7"]
-scale = Vector2(2, 1)
-shape = SubResource("RectangleShape2D_xmq01")
-
-[node name="Sp" type="Sprite2D" parent="Item7"]
-scale = Vector2(0.126, 0.063)
-texture = ExtResource("9_mpica")
-
-[node name="InteractionArea" type="Area2D" parent="Item7"]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Item7/InteractionArea"]
-shape = SubResource("RectangleShape2D_lv3k3")
-
-[node name="Item5" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(188, 456)
-
-[node name="Item6" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(164, 456)
-
-[node name="Item3" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(288, 472)
-
-[node name="Item4" parent="." instance=ExtResource("10_ljrhq")]
-position = Vector2(240, 464)
-
 [node name="Water" type="Sprite2D" parent="."]
 top_level = true
 material = SubResource("ShaderMaterial_5bqlb")
@@ -734,11 +518,32 @@ position = Vector2(498.00006, 619.99994)
 scale = Vector2(24.812502, 2.3045)
 texture = SubResource("GradientTexture2D_0n26d")
 
+[node name="Node2D2" type="Node2D" parent="."]
+script = ExtResource("13_5bqlb")
+Data = SubResource("Resource_1nl4h")
+
+[node name="Box_1x1" parent="." instance=ExtResource("10_ljrhq")]
+position = Vector2(304, 464)
+
+[node name="Box_1x5" parent="." instance=ExtResource("10_ljrhq")]
+position = Vector2(432, 500)
+
+[node name="Box_1x6" parent="." instance=ExtResource("10_ljrhq")]
+position = Vector2(404, 500)
+
+[node name="Box_2x2" parent="." instance=ExtResource("14_1nl4h")]
+position = Vector2(244, 464)
+
+[node name="Box_1x2" parent="." instance=ExtResource("15_y0u32")]
+position = Vector2(172, 452)
+
+[node name="Box_1x3" parent="." instance=ExtResource("15_y0u32")]
+position = Vector2(272, 460)
+
+[node name="Box_1x4" parent="." instance=ExtResource("15_y0u32")]
+position = Vector2(272, 444)
+
 [connection signal="body_entered" from="门/门Zone" to="门/门Zone" method="_on_body_entered"]
 [connection signal="body_exited" from="门/门Zone" to="门/门Zone" method="_on_body_exited"]
-[connection signal="body_entered" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_entered"]
-[connection signal="body_exited" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_exited"]
-[connection signal="body_entered" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_entered"]
-[connection signal="body_exited" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_exited"]
 [connection signal="body_entered" from="伤害碰撞盒" to="伤害碰撞盒" method="_on_body_entered"]
 [connection signal="body_exited" from="伤害碰撞盒" to="伤害碰撞盒" method="_on_body_exited"]

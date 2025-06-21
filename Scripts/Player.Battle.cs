@@ -36,7 +36,7 @@ public partial class Player
         
         ApplyImpulse(rePower);
         if(_items.Count > 0)
-            RemoveCascade(_items.Last(), new Vector2(rePower.X,rePower.Y * 5));
+            DropItem(_items.Last(), new Vector2(rePower.X,rePower.Y * 5));
         
         OnExternalImpulseDissipate += () =>
         {
