@@ -79,7 +79,7 @@ public partial class ItemInstance : RigidBody2D
     {
         Freeze  = true;
         Rotated = rotated;
-        X       = x;  Y = y;
+        X = x;  Y = y;
         
         Reparent(node);
 

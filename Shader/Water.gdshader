@@ -3,6 +3,8 @@ shader_type canvas_item;
 /* ─── 全局速度 ─── */
 uniform float shader_speed = 1.0;          // 0 = 静止
 
+uniform float ripple_clock;   // 由脚本驱动
+
 /* ─── 常规参数 ─── */
 uniform sampler2D screen_texture : hint_screen_texture;
 uniform float     y_scale                = 1.0;
@@ -15,22 +17,28 @@ uniform float     reflection_speed       = 0.01;
 /* ─── 涟漪控制 ─── */
 uniform bool  ripple_enabled      = true;
 
-uniform float rain_density        = 25.0;  // 控制一个波纹能扩散多大
-uniform float ripple_spawn_chance = 1.0;   // 0-1：有多少格子真正生成
-uniform float ripple_alpha_rand   = 0.6;   // 0-1：随机淡化
+uniform float rain_density        = 25.0;
+uniform float ripple_spawn_chance = 1.0;
+uniform float ripple_alpha_rand   = 0.6;
 
 uniform float rain_speed          = 1.6;
 uniform float ripple_amplitude    = 0.03;
 uniform float ripple_thickness    = 0.15;
 uniform float ripple_brightness   = 0.35;
 
-uniform float ripple_size_min     = 0.6;   // 随机尺寸区间
+uniform float ripple_size_min     = 0.6;
 uniform float ripple_size_max     = 1.2;
 
-/* ─── 近大远小（透视） ─── */
+/* ─── 透视：近大远小 ─── */
 uniform bool  ripple_perspective_enabled = true;
-uniform float ripple_size_near = 1.4;      // 贴图底部（近处）的额外倍率
-uniform float ripple_size_far  = 0.6;      // 顶部（远处）的额外倍率
+uniform float ripple_size_near = 1.4;
+uniform float ripple_size_far  = 0.6;
+
+/* ─── 淡出参数 ─── */
+uniform float ripple_fade_begin = 0.75;    // 0-1，开始淡出的位置
+
+/* ─── 格子内每轮是否换位置 ─── */
+uniform bool ripple_move_each_cycle = true;
 
 /* ─── hash ─── */
 float hash12(vec2 p){
@@ -45,7 +53,6 @@ vec2 hash22(vec2 p){
 
 void fragment()
 {
-    /* 统一时间缩放 */
     float T = TIME * shader_speed;
 
     /* 折射噪声 */
@@ -68,31 +75,37 @@ void fragment()
                 vec2 offset  = vec2(float(jx),float(jy));
                 vec2 nbr_id  = cell_id + offset;
 
-                /* 随机跳过格子（控制数量） */
                 if (hash12(nbr_id + 19.73) > ripple_spawn_chance)
                     continue;
 
-                /* 随机透明度 */
-                float alpha = 1.0 - ripple_alpha_rand * hash12(nbr_id + 88.31);
+                float alpha_rand = 1.0 - ripple_alpha_rand * hash12(nbr_id + 88.31);
 
-                /* 各种随机信息 */
                 vec2  drop_cen = hash22(nbr_id) * 0.8 + 0.1;
                 float phase    = hash12(nbr_id);
                 float size_rng = mix(ripple_size_min, ripple_size_max,
                                      hash12(nbr_id + 37.17));
 
-                /* ----------- 透视倍率 ----------- */
+                /* 透视倍率 */
                 float persp_scale = 1.0;
                 if (ripple_perspective_enabled){
-                    float drop_world_y = (nbr_id.y + drop_cen.y) / rain_density; // 0=顶 1=底
+                    float drop_world_y = (nbr_id.y + drop_cen.y) / rain_density;
                     persp_scale = mix(ripple_size_far, ripple_size_near, drop_world_y);
                 }
 
-                /* 半径随时间(0-1)、随机尺寸、透视倍率增长 */
-                float base_radius = fract(T * rain_speed + phase);
-                float radius      = base_radius * size_rng * persp_scale;
+                /* 生命周期 0-1 */
+                float life = fract(ripple_clock + phase);
+				/* ---------- 生命周期拆分 ---------- */
+                float t        = T * rain_speed + hash12(nbr_id);
+                float cycle_id = floor(t);
 
-                /* 计算环形掩码 */
+				vec2 seed = ripple_move_each_cycle
+                          ? nbr_id + cycle_id       /* 每轮新位置 */
+                          : nbr_id;                 /* 固定位置   */
+				
+                /* 半径 */
+                float radius = life * size_rng * persp_scale;
+
+                /* 波纹形状 */
                 vec2  nbr_uv = local_uv - offset;
                 float dist   = length(nbr_uv - drop_cen);
 
@@ -101,7 +114,9 @@ void fragment()
                              smoothstep(radius - ripple_thickness,
                                         radius, dist);
 
-                ring *= alpha;
+                /* ---------- 淡出 α ---------- */
+                float fade = 1.0 - smoothstep(ripple_fade_begin, 1.0, life);
+                ring *= fade * alpha_rand;
 
                 if (ring > 1e-4){
                     vec2 dir = normalize(nbr_uv - drop_cen + 1e-4);
@@ -123,7 +138,7 @@ void fragment()
 
     vec4 reflection_color = texture(screen_texture, reflection_uv);
 
-    /* 最终颜色 */
+    /* 输出颜色 */
     vec4 tex_color = texture(TEXTURE, UV);
     vec4 out_color = mix(tex_color, reflection_color, 0.5);
 

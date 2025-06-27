@@ -30,6 +30,7 @@ public partial class Camera : Camera2D
     private Vector2 maxOffset = new(100,75);
     private float   maxRoll   = 0.1f;
     private float   trauma;
+    private float   fixedTrauma;
     private int     traumaPower = 2;
     
     private float   targetZoom = 1.6f;
@@ -38,12 +39,11 @@ public partial class Camera : Camera2D
     
     private void Shake()
     {
-        var    amout       = Mathf.Pow(trauma,traumaPower);
+        var amout = Mathf.Pow(trauma,traumaPower);
         Rotation = maxRoll * amout * (rand.NextSingle() * 2 - 1);
         Offset = new Vector2(
             maxOffset.X * amout * (rand.NextSingle() * 2 - 1),
             maxOffset.Y * amout * (rand.NextSingle() * 2 - 1));
-        
     }
 
     public void FollowTarget(Node2D node)
@@ -62,13 +62,23 @@ public partial class Camera : Camera2D
         trauma = MathF.Min(trauma + amount,1);
     }
     
+    public void SetFixedTrauma(float amount)
+    {
+        fixedTrauma = amount;
+    }
+    
     public void SetZoom(float amount)
     {
-        targetZoom = amount;
+        targetZoom = Mathf.Clamp(amount,0.5f,1.6f);
     }
     
     public void Tick()
     {
+        if (fixedTrauma != 0)
+        {
+            trauma = fixedTrauma;
+        }
+        
         if (trauma != 0)
         {
             trauma = Mathf.Max(trauma - decay * (float)Game.PhysicsDelta,0);

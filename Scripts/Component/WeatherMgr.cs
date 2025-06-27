@@ -1,4 +1,9 @@
-﻿using Godot;
+﻿/*
+ * @Author: MaoT
+ * @Description: 天气管理器，处理天气相关视觉特效、逻辑
+ */
+
+using Godot;
 
 namespace MaoTab.Scripts.Component;
 
@@ -19,6 +24,7 @@ public partial class WeatherMgr : Node2D
 
     private ParticleProcessMaterial ParticleMaterial;
     private ParticleProcessMaterial NoCollisionParticleMaterial;
+    private ParticleProcessMaterial SeaFaceParticleMaterial;
     
     private const float MinSpeedScale = 3.75f;
     private const float MaxSpeedScale = 35.0f;
@@ -32,10 +38,10 @@ public partial class WeatherMgr : Node2D
     [Export] Curve TrailLifetimeWeightCurve;
     [Export] Curve SpeedWeightCurve;
     [Export] Curve GravityWeightCurve;
+    [Export] Curve RippleSpeedCurve;
 
     [Export] private AnimationPlayer LightningAnimation;
     
-    /// </summary>
     private const float MinTrailLifetime = 0.05f;
     private const float MaxTrailLifetime = 0.3f;
     
@@ -62,6 +68,7 @@ public partial class WeatherMgr : Node2D
         // 获取粒子发射材质
         ParticleMaterial            = RainParticles.ProcessMaterial as ParticleProcessMaterial;
         NoCollisionParticleMaterial = RainNoCollisionParticles.ProcessMaterial as ParticleProcessMaterial;
+        SeaFaceParticleMaterial = SeaFaceParticles.ProcessMaterial as ParticleProcessMaterial;
         
         if(ParticleMaterial == null || NoCollisionParticleMaterial == null) return;
         
@@ -106,10 +113,12 @@ public partial class WeatherMgr : Node2D
     private double timer;
     private double PreprocessTimer;
     
-    
-    
     public void Tick()
     {
+        var shaderRippleSpeed = RippleSpeedCurve.Sample(currentStrength);
+        rippleClock += (float)Game.PhysicsDelta * shaderRippleSpeed;
+        _seaFaceShader.SetShaderParameter("ripple_clock", rippleClock);
+        
         // 降低更新频率
         timer += Game.PhysicsDelta;
         if (timer >= 0.1f)
@@ -131,9 +140,21 @@ public partial class WeatherMgr : Node2D
         
         if (_followTarget == null) return;
         
+        var zoomAbsPercentage = 1 + Game.Camera.Zoom.X / 1.6f; // 缩放的比例计算实际上是反的，所以需要加值
+        
+        var resPosition    = new Vector2(_followPosition.X,_followPosition.Y * zoomAbsPercentage);
+        var resExtents     = new Vector3(600 * (zoomAbsPercentage + 1), 25.0f, 1);
+
+        // 根据镜头缩放扩张特效范围
+        ParticleMaterial.EmissionBoxExtents         = resExtents;
+        NoCollisionParticleMaterial.EmissionBoxExtents = resExtents;
+        SeaFaceParticleMaterial.EmissionBoxExtents = resExtents;
+        
         // 将粒子效果跟随镜头
-        RainParticles.Position            = _followPosition;
-        RainNoCollisionParticles.Position = _followPosition;
+        RainParticles.Position            = resPosition;
+        RainNoCollisionParticles.Position = resPosition;
+        
+        // 海平面仅更新水平轴
         SeaFaceParticles.Position = SeaFaceParticles.Position with { X = _followPosition.X };
         
         // 处理粒子播放
@@ -155,6 +176,15 @@ public partial class WeatherMgr : Node2D
         
         var weight = currentStrength / 100f;
         var runningSpeed = currentSpeed / 100f;
+
+        if (weight >= 0.8f)
+        {
+            Game.Camera.SetFixedTrauma(weight * 0.2f);
+        }
+        else
+        {
+            Game.Camera.SetFixedTrauma(0);
+        }
         
         SeaFaceParticles.SpeedScale = runningSpeed;
         
@@ -185,11 +215,11 @@ public partial class WeatherMgr : Node2D
         
         if(_seaFaceShader == null) return;
         
-        var shaderRippleSpeed = Mathf.Lerp(0.755f , 3.185f, weight);
-        
         _seaFaceShader.SetShaderParameter("ripple_enabled", !weight.AetF(0, 0.01f));
         _seaFaceShader.SetShaderParameter("rain_speed", shaderRippleSpeed);
         _seaFaceShader.SetShaderParameter("ripple_spawn_chance", weight);
         _seaFaceShader.SetShaderParameter("shader_speed", runningSpeed);
     }
+
+    private float rippleClock;
 }
