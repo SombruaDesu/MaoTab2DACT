@@ -78,3 +78,14 @@ group: TestLevel
 ·   queue_free()
 <<do>>
 ===
+
+title: Node_WaitTest
+---
+你好[wait time=10 /]
+->沉默[wait time=10 /]
+    怎么不说话啊这狐
+->你也好
+    好好好
+
+<<end>>
+===

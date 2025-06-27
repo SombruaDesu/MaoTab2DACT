@@ -20,6 +20,11 @@ public partial class Player : CharacterBody2D
     public Vector2 InputMoveDirection = Vector2.Zero;
 
     /// <summary>
+    /// 体力
+    /// </summary>
+    public float PS;
+    
+    /// <summary>
     /// 奔跑状态（默认奔跑）
     /// </summary>
     public bool Run = true;
@@ -50,6 +55,9 @@ public partial class Player : CharacterBody2D
     private Vector2 _externalForce          = Vector2.Zero; // 持续施加，不自动清除
     private Vector2 _pendingExternalImpulse = Vector2.Zero;
 
+    /// <summary>
+    /// 当一次性冲力消散时
+    /// </summary>
     private Action OnExternalImpulseDissipate;
     
     // 摩擦力属性：
@@ -269,6 +277,9 @@ public partial class Player : CharacterBody2D
         // 检测天花板碰撞，取消向上冲力
         HandleCeilingCollision();
 
+        // 更新特效
+        FxUpdate();
+        
         // 更新动画状态（方法内部实现动画切换逻辑）
         Animation();
 

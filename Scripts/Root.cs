@@ -4,6 +4,8 @@
  */
 
 using Godot;
+using MaoTab.Scripts.Component;
+using MaoTab.Scripts.Panel;
 using MaoTab.Scripts.System;
 using YarnSpinnerGodot;
 
@@ -76,8 +78,10 @@ public partial class Root : Node
     
     private Player _player;
     
+    [Export] private WeatherMgr _weatherMgr;
     [Export] private Scene _scene;
     [Export] private Interface _ui;
+    [Export] private DevPanel _devUi;
     
     [Export] private Component.AudioMixPlayer _audioMixPlayer;  // 临时在这里控制音效节点
     
@@ -91,12 +95,18 @@ public partial class Root : Node
     {
         Instance = this;
         
+        _devUi.Init();
+        
         Game.SoundVolumeScale = 0.15f;
         _audioMixPlayer.Init();
         
         Game.Scene = _scene;
-        Game.Camera = await ResourceHelper.LoadPacked<Component.Camera>("res://ScenePacked/Camera.tscn", _scene);
+        var camera = await ResourceHelper.LoadPacked<Camera>("res://ScenePacked/Camera.tscn", _scene);
+        Game.Camera = camera;
 
+        Game.WeatherMgr = _weatherMgr;
+        _weatherMgr.Init(camera);
+        
         Game.Interface = _ui;
         Game.Interface.Init();
         

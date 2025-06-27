@@ -81,7 +81,7 @@ public partial class ItemInstance : RigidBody2D
         Rotated = rotated;
         X       = x;  Y = y;
         
-        Reparent(node, true);
+        Reparent(node);
 
         // 实际占用的格子尺寸
         var   sz    = GetSize(); // 已考虑旋转 (X,Y)

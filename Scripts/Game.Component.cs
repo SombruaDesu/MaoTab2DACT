@@ -3,13 +3,14 @@
  * @Description: 游戏管理器，组件托管部分
  */
 
+using MaoTab.Scripts.Component;
 using MaoTab.Scripts.Panel;
 
 namespace MaoTab.Scripts;
 
 public static partial class Game
 {
-    public static Component.Camera Camera;
+    public static Camera Camera;
     
     /// <inheritdoc cref="MaoTab.Scripts.Scene"/>
     public static Scene Scene;
@@ -19,4 +20,6 @@ public static partial class Game
     
     /// <inheritdoc cref="MaoTab.Scripts.YarnRuntime"/>
     public static YarnRuntime Yarn;
+    
+    public static WeatherMgr  WeatherMgr;
 }

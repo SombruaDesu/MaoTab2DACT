@@ -133,6 +133,9 @@ public partial class Scene : Node2D
         if (node is Level level)
         {
             level.Init();
+            
+            Game.WeatherMgr.Refresh(level.SeaFacePosition,level.SeaFace);
+            
             if (level.SpawnPoint == null || level.SpawnPoint.Count == 0)
             {
                 GD.PrintErr("----\n关卡加载失败：" + levelName + " 关卡不存在玩家刷新位置");

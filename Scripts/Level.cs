@@ -12,7 +12,10 @@ namespace MaoTab.Scripts;
 [GlobalClass]
 public partial class Level : Node
 {
-    public LevelData Data = new(); 
+    public LevelData Data = new();
+
+    [Export] public float SeaFacePosition;
+    [Export] public Sprite2D SeaFace;
     
     public void AddTag(string tag)
     {

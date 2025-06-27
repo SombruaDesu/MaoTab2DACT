@@ -228,7 +228,7 @@ public partial class YarnRuntime : IActionRegistration
         _dialogue.Continue();
     }
 
-    public Action<string>           OnLineArrival;
+    public Action<LocalizedLine>    OnLineArrival;
     public Action<DialogueOption[]> OnOptionsArrival;
     
     /// <summary>
@@ -292,7 +292,7 @@ public partial class YarnRuntime : IActionRegistration
                 return;
             }
             
-            OnLineArrival?.Invoke(localisedLine.TextWithoutCharacterName.Text);
+            OnLineArrival?.Invoke(localisedLine);
             
             // UIRoot.DialoguePanel.Refresh(localisedLine.TextWithoutCharacterName.Text,null);
             // Continue();

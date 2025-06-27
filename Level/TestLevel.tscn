@@ -1,6 +1,7 @@
-[gd_scene load_steps=47 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=44 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
+[ext_resource type="Texture2D" uid="uid://c1q6pn2pv76t4" path="res://Texture/Background.png" id="2_1nl4h"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
 [ext_resource type="PackedScene" uid="uid://botlly1ekj8vw" path="res://ScenePacked/Component/TileMapPathFind.tscn" id="5_xhnlc"]
 [ext_resource type="Texture2D" uid="uid://bssesavjaf227" path="res://Texture/Path.webp" id="6_evpmb"]
@@ -9,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="8_msip7"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
 [ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Box_1x1.tscn" id="10_ljrhq"]
-[ext_resource type="Texture2D" uid="uid://bdfw3fqylyd6e" path="res://Texture/Fx_Rain.webp" id="10_mpica"]
 [ext_resource type="Shader" uid="uid://b1nyiciuywxqs" path="res://Shader/Water.gdshader" id="12_vxmux"]
 [ext_resource type="Script" uid="uid://bxamsm6xbiexk" path="res://Scripts/Component/ItemSpawn.cs" id="13_5bqlb"]
 [ext_resource type="PackedScene" uid="uid://crckltxrgif68" path="res://ScenePacked/Box_2x2.tscn" id="14_1nl4h"]
@@ -286,52 +286,6 @@ func goToPlayer()-> void:
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ljrhq"]
 size = Vector2(25, 25)
 
-[sub_resource type="Curve" id="Curve_lgr22"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 4
-
-[sub_resource type="CurveTexture" id="CurveTexture_mpica"]
-curve = SubResource("Curve_lgr22")
-
-[sub_resource type="Curve" id="Curve_trn2v"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.348485, 0.59228), 1.63872, 1.63872, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_03owx"]
-curve = SubResource("Curve_trn2v")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_msip7"]
-lifetime_randomness = 1.0
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(500, 1, 1)
-direction = Vector3(0, 1, 0)
-initial_velocity_min = 1.0
-initial_velocity_max = 10.0
-gravity = Vector3(200, 500, 0)
-linear_accel_min = -2.2351742e-06
-linear_accel_max = 99.99999
-scale_min = 0.5
-scale_max = 0.79999995
-alpha_curve = SubResource("CurveTexture_mpica")
-turbulence_noise_speed = Vector3(0, 9.825, 0)
-turbulence_influence_min = 0.072
-turbulence_influence_max = 0.078
-turbulence_initial_displacement_min = -31.5
-turbulence_initial_displacement_max = 12.2
-turbulence_influence_over_life = SubResource("CurveTexture_03owx")
-collision_mode = 2
-sub_emitter_mode = 3
-sub_emitter_amount_at_collision = 32
-
-[sub_resource type="CurveTexture" id="CurveTexture_trn2v"]
-curve = SubResource("Curve_lgr22")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ljrhq"]
-particle_flag_disable_z = true
-gravity = Vector3(0, 0, 0)
-alpha_curve = SubResource("CurveTexture_trn2v")
-
 [sub_resource type="GDScript" id="GDScript_xmwv1"]
 resource_name = "Door"
 script/source = "extends Area2D
@@ -348,6 +302,44 @@ func _on_body_entered(body: Node2D) -> void:
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msip7"]
 size = Vector2(16, 16)
+
+[sub_resource type="GDScript" id="GDScript_1nl4h"]
+resource_name = "Door"
+script/source = "extends Area2D
+
+# 当玩家碰撞时
+func _on_body_entered(body: Node2D) -> void:
+	if body is not Player:
+		return
+	GameState.GetCamera().FollowPosition(Vector2(575,58))
+	GameState.GetCamera().SetZoom(0.51)
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y0u32"]
+size = Vector2(16, 16)
+
+[sub_resource type="GDScript" id="GDScript_y0u32"]
+resource_name = "Door"
+script/source = "extends Area2D
+
+# 当玩家碰撞时
+func _on_body_entered(body: Node2D) -> void:
+	if body is not Player:
+		return
+	var p = body as Player
+	p.SetYarnAction(YarnAction.Create(\"Node_WaitTest\"));
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1nl4h"]
+size = Vector2(16, 16)
+
+[sub_resource type="Resource" id="Resource_1nl4h"]
+script = ExtResource("14_rkfdh")
+IdList = null
+SpawnProbability = 0.0
+metadata/_custom_type_script = "uid://cqcgo7aoahx60"
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vxmux"]
 
@@ -366,12 +358,26 @@ noise = SubResource("FastNoiseLite_rkfdh")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5bqlb"]
 shader = ExtResource("12_vxmux")
+shader_parameter/shader_speed = 1.0
 shader_parameter/y_scale = 3.6450000000040745
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_5bqlb")
 shader_parameter/distortion_strength = 0.02999999999883584
 shader_parameter/distortion_speed = 0.01499999999941792
 shader_parameter/reflection_noise = SubResource("NoiseTexture2D_1nl4h")
 shader_parameter/reflection_speed = 0.01000000000931322
+shader_parameter/ripple_enabled = true
+shader_parameter/rain_density = 45.0
+shader_parameter/ripple_spawn_chance = 0.5
+shader_parameter/ripple_alpha_rand = 0.6
+shader_parameter/rain_speed = 1.6
+shader_parameter/ripple_amplitude = 0.8000000000029104
+shader_parameter/ripple_thickness = 0.05000000000291038
+shader_parameter/ripple_brightness = 0.19999999999708962
+shader_parameter/ripple_size_min = 0.10000000000582077
+shader_parameter/ripple_size_max = 1.2
+shader_parameter/ripple_perspective_enabled = true
+shader_parameter/ripple_size_near = 1.4
+shader_parameter/ripple_size_far = 0.13999999999941792
 
 [sub_resource type="Gradient" id="Gradient_eatkd"]
 offsets = PackedFloat32Array(0, 0.10119, 1)
@@ -383,14 +389,10 @@ fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 metadata/_snap_enabled = true
 
-[sub_resource type="Resource" id="Resource_1nl4h"]
-script = ExtResource("14_rkfdh")
-IdList = null
-SpawnProbability = 0.0
-metadata/_custom_type_script = "uid://cqcgo7aoahx60"
-
-[node name="TestLevel" type="Node2D"]
+[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("SeaFace")]
 script = ExtResource("1_1yrnh")
+SeaFacePosition = 654.0
+SeaFace = NodePath("Water")
 LevelName = "TestLevel"
 _spawnPoint = Dictionary[String, NodePath]({
 "A": NodePath("SpawnPoint"),
@@ -403,149 +405,148 @@ position = Vector2(418, 423)
 [node name="SpawnPoint2" type="Node2D" parent="."]
 position = Vector2(136, 456)
 
-[node name="门" type="Sprite2D" parent="."]
+[node name="Object" type="Node2D" parent="."]
+
+[node name="Water2" type="Sprite2D" parent="Object"]
+texture_filter = 1
+position = Vector2(592.00006, 162.00002)
+scale = Vector2(1.335, 1.335)
+texture = ExtResource("2_1nl4h")
+
+[node name="门" type="Sprite2D" parent="Object"]
 modulate = Color(0.81237876, 0.3017064, 0, 1)
 position = Vector2(132, 432)
 scale = Vector2(40.000008, 64.00001)
 texture = ExtResource("2_u18fy")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="门"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Object/门"]
 libraries = {
 &"": SubResource("AnimationLibrary_u18fy")
 }
 
-[node name="门Zone" type="Area2D" parent="门"]
+[node name="门Zone" type="Area2D" parent="Object/门"]
 rotation = 1.5708
 script = SubResource("GDScript_xhnlc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="门/门Zone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Object/门/门Zone"]
 shape = SubResource("RectangleShape2D_xhnlc")
 metadata/_edit_lock_ = true
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-avoidance_enabled = true
-debug_enabled = true
-
-[node name="TileMapPathFind" parent="." instance=ExtResource("5_xhnlc")]
+[node name="TileMapPathFind" parent="Object" instance=ExtResource("5_xhnlc")]
 tile_map_data = PackedByteArray("AAAGAB0AAQAAAAAAAAAHAB0AAQAAAAAAAAAIAB0AAQAAAAAAAAAJAB0AAQAAAAAAAAAKAB0AAQAAAAAAAAALAB0AAQAAAAAAAAAMAB0AAQAAAAAAAAANAB0AAQAAAAAAAAAOAB4AAQAAAAAAAAAPAB4AAQAAAAAAAAAQAB4AAQAAAAAAAAARAB4AAQAAAAAAAAASAB4AAQAAAAAAAAATAB4AAQAAAAAAAAAUAB4AAQAAAAAAAAAYACAAAQAAAAAAAAAZACAAAQAAAAAAAAAaACAAAQAAAAAAAAAbACAAAQAAAAAAAAAcACAAAQAAAAAAAAAdACAAAQAAAAAAAAAeACAAAQAAAAAAAAAfACAAAQAAAAAAAAAgACAAAQAAAAAAAAAhACAAAQAAAAAAAAAiACAAAQAAAAAAAAAjACAAAQAAAAAAAAAkACAAAQAAAAAAAAAlACAAAQAAAAAAAAAmACAAAQAAAAAAAAAnACAAAQAAAAAAAAAoACAAAQAAAAAAAAArAB4AAQAAAAAAAAAtAB4AAQAAAAAAAAAuAB4AAQAAAAAAAAAvAB4AAQAAAAAAAAAwAB4AAQAAAAAAAAAxAB4AAQAAAAAAAAAsAB4AAQAAAAAAAAAoABkAAQAAAAAAAAAnABkAAQAAAAAAAAAmABkAAQAAAAAAAAAlABkAAQAAAAAAAAAkABkAAQAAAAAAAAAjABkAAQAAAAAAAAAiABkAAQAAAAAAAAAiABoAAQAAAAAAAAAjABoAAQAAAAAAAAAkABoAAQAAAAAAAAAlABoAAQAAAAAAAAAmABoAAQAAAAAAAAAnABoAAQAAAAAAAAAoABoAAQAAAAAAAAApABkAAQAAAAAAAAApABoAAQAAAAAAAAAyAB0AAQAAAAAAAAAzAB0AAQAAAAAAAAA0AB0AAQAAAAAAAAA1AB0AAQAAAAAAAAA=")
 tile_set = SubResource("TileSet_evpmb")
 JumpDistance = 6
 
-[node name="TileMap" type="TileMapLayer" parent="."]
+[node name="TileMap" type="TileMapLayer" parent="Object"]
 texture_filter = 1
 tile_map_data = PackedByteArray("AAAZACAAAAADAAEAAAAaACAAAAADAAEAAAAbACAAAAADAAEAAAAcACAAAAADAAEAAAAdACAAAAADAAEAAAAeACAAAAADAAEAAAAfACAAAAADAAEAAAAgACAAAAADAAEAAAAhACAAAAADAAEAAAAiACAAAAADAAEAAAAjACAAAAADAAEAAAAkACAAAAADAAEAAAAlACAAAAADAAEAAAAmACAAAAADAAEAAAAnACAAAAADAAEAAAAoACAAAAAFAAEAAAAYACAAAAABAAEAAAAYACEAAAABAAMAAAAYACIAAAABAAMAAAAYACMAAAABAAMAAAAYACQAAAABAAMAAAAoACEAAAAFAAMAAAAoACIAAAAFAAMAAAAoACMAAAAFAAMAAAAoACQAAAAFAAMAAAAZACEAAAADAAMAAAAaACEAAAADAAMAAAAaACIAAAADAAMAAAAbACIAAAADAAMAAAAcACIAAAADAAMAAAAdACIAAAADAAMAAAAeACIAAAADAAMAAAAfACIAAAADAAMAAAAgACIAAAADAAMAAAAhACIAAAADAAMAAAAiACIAAAADAAMAAAAjACIAAAADAAMAAAAkACIAAAADAAMAAAAlACEAAAADAAMAAAAmACEAAAADAAMAAAAnACEAAAADAAMAAAAkACEAAAADAAMAAAAjACEAAAADAAMAAAAiACEAAAADAAMAAAAhACEAAAADAAMAAAAgACEAAAADAAMAAAAfACEAAAADAAMAAAAeACEAAAADAAMAAAAdACEAAAADAAMAAAAcACEAAAADAAMAAAAbACEAAAADAAMAAAAZACIAAAADAAMAAAAlACIAAAADAAMAAAAmACIAAAADAAMAAAAnACIAAAADAAMAAAAnACMAAAADAAMAAAAmACMAAAADAAMAAAAlACMAAAADAAMAAAAkACMAAAADAAMAAAAjACMAAAADAAMAAAAiACMAAAADAAMAAAAhACMAAAADAAMAAAAgACMAAAADAAMAAAAfACMAAAADAAMAAAAeACMAAAADAAMAAAAdACMAAAADAAMAAAAcACMAAAADAAMAAAAbACMAAAADAAMAAAAaACMAAAADAAMAAAAZACMAAAADAAMAAAAZACQAAAADAAMAAAAaACQAAAADAAMAAAAbACQAAAADAAMAAAAcACQAAAADAAMAAAAdACQAAAADAAMAAAAeACQAAAADAAMAAAAfACQAAAADAAMAAAAgACQAAAADAAMAAAAhACQAAAADAAMAAAAiACQAAAADAAMAAAAjACQAAAADAAMAAAAkACQAAAADAAMAAAAlACQAAAADAAMAAAAmACQAAAADAAMAAAAnACQAAAADAAMAAAArAB4AAAABAAEAAAArAB8AAAABAAMAAAArACAAAAABAAMAAAArACEAAAABAAMAAAArACIAAAABAAMAAAArACMAAAABAAMAAAArACQAAAABAAMAAAAsAB4AAAADAAEAAAAtAB4AAAADAAEAAAAuAB4AAAADAAEAAAAvAB4AAAADAAEAAAAwAB4AAAADAAEAAAAsAB8AAAADAAMAAAAsACAAAAADAAMAAAAsACEAAAADAAMAAAAsACIAAAADAAMAAAAsACMAAAADAAMAAAAsACQAAAADAAMAAAAtAB8AAAADAAMAAAAtACAAAAADAAMAAAAtACEAAAADAAMAAAAtACIAAAADAAMAAAAtACMAAAADAAMAAAAtACQAAAADAAMAAAAuAB8AAAADAAMAAAAuACAAAAADAAMAAAAuACEAAAADAAMAAAAuACIAAAADAAMAAAAuACMAAAADAAMAAAAuACQAAAADAAMAAAAvAB8AAAADAAMAAAAvACAAAAADAAMAAAAvACEAAAADAAMAAAAvACIAAAADAAMAAAAvACMAAAADAAMAAAAvACQAAAADAAMAAAAwAB8AAAADAAMAAAAwACAAAAADAAMAAAAwACEAAAADAAMAAAAwACIAAAADAAMAAAAwACMAAAADAAMAAAAwACQAAAADAAMAAAAjABoAAAADAAUAAAAkABoAAAADAAUAAAAlABoAAAADAAUAAAAmABoAAAADAAUAAAAnABoAAAADAAUAAAAoABoAAAADAAUAAAApABoAAAAFAAUAAAApABkAAAAFAAEAAAAjABkAAAADAAEAAAAkABkAAAADAAEAAAAlABkAAAADAAEAAAAmABkAAAADAAEAAAAnABkAAAADAAEAAAAoABkAAAADAAEAAAAiABkAAAABAAEAAAAiABoAAAABAAUAAAAUAB4AAAAFAAEAAAAUACQAAAAFAAMAAAAUACMAAAAFAAMAAAAUACIAAAAFAAMAAAAUACEAAAAFAAMAAAAUACAAAAAFAAMAAAAUAB8AAAAFAAMAAAATAB4AAAADAAEAAAASAB4AAAADAAEAAAARAB4AAAADAAEAAAAQAB4AAAADAAEAAAAPAB4AAAADAAEAAAAOAB4AAAAXAAIAAAAOAB0AAAAXAAEAAAANAB0AAAAWAAEAAAANAB4AAAAWAAIAAAAMAB0AAAADAAEAAAALAB0AAAADAAEAAAAKAB0AAAADAAEAAAAJAB0AAAADAAEAAAAIAB0AAAADAAEAAAAHAB0AAAADAAEAAAAGAB0AAAABAAEAAAAGAB4AAAABAAMAAAAGAB8AAAABAAMAAAAGACAAAAABAAMAAAAGACEAAAABAAMAAAAGACIAAAABAAMAAAAGACMAAAABAAMAAAAGACQAAAABAAMAAAAHAB4AAAADAAMAAAAHAB8AAAADAAMAAAAHACAAAAADAAMAAAAHACEAAAADAAMAAAAHACIAAAADAAMAAAAHACMAAAADAAMAAAAHACQAAAADAAMAAAAIAB4AAAADAAMAAAAIAB8AAAADAAMAAAAIACAAAAADAAMAAAAIACEAAAADAAMAAAAIACIAAAADAAMAAAAIACMAAAADAAMAAAAIACQAAAADAAMAAAAJAB4AAAADAAMAAAAJAB8AAAADAAMAAAAJACAAAAADAAMAAAAJACEAAAADAAMAAAAJACIAAAADAAMAAAAJACMAAAADAAMAAAAJACQAAAADAAMAAAAKAB4AAAADAAMAAAAKAB8AAAADAAMAAAAKACAAAAADAAMAAAAKACEAAAADAAMAAAAKACIAAAADAAMAAAAKACMAAAADAAMAAAAKACQAAAADAAMAAAALAB4AAAADAAMAAAALAB8AAAADAAMAAAALACAAAAADAAMAAAALACEAAAADAAMAAAALACIAAAADAAMAAAALACMAAAADAAMAAAALACQAAAADAAMAAAAMAB4AAAADAAMAAAAMAB8AAAADAAMAAAAMACAAAAADAAMAAAAMACEAAAADAAMAAAAMACIAAAADAAMAAAAMACMAAAADAAMAAAAMACQAAAADAAMAAAANAB8AAAADAAMAAAANACAAAAADAAMAAAANACEAAAADAAMAAAANACIAAAADAAMAAAANACMAAAADAAMAAAANACQAAAADAAMAAAAOAB8AAAADAAMAAAAOACAAAAADAAMAAAAOACEAAAADAAMAAAAOACIAAAADAAMAAAAOACMAAAADAAMAAAAOACQAAAADAAMAAAAPAB8AAAADAAMAAAAPACAAAAADAAMAAAAPACEAAAADAAMAAAAPACIAAAADAAMAAAAPACMAAAADAAMAAAAPACQAAAADAAMAAAAQAB8AAAADAAMAAAAQACAAAAADAAMAAAAQACEAAAADAAMAAAAQACIAAAADAAMAAAAQACMAAAADAAMAAAAQACQAAAADAAMAAAARAB8AAAADAAMAAAARACAAAAADAAMAAAARACEAAAADAAMAAAARACIAAAADAAMAAAARACMAAAADAAMAAAARACQAAAADAAMAAAASAB8AAAADAAMAAAASACAAAAADAAMAAAASACEAAAADAAMAAAASACIAAAADAAMAAAASACMAAAADAAMAAAASACQAAAADAAMAAAATAB8AAAADAAMAAAATACAAAAADAAMAAAATACEAAAADAAMAAAATACIAAAADAAMAAAATACMAAAADAAMAAAATACQAAAADAAMAAAAxAB4AAAATAAIAAAAxAB0AAAATAAEAAAAyAB0AAAAUAAEAAAAzAB0AAAADAAEAAAA0AB0AAAADAAEAAAA1AB0AAAAFAAEAAAA1AB4AAAAFAAMAAAA1AB8AAAAFAAMAAAA1ACAAAAAFAAMAAAA1ACEAAAAFAAMAAAA1ACIAAAAFAAMAAAA1ACMAAAAFAAMAAAA1ACQAAAAFAAMAAAA0ACQAAAADAAMAAAAzACQAAAADAAMAAAAyACQAAAADAAMAAAAyACMAAAADAAMAAAAzACMAAAADAAMAAAA0ACMAAAADAAMAAAA0ACIAAAADAAMAAAA0ACEAAAADAAMAAAAzACIAAAADAAMAAAAyACIAAAADAAMAAAAyACEAAAADAAMAAAAyACAAAAADAAMAAAAzACAAAAADAAMAAAAzACEAAAADAAMAAAA0ACAAAAADAAMAAAA0AB8AAAADAAMAAAAzAB8AAAADAAMAAAAzAB4AAAADAAMAAAAyAB4AAAADAAMAAAA0AB4AAAADAAMAAAAyAB8AAAADAAMAAAAxAB8AAAADAAMAAAAxACAAAAADAAMAAAAxACEAAAADAAMAAAAxACIAAAADAAMAAAAxACMAAAADAAMAAAAxACQAAAADAAMAAAAcAB8AAAABAAcAAAA=")
 tile_set = SubResource("TileSet_hh7ik")
 navigation_visibility_mode = 1
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="TileMap"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="Object/TileMap"]
 occluder = SubResource("OccluderPolygon2D_hh7ik")
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="TileMap"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="Object/TileMap"]
 occluder = SubResource("OccluderPolygon2D_evpmb")
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="TileMap"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="Object/TileMap"]
 occluder = SubResource("OccluderPolygon2D_xmwv1")
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="TileMap"]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="Object/TileMap"]
 occluder = SubResource("OccluderPolygon2D_msip7")
 
-[node name="Node2D" type="CharacterBody2D" parent="."]
+[node name="AI" type="CharacterBody2D" parent="Object"]
 position = Vector2(276, 426)
 collision_layer = 0
 platform_on_leave = 2
 script = SubResource("GDScript_msip7")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Object/AI"]
 shape = SubResource("RectangleShape2D_ljrhq")
 
-[node name="Sprite2D" type="Sprite2D" parent="Node2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Object/AI"]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_mpica")
 
-[node name="RoleAgent" type="Node" parent="Node2D" node_paths=PackedStringArray("roleBody", "_pathFind2D")]
+[node name="RoleAgent" type="Node" parent="Object/AI" node_paths=PackedStringArray("roleBody", "_pathFind2D")]
 script = ExtResource("7_xmwv1")
 roleBody = NodePath("..")
 _pathFind2D = NodePath("../../TileMapPathFind")
 metadata/_custom_type_script = "uid://bq7dxbbsoe3ku"
 
-[node name="EndPoint" type="Sprite2D" parent="Node2D"]
+[node name="EndPoint" type="Sprite2D" parent="Object/AI"]
 modulate = Color(1, 0, 0, 1)
 scale = Vector2(0.035, 0.035)
 texture = ExtResource("8_msip7")
 
-[node name="StartPoint" type="Sprite2D" parent="Node2D"]
+[node name="StartPoint" type="Sprite2D" parent="Object/AI"]
 modulate = Color(8.1822276e-07, 0.6442557, 0.26578575, 1)
 scale = Vector2(0.035, 0.035)
 texture = ExtResource("8_msip7")
 
-[node name="RainLine" type="GPUParticles2D" parent="."]
-position = Vector2(440, 17)
-amount = 266
-amount_ratio = 0.2019
-sub_emitter = NodePath("RainPoint")
-texture = ExtResource("10_mpica")
-lifetime = 2.0
-speed_scale = 3.75
-explosiveness = 0.01
-collision_base_size = 61.08
-visibility_rect = Rect2(-499.33676, -1.9952393, 1344.6393, 2786.775)
-draw_order = 0
-trail_enabled = true
-trail_lifetime = 0.08
-trail_sections = 2
-trail_section_subdivisions = 1
-process_material = SubResource("ParticleProcessMaterial_msip7")
-
-[node name="RainPoint" type="GPUParticles2D" parent="RainLine"]
-amount = 600
-lifetime = 0.25
-explosiveness = 0.24
-interpolate = false
-fract_delta = false
-visibility_rect = Rect2(-1000, 0, 2000, 2000)
-process_material = SubResource("ParticleProcessMaterial_ljrhq")
-
-[node name="伤害碰撞盒" type="Area2D" parent="."]
+[node name="伤害碰撞盒" type="Area2D" parent="Object"]
 position = Vector2(456, 504)
 rotation = 1.5708
 script = SubResource("GDScript_xmwv1")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="伤害碰撞盒"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Object/伤害碰撞盒"]
 shape = SubResource("RectangleShape2D_msip7")
 
-[node name="Water" type="Sprite2D" parent="."]
-top_level = true
-material = SubResource("ShaderMaterial_5bqlb")
-position = Vector2(498.00006, 619.99994)
-scale = Vector2(24.812502, 2.3045)
-texture = SubResource("GradientTexture2D_0n26d")
+[node name="碰撞盒" type="Area2D" parent="Object"]
+position = Vector2(575, 441.99997)
+rotation = 1.5708
+scale = Vector2(8.915, 8.915)
+script = SubResource("GDScript_1nl4h")
 
-[node name="Node2D2" type="Node2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Object/碰撞盒"]
+shape = SubResource("RectangleShape2D_y0u32")
+
+[node name="对话碰撞盒" type="Area2D" parent="Object"]
+position = Vector2(766.00006, 408)
+rotation = 1.5708
+scale = Vector2(8.915, 8.915)
+script = SubResource("GDScript_y0u32")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Object/对话碰撞盒"]
+shape = SubResource("RectangleShape2D_1nl4h")
+
+[node name="Node2D2" type="Node2D" parent="Object"]
+position = Vector2(370, 8)
 script = ExtResource("13_5bqlb")
 Data = SubResource("Resource_1nl4h")
 
-[node name="Box_1x1" parent="." instance=ExtResource("10_ljrhq")]
+[node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
 position = Vector2(304, 464)
 
-[node name="Box_1x5" parent="." instance=ExtResource("10_ljrhq")]
+[node name="Box_1x5" parent="Object" instance=ExtResource("10_ljrhq")]
 position = Vector2(432, 500)
 
-[node name="Box_1x6" parent="." instance=ExtResource("10_ljrhq")]
+[node name="Box_1x6" parent="Object" instance=ExtResource("10_ljrhq")]
 position = Vector2(404, 500)
 
-[node name="Box_2x2" parent="." instance=ExtResource("14_1nl4h")]
+[node name="Box_2x2" parent="Object" instance=ExtResource("14_1nl4h")]
 position = Vector2(244, 464)
 
-[node name="Box_1x2" parent="." instance=ExtResource("15_y0u32")]
+[node name="Box_1x2" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(172, 452)
 
-[node name="Box_1x3" parent="." instance=ExtResource("15_y0u32")]
+[node name="Box_1x3" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(272, 460)
 
-[node name="Box_1x4" parent="." instance=ExtResource("15_y0u32")]
+[node name="Box_1x4" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(272, 444)
 
-[connection signal="body_entered" from="门/门Zone" to="门/门Zone" method="_on_body_entered"]
-[connection signal="body_exited" from="门/门Zone" to="门/门Zone" method="_on_body_exited"]
-[connection signal="body_entered" from="伤害碰撞盒" to="伤害碰撞盒" method="_on_body_entered"]
-[connection signal="body_exited" from="伤害碰撞盒" to="伤害碰撞盒" method="_on_body_exited"]
+[node name="Water" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_5bqlb")
+position = Vector2(537, 654)
+scale = Vector2(24.812502, 2.3045)
+texture = SubResource("GradientTexture2D_0n26d")
+
+[connection signal="body_entered" from="Object/门/门Zone" to="Object/门/门Zone" method="_on_body_entered"]
+[connection signal="body_exited" from="Object/门/门Zone" to="Object/门/门Zone" method="_on_body_exited"]
+[connection signal="body_entered" from="Object/伤害碰撞盒" to="Object/伤害碰撞盒" method="_on_body_entered"]
+[connection signal="body_exited" from="Object/伤害碰撞盒" to="Object/伤害碰撞盒" method="_on_body_exited"]
+[connection signal="body_entered" from="Object/碰撞盒" to="Object/碰撞盒" method="_on_body_entered"]
+[connection signal="body_exited" from="Object/碰撞盒" to="Object/碰撞盒" method="_on_body_exited"]
+[connection signal="body_entered" from="Object/对话碰撞盒" to="Object/对话碰撞盒" method="_on_body_entered"]
+[connection signal="body_exited" from="Object/对话碰撞盒" to="Object/对话碰撞盒" method="_on_body_exited"]
