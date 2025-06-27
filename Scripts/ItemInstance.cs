@@ -1,6 +1,12 @@
-﻿using System.Threading;
+﻿/*
+ * @Author: MaoT
+ * @Description: 场景物品对象
+ */
+
+
+using System.Threading;
 using System.Threading.Tasks;
-using Godot;
+using Godot; 
 
 namespace MaoTab.Scripts;
 
@@ -9,7 +15,8 @@ public partial class ItemInstance : RigidBody2D
 {
     [Export] public  int            W = 1;
     [Export] public  int            H = 1;
-    public           ItemDefinition Def;
+    [Export] public  ItemDefinition Def;
+    
     public           bool           Rotated; // true = 旋转 90°
     public           int            X;       // 左下角格子的 x
     public           int            Y;       // 左下角格子的 y
@@ -17,14 +24,21 @@ public partial class ItemInstance : RigidBody2D
     [Export] private Area2D         _collisionArea;
     public           bool           canPackup;
     public           bool           canDrop;
-    public override void _Ready()
-    {
-        Init(new ItemDefinition("0",W,H,1.0f,true));
-    }
 
     public void Init(ItemDefinition def)
     {
-        Def         = def;
+        Def          = def;
+        Def.Instance = this;
+        
+        if (!Def.IsNew)
+        {
+            Position = Def.Position;
+        }
+        else
+        {
+            Def.IsNew  = false;
+        }
+        
         _interactionArea.BodyEntered += body =>
         {
             if (body is Player player)

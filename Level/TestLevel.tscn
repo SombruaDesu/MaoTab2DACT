@@ -30,6 +30,9 @@ resource_name = "Door"
 script/source = "
 extends Area2D
 
+func _ready() -> void:
+	print(\"DOOR1\");
+	pass
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
@@ -382,8 +385,7 @@ metadata/_snap_enabled = true
 
 [sub_resource type="Resource" id="Resource_1nl4h"]
 script = ExtResource("14_rkfdh")
-IdList = ""
-PreId = ""
+IdList = null
 SpawnProbability = 0.0
 metadata/_custom_type_script = "uid://cqcgo7aoahx60"
 

@@ -1,4 +1,10 @@
-﻿using Godot;
+﻿/*
+ * @Author: MaoT
+ * @Description: Yarn交互数据
+ */
+
+
+using Godot;
 
 namespace MaoTab.Scripts;
 

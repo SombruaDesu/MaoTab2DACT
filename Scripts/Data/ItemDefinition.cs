@@ -1,13 +1,22 @@
-﻿using Godot;
+﻿/*
+ * @Author: MaoT
+ * @Description: 物品数据
+ */
+
+
+using Godot;
 
 namespace MaoTab.Scripts;
 
 [GlobalClass]
-public partial class ItemDefinition(string id, int w, int h,float weight, bool canRotate)
-    : GodotObject
+public partial class ItemDefinition : Resource
 {
-    public readonly string   Id        = id;
-    public readonly Vector2I Size      = new(w, h);
-    public readonly bool     CanRotate = canRotate;
-    public readonly float    Weight = weight;
+    [Export] public string Id;
+    [Export] public Vector2I Size;
+    [Export] public bool     CanRotate;
+    [Export] public float    Weight;
+
+    public ItemInstance Instance;
+    public bool         IsNew = true;
+    public Vector2 Position;
 }

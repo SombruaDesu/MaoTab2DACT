@@ -25,7 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="addons\" />
-    <Folder Include="Data\" />
+    <Folder Include="Data\Item\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -1,8 +1,14 @@
-﻿using System;
+﻿/*
+ * @Author: MaoT
+ * @Description: 寻路层对象，构建寻路数据
+ */
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using Godot.Collections;
+using Godot.Collections; 
 
 public partial class TileMapPathFind : TileMapLayer
 {
@@ -98,7 +104,7 @@ public partial class TileMapPathFind : TileMapLayer
         // 查找起始位置和结束位置之间的路径
         var idPath = _astarGraph.GetIdPath(_astarGraph.GetClosestPoint(startPos), _astarGraph.GetClosestPoint(endPos));
 
-        if (idPath.Count() <= 0)
+        if (idPath.Length == 0)
         {
             return pathStack;
         } // 如果路径已到达目标，返回空路径栈
@@ -162,7 +168,7 @@ public partial class TileMapPathFind : TileMapLayer
     private PointInfo GetInfoPointByPointId(long pointId)
     {
         // 查找并返回在_pointInfoList中第一个与给定pointId相同的点
-        return _pointInfoList.Where(p => p.PointID == pointId).FirstOrDefault();
+        return _pointInfoList.FirstOrDefault(p => p.PointID == pointId);
     }
 
     private void DrawDebugLine(Vector2 to, Vector2 from, Color color)
@@ -586,50 +592,6 @@ public partial class TileMapPathFind : TileMapLayer
         // ② 再做“允许微小高度差”的台阶连线 ------------------
         if (p1.IsLeftEdge || p1.IsLeftWall || p1.IsFallTile)
             ConnectStepHorizontal(p1);
-        
-        /*if (p1.IsLeftEdge || p1.IsLeftWall || p1.IsFallTile)
-        {
-            PointInfo closest = null;
-
-            // 遍历点信息列表
-            foreach (var p2 in _pointInfoList)
-            {
-                if (p1.PointID == p2.PointID)
-                {
-                    continue;
-                } // 如果点相同，转到下一个点
-
-                // 如果点是右边缘或右墙，并且高度（Y位置）相同，且p2位置在p1点的右边
-                if ((p2.IsRightEdge || p2.IsRightWall || p2.IsFallTile) && p2.Position.Y == p1.Position.Y &&
-                    p2.Position.X > p1.Position.X)
-                {
-                    // 如果最近的点尚未初始化
-                    if (closest == null)
-                    {
-                        closest = new PointInfo(p2.PointID, p2.Position); // 初始化为p2点
-                    }
-
-                    // 如果p2点比当前最近的点更近
-                    if (p2.Position.X < closest.Position.X)
-                    {
-                        closest.Position = p2.Position; // 更新最近点位置
-                        closest.PointID = p2.PointID; // 更新pointId
-                    }
-                }
-            }
-
-            // 如果找到最近的点
-            if (closest != null)
-            {
-                // 如果无法建立水平连接
-                if (!HorizontalConnectionCannotBeMade((Vector2I)p1.Position, (Vector2I)closest.Position))
-                {
-                    _astarGraph.ConnectPoints(p1.PointID, closest.PointID); // 连接点
-                    DrawDebugLine(p1.Position, closest.Position,
-                        new Color(0, 1, 0, 1)); // 在点之间绘制绿色线
-                }
-            }
-        }*/
     }
 
     private bool HorizontalConnectionCannotBeMade(Vector2I p1, Vector2I p2)

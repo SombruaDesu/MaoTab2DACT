@@ -12,8 +12,14 @@ namespace MaoTab.Scripts.Component;
 public partial class Camera : Camera2D
 {
     // 摄像机跟踪对象
-    public Node2D FollowTarget;
-    
+    private Node2D _followTarget;
+
+    private Vector2 _followPosition
+    {
+        set;
+        get => _followTarget?.Position ?? field;
+    }
+
     // 用于控制基础跟踪速度
     private const float BASE_SPEED = 0.25f;
     
@@ -25,8 +31,8 @@ public partial class Camera : Camera2D
     private float   maxRoll   = 0.1f;
     private float   trauma;
     private int     traumaPower = 2;
-    
-    Random rand = new Random();
+
+    private Random rand = new();
     
     private void Shake()
     {
@@ -36,6 +42,17 @@ public partial class Camera : Camera2D
             maxOffset.X * amout * (rand.NextSingle() * 2 - 1),
             maxOffset.Y * amout * (rand.NextSingle() * 2 - 1));
         
+    }
+
+    public void FollowTarget(Node2D node)
+    {
+        _followTarget = node;
+    }
+    
+    public void FollowPosition(Vector2 pos)
+    {
+        _followPosition = pos;
+        _followTarget   = null;
     }
 
     public void AddTrauma(float amount)
@@ -51,13 +68,13 @@ public partial class Camera : Camera2D
             Shake();
         }
         
-        if (FollowTarget == null)
+        if (_followTarget == null)
         {
             return;
         }
         
         // 计算摄像机当前位置和目标之间的距离
-        float distance = Position.DistanceTo(FollowTarget.Position);
+        float distance = Position.DistanceTo(_followTarget.Position);
         
         // 根据距离调整 lerp 的比例因子
         // 当目标较远时，跟踪速度增大；当目标较近时，保持最小的速度
@@ -67,7 +84,7 @@ public partial class Camera : Camera2D
         factor = Mathf.Clamp(factor, 0f, 1f);
         
         Position = new Vector2(
-            Mathf.Lerp(Position.X, FollowTarget.Position.X, factor),
-            Mathf.Lerp(Position.Y, FollowTarget.Position.Y, factor));
+            Mathf.Lerp(Position.X, _followTarget.Position.X, factor),
+            Mathf.Lerp(Position.Y, _followTarget.Position.Y, factor));
     }
 }

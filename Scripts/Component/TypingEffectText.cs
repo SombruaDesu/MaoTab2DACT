@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * @Author: MaoT
+ * @Description: 带效果的文本
+ */
+
+
+using System;
 using System.Threading.Tasks;
 using Godot;
 

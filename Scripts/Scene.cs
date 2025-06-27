@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 using MaoTab.Scripts.Component;
-using MaoTab.Scripts.System;
 
 namespace MaoTab.Scripts;
 
@@ -23,11 +22,6 @@ public partial class Scene : Node2D
     /// 当前生效关卡（整个游戏同时只有一个）
     /// </summary>
     public Level CurLevel;
-
-    /// <summary>
-    /// 当前生效关卡名称（整个游戏同时只有一个）
-    /// </summary>
-    public string CurLevelName;
     
     /// <summary>
     ///  加载前的上一个关卡
@@ -35,7 +29,7 @@ public partial class Scene : Node2D
     public Level PrvLevel;
     
     public Dictionary<string, LevelData> AllLevelData = new();
-
+    
     /// <summary>
     /// 向指定关卡数据添加标签
     /// </summary>
@@ -45,10 +39,7 @@ public partial class Scene : Node2D
     {
         if (levelName == "this")
         {
-            if(!string.IsNullOrWhiteSpace(CurLevelName))
-            {
-                levelName = CurLevelName;
-            }
+            levelName = CurLevel.Data.Name;
         }
 
         // 检测是否已经存在关卡数据，如果存在则向现有数据插入标签
@@ -80,11 +71,8 @@ public partial class Scene : Node2D
     public bool HasTag(string levelName, string tagName)
     {
         if (levelName == "this")
-        {
-            if (!string.IsNullOrWhiteSpace(CurLevelName))
-            {
-                levelName = CurLevelName;
-            }
+        { 
+            levelName = CurLevel.Data.Name;
         }
         
         if (AllLevelData.TryGetValue(levelName, out var data))
@@ -151,15 +139,8 @@ public partial class Scene : Node2D
                 return Task.FromResult(false);
             }
             
-            // BUG:
-            // 这里有个非常操蛋的时序问题，主要由C#脚本与Gds的调用时序产生，
-            // 如果node被AddChild了，也就是被放到场景树内后，相当于完成了实例化，加入了场景树
-            // 导致CurLevel还没被更新就触发了这个才被实例化的关卡的所有节点脚本Ready，
-            // 但是没有AddChild先把node挂给了CurLevel的话，又会导致实例化后，所有场景的脚本失效
-            // 这里的解决方案就是使用一个标签（CurLevelName）作为key值，代表当前场景
-            CurLevelName = levelName;
-            Level.AddChild(level);
             CurLevel = level;
+            Level.AddChild(level);
         }
         else
         {
@@ -198,8 +179,8 @@ public partial class Scene : Node2D
                 {
                     var pos = CurLevel.SpawnPoint[spawnPointName].Position;
                     Game.MainPlayer.Position = pos;
-                    GD.Print("----\n[color=#e16032]" +
-                             "关卡加载完成：" + levelName + 
+                    GD.PrintRich("----\n[color=#57b289]" +
+                                 "关卡加载完成：" + levelName + 
                                  "，关卡加载完成，" + "使用刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
                                  "，位置：" + pos);
                 }

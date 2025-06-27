@@ -1,7 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmb6d2da1bj1e"]
+[gd_scene load_steps=8 format=3 uid="uid://cmb6d2da1bj1e"]
 
 [ext_resource type="Script" uid="uid://ccqy8wixsuy1w" path="res://Scripts/ItemInstance.cs" id="1_1es4a"]
 [ext_resource type="Texture2D" uid="uid://d0ur42oeqqrpd" path="res://Texture/Box/Box_1x1.png" id="2_1es4a"]
+[ext_resource type="Script" uid="uid://qju63k4vfdee" path="res://Scripts/Data/ItemDefinition.cs" id="2_hu42y"]
+
+[sub_resource type="Resource" id="Resource_7a4sk"]
+script = ExtResource("2_hu42y")
+Id = ""
+Size = Vector2i(0, 0)
+CanRotate = false
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xmq01"]
 size = Vector2(8, 8)
@@ -15,6 +24,7 @@ size = Vector2(8, 8)
 collision_layer = 8
 collision_mask = 8
 script = ExtResource("1_1es4a")
+Def = SubResource("Resource_7a4sk")
 _interactionArea = NodePath("InteractionArea")
 _collisionArea = NodePath("CollisionArea")
 

@@ -22,7 +22,7 @@ public partial class Logic
         player = await ResourceHelper.LoadPacked<Player>("res://ScenePacked/Fox.tscn", Game.Scene);
 
         Game.MainPlayer          = player;
-        Game.Camera.FollowTarget = player;
+        Game.Camera.FollowTarget(player);
         
         var home  = Game.Interface.HomePanel;
 
@@ -67,7 +67,7 @@ public partial class Logic
             
             await Game.Scene.LoadLevel("TestLevel");
             
-            Game.Camera.FollowTarget = player;
+            Game.Camera.FollowTarget(player);
 
             networkManager.Init(false);
 

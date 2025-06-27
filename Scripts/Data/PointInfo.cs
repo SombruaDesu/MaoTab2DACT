@@ -1,4 +1,9 @@
-﻿using Godot;
+﻿/*
+ * @Author: MaoT
+ * @Description: 路径点数据
+ */
+
+using Godot;
 
 public class PointInfo
 {

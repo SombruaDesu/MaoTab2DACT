@@ -17,7 +17,7 @@ namespace MaoTab.Scripts.Component;
 public partial class GameState : Node
 {
     public static Dictionary<string,Node> CacheNodes = new();
-
+    
     public static Camera GetCamera()
     {
         return Game.Camera;

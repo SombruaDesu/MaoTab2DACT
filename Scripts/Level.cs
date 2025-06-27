@@ -3,6 +3,7 @@
  * @Description: 关卡对象，用于管理关卡内实体
  */
 
+using System;
 using Godot;
 using Godot.Collections;
 
@@ -11,8 +12,8 @@ namespace MaoTab.Scripts;
 [GlobalClass]
 public partial class Level : Node
 {
-    public LevelData Data = new();
-
+    public LevelData Data = new(); 
+    
     public void AddTag(string tag)
     {
         Data.Tags.Add(tag);
@@ -39,7 +40,6 @@ public partial class Level : Node
                 }
             }
         }
-        
     }
 
     [Export] private string LevelName;

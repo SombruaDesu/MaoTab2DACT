@@ -77,7 +77,7 @@ public static class ResourceHelper
         }
         else
         {
-            GD.Print("An error occurred when trying to access the path.");
+            GD.Print($"访问{path}路径时出现错误");
         }
         
         return paths;

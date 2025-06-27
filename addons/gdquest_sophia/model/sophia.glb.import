@@ -15,7 +15,6 @@ dest_files=["res://.godot/imported/sophia.glb-d7b8cf4a3f2715ceba7842d2744ce1ef.s
 
 nodes/root_type="Node3D"
 nodes/root_name="Scene Root"
-nodes/root_script=null
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -34,9 +33,6 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-materials/extract=0
-materials/extract_format=0
-materials/extract_path=""
 _subresources={
 "animations": {
 "EdgeGrab": {

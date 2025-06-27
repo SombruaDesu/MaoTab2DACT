@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * @Author: MaoT
+ * @Description: 寻路代理
+ */
+
+using System.Collections.Generic;
 using Godot;
 
 namespace MaoTab.Scripts;

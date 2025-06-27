@@ -68,7 +68,7 @@ public partial class Player
         // 自底向上找可行 y
         for (int candY = 1; candY <= Height - sz.Y + 1; ++candY)
         {
-            /* ① 区域必须全空 */
+            // 区域必须全空
             bool collided = false;
             for (int dx = 0; dx < sz.X && !collided; ++dx)
                 for (int dy = 0; dy < sz.Y && !collided; ++dy)
@@ -76,8 +76,8 @@ public partial class Player
                         collided = true;
             if (collided) continue;
 
-            /* ② 至少 1 个底边格子有支撑 */
-            bool supported = (candY == 1);                 // 接地直接 OK
+            // 至少 1 个底边格子有支撑
+            bool supported = candY == 1;  // 接地直接算有支撑
             if (!supported)
             {
                 for (int dx = 0; dx < sz.X && !supported; ++dx)
@@ -86,7 +86,7 @@ public partial class Player
             }
             if (!supported) continue;
 
-            /* 找到了 */
+            // 找到了
             y = candY;
             return true;
         }
@@ -125,15 +125,15 @@ public partial class Player
         var def = item.Def;
         if (!CanPlace(def, rotated, x, out int y)) return false;
 
-        // ① 必须在调用 PickedUp 之前记录尺寸
+        // 必须在调用 PickedUp 之前记录尺寸
         Vector2I sz = rotated
             ? new Vector2I(def.Size.Y, def.Size.X)
             : def.Size;
 
-        // ② 再通知表现层
+        // 再通知表现层
         await item.PickedUp(_instanceLayer, x, y, rotated);
 
-        // ③ 把 sz 用来写网格
+        // 把 sz 用来写网格
         for (int dx = 0; dx < sz.X; ++dx)
             for (int dy = 0; dy < sz.Y; ++dy)
                 _cells[x + dx, y + dy] = item;
@@ -179,7 +179,7 @@ public partial class Player
 
         if (!found) return Task.FromResult(false); // 哪儿都放不下
 
-        // ④ 真正落位
+        // 真正落位
         return Place(item, bestRot, bestX);
     }
 

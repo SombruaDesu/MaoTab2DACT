@@ -1,4 +1,9 @@
-﻿using Godot;
+﻿/*
+ * @Author: MaoT
+ * @Description: Yarn指令集
+ */
+
+using Godot;
 using YarnSpinnerGodot;
 
 namespace MaoTab.Scripts;

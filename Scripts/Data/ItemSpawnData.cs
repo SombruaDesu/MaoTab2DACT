@@ -1,4 +1,11 @@
+/*
+ * @Author: MaoT
+ * @Description: 物品刷新点数据
+ */
+
+
 using Godot;
+using Godot.Collections;
 
 namespace MaoTab.Scripts;
 
@@ -9,14 +16,14 @@ namespace MaoTab.Scripts;
 public partial class ItemSpawnData : Resource
 {
     /// <summary>
-    /// 可刷新的物品名
+    /// 可刷新的物品ID
     /// </summary>
-    [Export] public string IdList;
+    [Export] public Array<string> IdList;
 
     /// <summary>
     /// 上一个刷新的ID
     /// </summary>
-    [Export] public string PreId;
+    public string PreId;
 
     /// <summary>
     /// 刷新概率
