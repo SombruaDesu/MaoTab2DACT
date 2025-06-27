@@ -15,6 +15,6 @@ public partial class Player
     
     public void FxUpdate()
     {
-        Mathf.Lerp(RainHitParticles.Amount, Game.WeatherStrength * 8,1);
+        Mathf.Lerp(RainHitParticles.Amount, Game.WeatherStrength * 8,Game.WeatherStrength / 100f);
     }
 }

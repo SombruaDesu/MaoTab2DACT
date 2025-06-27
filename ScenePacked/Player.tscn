@@ -820,6 +820,7 @@ speed_scale = 0.25
 script = ExtResource("11_7wskr")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+visible = false
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.737255)
 texture = ExtResource("12_jieuq")

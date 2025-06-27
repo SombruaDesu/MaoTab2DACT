@@ -19,6 +19,8 @@ public partial class Player
     public void HarmFromPoint(Vector2  point,Vector2 power)
     {
         _isHarm               = true;
+        _targetVelocity = Vector2.Zero; 
+        
         _sprite.Modulate = new Color(Colors.Red);
         
         var imp     = point.LookAt(Position);

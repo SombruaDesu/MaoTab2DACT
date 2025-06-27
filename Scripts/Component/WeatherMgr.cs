@@ -20,20 +20,11 @@ public partial class WeatherMgr : Node2D
     
     [Export] private GpuParticles2D RainParticles;
     [Export] private GpuParticles2D RainNoCollisionParticles;
-    [Export] private GpuParticles2D SeaFaceParticles;
 
     private ParticleProcessMaterial ParticleMaterial;
     private ParticleProcessMaterial NoCollisionParticleMaterial;
-    private ParticleProcessMaterial SeaFaceParticleMaterial;
     
     private const float MinSpeedScale = 3.75f;
-    private const float MaxSpeedScale = 35.0f;
-    
-    /// <summary>
-    /// 雨迹重力，决定雨的方向，为0时垂直
-    /// </summary>
-    private const float MinGravity = 0f;
-    private const float MaxGravity = 250.0f;
     
     [Export] Curve TrailLifetimeWeightCurve;
     [Export] Curve SpeedWeightCurve;
@@ -43,8 +34,6 @@ public partial class WeatherMgr : Node2D
     [Export] private AnimationPlayer LightningAnimation;
     
     private const float MinTrailLifetime = 0.05f;
-    private const float MaxTrailLifetime = 0.3f;
-    
     
     private float currentStrength;
     
@@ -53,8 +42,11 @@ public partial class WeatherMgr : Node2D
     /// </summary>
     private float currentSpeed;
     
+    [Export] private ColorRect PostLayer;
+    private ShaderMaterial PostFxMaterial;
     
     private ShaderMaterial _seaFaceShader;
+    private Sprite2D       _seaFace;
 
     public void Lightning()
     {
@@ -68,25 +60,21 @@ public partial class WeatherMgr : Node2D
         // 获取粒子发射材质
         ParticleMaterial            = RainParticles.ProcessMaterial as ParticleProcessMaterial;
         NoCollisionParticleMaterial = RainNoCollisionParticles.ProcessMaterial as ParticleProcessMaterial;
-        SeaFaceParticleMaterial = SeaFaceParticles.ProcessMaterial as ParticleProcessMaterial;
         
-        if(ParticleMaterial == null || NoCollisionParticleMaterial == null) return;
-        
-        RainParticles.SpeedScale    = MinSpeedScale;
-        RainNoCollisionParticles.SpeedScale = MinSpeedScale;
-        
-        RainParticles.TrailLifetime = MinTrailLifetime;
-        RainNoCollisionParticles.TrailLifetime = MinTrailLifetime;
-        
-        ParticleMaterial.Gravity    = ParticleMaterial.Gravity with { X = 200 };
-        NoCollisionParticleMaterial.Gravity    = ParticleMaterial.Gravity with { X = 200 };
+        PostFxMaterial = PostLayer.Material as ShaderMaterial;
     }
 
-    public void Refresh(float seaFacePosition,Sprite2D seaFace)
+    public void Refresh(Sprite2D seaFace)
     {
-        SeaFaceParticles.GlobalPosition = SeaFaceParticles.GlobalPosition with { Y = seaFacePosition };
-        
-        _seaFaceShader = seaFace.Material as ShaderMaterial;
+        if(seaFace == null)
+        {
+            _seaFace = null;
+            _seaFaceShader =  null;
+            return;
+        }
+
+        _seaFace                        = seaFace;
+        _seaFaceShader                  = seaFace.Material as ShaderMaterial;
     }
 
     private void SetGravity(float value)
@@ -112,12 +100,20 @@ public partial class WeatherMgr : Node2D
 
     private double timer;
     private double PreprocessTimer;
+
+    private float curPostStrength;
+    
     
     public void Tick()
     {
-        var shaderRippleSpeed = RippleSpeedCurve.Sample(currentStrength);
-        rippleClock += (float)Game.PhysicsDelta * shaderRippleSpeed;
-        _seaFaceShader.SetShaderParameter("ripple_clock", rippleClock);
+        if (_seaFace != null)
+        {
+            var shaderRippleSpeed = RippleSpeedCurve.Sample(currentStrength);
+
+            rippleClock += (float)Game.PhysicsDelta * shaderRippleSpeed;
+            _seaFaceShader.SetShaderParameter("ripple_clock", rippleClock);
+            _seaFaceShader.SetShaderParameter("rain_speed", shaderRippleSpeed);
+        }
         
         // 降低更新频率
         timer += Game.PhysicsDelta;
@@ -126,7 +122,8 @@ public partial class WeatherMgr : Node2D
             PreprocessTimer += Game.PhysicsDelta;
             if (currentStrength > 0.1f && PreprocessTimer >= 5f && !RainParticles.Preprocess.AetD(2,0.1d))
             {
-                PreprocessTimer                              = 0;
+                PreprocessTimer = 0;
+                
                 RainParticles.Preprocess            = 2f;
                 RainNoCollisionParticles.Preprocess = 2f;
             }
@@ -148,14 +145,17 @@ public partial class WeatherMgr : Node2D
         // 根据镜头缩放扩张特效范围
         ParticleMaterial.EmissionBoxExtents         = resExtents;
         NoCollisionParticleMaterial.EmissionBoxExtents = resExtents;
-        SeaFaceParticleMaterial.EmissionBoxExtents = resExtents;
         
         // 将粒子效果跟随镜头
-        RainParticles.Position            = resPosition;
-        RainNoCollisionParticles.Position = resPosition;
+        if (!RainParticles.Position.AetV2(resPosition,1))
+        {
+            RainParticles.Position            = resPosition;
+        }
         
-        // 海平面仅更新水平轴
-        SeaFaceParticles.Position = SeaFaceParticles.Position with { X = _followPosition.X };
+        if (!RainNoCollisionParticles.Position.AetV2(resPosition,1))
+        {
+            RainNoCollisionParticles.Position            = resPosition;
+        }
         
         // 处理粒子播放
         currentStrength = (float)Mathf.Lerp(currentStrength , Game.WeatherStrength, Game.PhysicsDelta * 5);
@@ -176,17 +176,21 @@ public partial class WeatherMgr : Node2D
         
         var weight = currentStrength / 100f;
         var runningSpeed = currentSpeed / 100f;
-
+        
         if (weight >= 0.8f)
         {
+            curPostStrength = Mathf.Lerp(curPostStrength, 1, (float)Game.PhysicsDelta* 5);
+            PostFxMaterial.SetShaderParameter("effect_strength", curPostStrength);
+            
             Game.Camera.SetFixedTrauma(weight * 0.2f);
         }
         else
         {
+            curPostStrength = Mathf.Lerp(curPostStrength, 0, (float)Game.PhysicsDelta* 5);
+            PostFxMaterial.SetShaderParameter("effect_strength", curPostStrength);
+            
             Game.Camera.SetFixedTrauma(0);
         }
-        
-        SeaFaceParticles.SpeedScale = runningSpeed;
         
         float speed   = SpeedWeightCurve.Sample(weight) * Mathf.Clamp(runningSpeed,0.01f,1);
         float gravity = GravityWeightCurve.Sample(weight);
@@ -199,14 +203,11 @@ public partial class WeatherMgr : Node2D
             
             RainNoCollisionParticles.Emitting = false;
             RainNoCollisionParticles.Preprocess = 0f;
-            
-            SeaFaceParticles.Emitting = false;
         }
         else
         {
             RainParticles.Emitting            = true;
             RainNoCollisionParticles.Emitting = true;
-            SeaFaceParticles.Emitting = true;
         }
         
         SetSpeedScale(speed);
@@ -216,7 +217,6 @@ public partial class WeatherMgr : Node2D
         if(_seaFaceShader == null) return;
         
         _seaFaceShader.SetShaderParameter("ripple_enabled", !weight.AetF(0, 0.01f));
-        _seaFaceShader.SetShaderParameter("rain_speed", shaderRippleSpeed);
         _seaFaceShader.SetShaderParameter("ripple_spawn_chance", weight);
         _seaFaceShader.SetShaderParameter("shader_speed", runningSpeed);
     }

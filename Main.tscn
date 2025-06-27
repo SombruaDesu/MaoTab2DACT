@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b12bvldcy3kts"]
+[gd_scene load_steps=35 format=3 uid="uid://b12bvldcy3kts"]
 
 [ext_resource type="Script" uid="uid://bdnmku7adl06u" path="res://Scripts/Root.cs" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://datqvqvw8l06i" path="res://Scripts/Scene.cs" id="2_trn2v"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="5_3dxm6"]
 [ext_resource type="Script" uid="uid://c51j6aviajr8h" path="res://Scripts/Panel/DevPanel.cs" id="6_20pc6"]
 [ext_resource type="AudioStream" uid="uid://blobw6njkvn22" path="res://Audio/Mili - Old City Market.mp3" id="6_trn2v"]
+[ext_resource type="Shader" uid="uid://kf7otpffh6n7" path="res://Shader/DistortionSpeedLines.gdshader" id="7_5vvyt"]
 [ext_resource type="AudioStream" uid="uid://ci6xtwak1rqax" path="res://Audio/Mili - Old City ~ Respite.mp3" id="7_lgr22"]
 
 [sub_resource type="Curve" id="Curve_5vvyt"]
@@ -18,8 +19,8 @@ point_count = 3
 
 [sub_resource type="Curve" id="Curve_c6i3y"]
 _limits = [0.0, 35.0, 0.0, 1.0]
-_data = [Vector2(0, 3.75), 0.0, 0.0, 0, 0, Vector2(1, 35), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 2.75), 0.0, 0.0, 0, 0, Vector2(0.55468756, 3.090313), 0.0, 0.0, 0, 0, Vector2(1, 35), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="Curve" id="Curve_c2ibq"]
 _limits = [0.0, 250.0, 0.0, 1.0]
@@ -113,27 +114,6 @@ turbulence_influence_over_life = SubResource("CurveTexture_03owx")
 sub_emitter_mode = 3
 sub_emitter_amount_at_collision = 32
 
-[sub_resource type="Curve" id="Curve_bg4s2"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_bg4s2"]
-curve = SubResource("Curve_bg4s2")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_20pc6"]
-lifetime_randomness = 0.15
-particle_flag_disable_z = true
-emission_shape = 3
-emission_box_extents = Vector3(600, 25, 1)
-direction = Vector3(0, -500, 0)
-spread = 33.84
-flatness = 1.0
-initial_velocity_min = 47.829998
-initial_velocity_max = 47.829998
-gravity = Vector3(0, 100, 0)
-scale_min = 0.75
-alpha_curve = SubResource("CurveTexture_bg4s2")
-
 [sub_resource type="Animation" id="Animation_20pc6"]
 resource_name = "Lightning"
 length = 0.7
@@ -172,6 +152,32 @@ _data = {
 &"RESET": SubResource("Animation_5vvyt")
 }
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5vvyt"]
+frequency = 0.11
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c6i3y"]
+height = 128
+seamless = true
+noise = SubResource("FastNoiseLite_5vvyt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6i3y"]
+shader = ExtResource("7_5vvyt")
+shader_parameter/noise = SubResource("NoiseTexture2D_c6i3y")
+shader_parameter/rain_speed = 4.0
+shader_parameter/wind = 0.15
+shader_parameter/streak_density = 1.8
+shader_parameter/streak_width = 0.25
+shader_parameter/distortion_power = 0.015
+shader_parameter/blur_strength = 0.006
+shader_parameter/effect_strength = 1.0
+shader_parameter/big_drops_enable = true
+shader_parameter/big_drops_scale = 1.5
+shader_parameter/big_drops_power = 0.02
+
 [node name="Root" type="Node" node_paths=PackedStringArray("_weatherMgr", "_scene", "_ui", "_devUi", "_audioMixPlayer")]
 script = ExtResource("1_glv2v")
 _weatherMgr = NodePath("Scene/Weather")
@@ -186,20 +192,20 @@ Level = NodePath("Level")
 
 [node name="Level" type="Node2D" parent="Scene"]
 
-[node name="Weather" type="Node2D" parent="Scene" node_paths=PackedStringArray("RainParticles", "RainNoCollisionParticles", "SeaFaceParticles", "LightningAnimation")]
+[node name="Weather" type="Node2D" parent="Scene" node_paths=PackedStringArray("RainParticles", "RainNoCollisionParticles", "LightningAnimation", "PostLayer")]
 position = Vector2(0, 2)
 script = ExtResource("3_wkp8b")
 RainParticles = NodePath("RainLine")
 RainNoCollisionParticles = NodePath("RainLineNoCollision")
-SeaFaceParticles = NodePath("RainHitSeaFace")
 TrailLifetimeWeightCurve = SubResource("Curve_5vvyt")
 SpeedWeightCurve = SubResource("Curve_c6i3y")
 GravityWeightCurve = SubResource("Curve_c2ibq")
 RippleSpeedCurve = SubResource("Curve_j4qnp")
 LightningAnimation = NodePath("AnimationPlayer")
+PostLayer = NodePath("../../CanvasLayer/RainPostFx")
 
 [node name="RainLine" type="GPUParticles2D" parent="Scene/Weather"]
-amount = 1256
+amount = 1200
 amount_ratio = 0.2019
 sub_emitter = NodePath("RainPoint")
 texture = ExtResource("3_03owx")
@@ -210,7 +216,7 @@ explosiveness = 0.01
 use_fixed_seed = true
 seed = 1337558236
 collision_base_size = 61.08
-visibility_rect = Rect2(-499.33676, -1.9952393, 1344.6393, 2786.775)
+visibility_rect = Rect2(-650, -1.995, 1300, 1500)
 draw_order = 0
 trail_enabled = true
 trail_sections = 2
@@ -238,21 +244,12 @@ randomness = 0.39
 use_fixed_seed = true
 seed = 1000
 collision_base_size = 61.08
-visibility_rect = Rect2(-499.33676, -1.9952393, 1344.6393, 2786.775)
+visibility_rect = Rect2(-650, 0, 1300, 1500)
 draw_order = 0
 trail_enabled = true
 trail_sections = 2
 trail_section_subdivisions = 1
 process_material = SubResource("ParticleProcessMaterial_c6i3y")
-
-[node name="RainHitSeaFace" type="GPUParticles2D" parent="Scene/Weather"]
-position = Vector2(0, 636)
-amount = 1000
-speed_scale = 2.59
-randomness = 1.0
-visibility_rect = Rect2(-1000, -100, 2000, 200)
-trail_sections = 2
-process_material = SubResource("ParticleProcessMaterial_20pc6")
 
 [node name="Lightning" type="DirectionalLight2D" parent="Scene/Weather"]
 energy = 0.0
@@ -263,6 +260,15 @@ libraries = {
 }
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RainPostFx" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_c6i3y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Interface" type="Control" parent="CanvasLayer"]
 layout_mode = 3

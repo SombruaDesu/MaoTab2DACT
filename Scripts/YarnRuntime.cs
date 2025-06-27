@@ -235,8 +235,8 @@ public partial class YarnRuntime : IActionRegistration
     /// 捕获模式开关，开启时自动跳过行，并将跳过的行收集起来，直到此标签关闭时停止自动跳过
     /// </summary>
     /// <para>收集的行存放于captureLine</para>
-    private bool captureMode = false;
-    private List<LocalizedLine> captureLines = new List<LocalizedLine>();
+    private bool captureMode;
+    private List<LocalizedLine> captureLines = new();
 
     /// <summary>
     /// 启动捕获模式

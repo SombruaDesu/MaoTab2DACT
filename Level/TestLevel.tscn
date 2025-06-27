@@ -358,7 +358,8 @@ noise = SubResource("FastNoiseLite_rkfdh")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5bqlb"]
 shader = ExtResource("12_vxmux")
 shader_parameter/shader_speed = 1.0
-shader_parameter/ripple_clock = 0.0
+shader_parameter/ripple_clock = 46.05999999999767
+shader_parameter/inv_scale = Vector2(9.825, 1)
 shader_parameter/y_scale = 1.0
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_5bqlb")
 shader_parameter/distortion_strength = 0.02999999999883584
@@ -366,7 +367,7 @@ shader_parameter/distortion_speed = 0.01499999999941792
 shader_parameter/reflection_noise = SubResource("NoiseTexture2D_1nl4h")
 shader_parameter/reflection_speed = 0.01000000000931322
 shader_parameter/ripple_enabled = true
-shader_parameter/rain_density = 98.0
+shader_parameter/rain_density = 50.0
 shader_parameter/ripple_spawn_chance = 0.5
 shader_parameter/ripple_alpha_rand = 0.6
 shader_parameter/rain_speed = 1.6
@@ -374,10 +375,10 @@ shader_parameter/ripple_amplitude = 0.8000000000029104
 shader_parameter/ripple_thickness = 0.05000000000291038
 shader_parameter/ripple_brightness = 0.19999999999708962
 shader_parameter/ripple_size_min = 0.10000000000582077
-shader_parameter/ripple_size_max = 1.2
+shader_parameter/ripple_size_max = 0.0650000000023283
 shader_parameter/ripple_perspective_enabled = true
-shader_parameter/ripple_size_near = 8.184999999997672
-shader_parameter/ripple_size_far = 0.13999999999941792
+shader_parameter/ripple_size_near = 12.934999999997672
+shader_parameter/ripple_size_far = 0.08000000000174623
 shader_parameter/ripple_fade_begin = 0.75
 shader_parameter/ripple_move_each_cycle = true
 
@@ -387,8 +388,8 @@ colors = PackedColorArray(0.73040193, 0.70238847, 0.8470186, 1, 0.0392157, 0.627
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_0n26d"]
 gradient = SubResource("Gradient_eatkd")
-width = 2400
-height = 2400
+width = 1024
+height = 1024
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 metadata/_snap_enabled = true
@@ -408,6 +409,12 @@ position = Vector2(418, 423)
 
 [node name="SpawnPoint2" type="Node2D" parent="."]
 position = Vector2(136, 456)
+
+[node name="Background" type="Sprite2D" parent="."]
+modulate = Color(0.3019608, 0.3019608, 0.3019608, 1)
+position = Vector2(537.00006, 238)
+scale = Vector2(2000, 900)
+texture = ExtResource("2_u18fy")
 
 [node name="Object" type="Node2D" parent="."]
 
@@ -535,9 +542,10 @@ position = Vector2(272, 460)
 position = Vector2(272, 444)
 
 [node name="Water" type="Sprite2D" parent="."]
+texture_repeat = 2
 material = SubResource("ShaderMaterial_5bqlb")
-position = Vector2(545, 882.00006)
-scale = Vector2(1, 0.27625)
+position = Vector2(516, 642)
+scale = Vector2(9.825, 0.2)
 texture = SubResource("GradientTexture2D_0n26d")
 
 [connection signal="body_entered" from="Object/门/门Zone" to="Object/门/门Zone" method="_on_body_entered"]

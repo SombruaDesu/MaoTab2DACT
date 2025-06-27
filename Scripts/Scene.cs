@@ -134,7 +134,7 @@ public partial class Scene : Node2D
         {
             level.Init();
             
-            Game.WeatherMgr.Refresh(level.SeaFacePosition,level.SeaFace);
+            Game.WeatherMgr.Refresh(level.SeaFace);
             
             if (level.SpawnPoint == null || level.SpawnPoint.Count == 0)
             {
