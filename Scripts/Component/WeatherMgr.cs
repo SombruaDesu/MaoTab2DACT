@@ -3,6 +3,7 @@
  * @Description: 天气管理器，处理天气相关视觉特效、逻辑
  */
 
+using System;
 using Godot;
 
 namespace MaoTab.Scripts.Component;
@@ -44,6 +45,8 @@ public partial class WeatherMgr : Node2D
     private ShaderMaterial _seaFaceShader;
     private Sprite2D       _seaFace;
 
+    public bool HasLightning;
+    
     public void Lightning()
     {
         LightningAnimation.Play("Lightning");
@@ -69,8 +72,8 @@ public partial class WeatherMgr : Node2D
             return;
         }
 
-        _seaFace                        = seaFace;
-        _seaFaceShader                  = seaFace.Material as ShaderMaterial;
+        _seaFace = seaFace;
+        _seaFaceShader  = seaFace.Material as ShaderMaterial;
     }
 
     private void SetGravity(float value)
@@ -103,6 +106,12 @@ public partial class WeatherMgr : Node2D
     /// 着色器驱动帧
     /// </summary>
     private float rippleClock;
+    
+    private double lightningTimer;
+    
+    private Random rand = new();
+    private double nextlightningTime;
+    
     public void Tick()
     {
         if (_seaFace != null)
@@ -112,6 +121,17 @@ public partial class WeatherMgr : Node2D
             rippleClock += (float)Game.PhysicsDelta * shaderRippleSpeed;
             _seaFaceShader.SetShaderParameter("ripple_clock", rippleClock);
             _seaFaceShader.SetShaderParameter("rain_speed", shaderRippleSpeed);
+        }
+
+        if (HasLightning)
+        {
+            lightningTimer += Game.PhysicsDelta;
+            if (lightningTimer >= nextlightningTime)
+            {
+                Lightning();
+                nextlightningTime = rand.NextDouble() * 5;
+                lightningTimer    = 0;
+            }
         }
         
         // 降低更新频率

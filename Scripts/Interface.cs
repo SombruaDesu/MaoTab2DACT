@@ -15,8 +15,8 @@ namespace MaoTab.Scripts;
 /// </summary>
 public partial class Interface : Control
 {
-    public HomePanel HomePanel;
-    public DlgPanel DlgPanel;
+    public HomePanel    HomePanel;
+    public DlgPanel     DlgPanel;
     public LoadingPanel LoadingPanel;
     
     public async Task LoadStart()

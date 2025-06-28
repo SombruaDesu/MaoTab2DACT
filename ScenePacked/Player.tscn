@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://d3clcsfsguycs"]
+[gd_scene load_steps=53 format=3 uid="uid://d3clcsfsguycs"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_upung"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="2_6jq0n"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bdmdj2noaqau6" path="res://Texture/Character/Idle/character_idle0.png" id="10_2j7rw"]
 [ext_resource type="Texture2D" uid="uid://cy3aqrnxovei2" path="res://Texture/Character/Harm/character01hit0000.png" id="10_15ue1"]
 [ext_resource type="Texture2D" uid="uid://l8l710lj3och" path="res://Texture/Character/Jump/character01falling0000.png" id="10_gxbmg"]
-[ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="10_r31c2"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="11_7wskr"]
 [ext_resource type="Texture2D" uid="uid://ds3tw485k85ra" path="res://Texture/Character/Idle/character_idle1.png" id="11_gxbmg"]
 [ext_resource type="Texture2D" uid="uid://kjsf2vksy2kb" path="res://Texture/Character/character_run0.png" id="11_vk253"]
@@ -31,9 +30,10 @@
 [ext_resource type="Texture2D" uid="uid://djpmb8nekhimp" path="res://Texture/Character/character_run6.png" id="17_kal0s"]
 [ext_resource type="Texture2D" uid="uid://bnxrgmpt1jyxy" path="res://Texture/Character/character_run7.png" id="18_2j7rw"]
 [ext_resource type="Texture2D" uid="uid://tghj82pxmqxt" path="res://Texture/Character/Jump/character01jump0000.png" id="19_yrhg5"]
+[ext_resource type="Texture2D" uid="uid://c5j5iyp7wa1q6" path="res://Texture/Character/character01climb.png" id="28_15ue1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
-size = Vector2(20, 22)
+size = Vector2(15, 26)
 
 [sub_resource type="Animation" id="Animation_qf4bv"]
 resource_name = "Bottom_1"
@@ -277,10 +277,6 @@ _data = {
 &"Top_3": SubResource("Animation_l83d4")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mu4ax"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(0, 192, 33, 32)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_ijo77"]
 animations = [{
 "frames": [{
@@ -367,7 +363,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mu4ax")
+"texture": ExtResource("28_15ue1")
 }],
 "loop": true,
 "name": &"WallHang",
@@ -623,7 +619,7 @@ _footHRay = NodePath("FootRay")
 RainHitParticles = NodePath("RainHit")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 5)
+position = Vector2(-0.5, 3)
 shape = SubResource("RectangleShape2D_mu4ax")
 
 [node name="Backpack" type="Node2D" parent="."]

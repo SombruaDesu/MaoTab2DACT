@@ -326,21 +326,23 @@ public partial class Player : CharacterBody2D
         SetFacing(newDir);
     }
 
+    private const float WallHangDir = 8.5f;
+    
     private void SetFacing(bool facing)
     {
         // 根据输入调整角色精灵和射线朝向
         if (facing)
         {
             _sprite.FlipH = true;
-            _footHRay.SetTargetPosition(new Vector2(-10.2f, 0));
-            _headHRay.SetTargetPosition(new Vector2(-10.2f, 0));
+            _footHRay.SetTargetPosition(new Vector2(-WallHangDir, 0));
+            _headHRay.SetTargetPosition(new Vector2(-WallHangDir, 0));
             _backpackFairyLayer.Scale = new Vector2(-1f, 1f);
         }
         else
         {
             _sprite.FlipH = false;
-            _footHRay.SetTargetPosition(new Vector2(10.2f, 0));
-            _headHRay.SetTargetPosition(new Vector2(10.2f, 0));
+            _footHRay.SetTargetPosition(new Vector2(WallHangDir, 0));
+            _headHRay.SetTargetPosition(new Vector2(WallHangDir, 0));
             _backpackFairyLayer.Scale = new Vector2(1f, 1f);
         }
 
@@ -363,6 +365,8 @@ public partial class Player : CharacterBody2D
             {
                 _isWallHanging = false;
             }
+            
+            _pendingExternalImpulse = Vector2.Zero;
             return;
         }
         

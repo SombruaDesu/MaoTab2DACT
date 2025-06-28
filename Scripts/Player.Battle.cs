@@ -84,7 +84,7 @@ public partial class Player
         
         await Game.Interface.LoadStart();
         Position = Game.Scene.GetLastSafePoint();
-        await Game.Interface.LoadOver();
+        Game.Interface.LoadOver();
         _isDead = false;
     }
     
