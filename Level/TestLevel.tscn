@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=46 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -8,11 +8,13 @@
 [ext_resource type="Script" uid="uid://bq7dxbbsoe3ku" path="res://Scripts/RoleAgent.cs" id="7_xmwv1"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="8_msip7"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
+[ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Box_1x1.tscn" id="10_ljrhq"]
 [ext_resource type="Script" uid="uid://qju63k4vfdee" path="res://Scripts/Data/ItemDefinition.cs" id="12_5bqlb"]
 [ext_resource type="Shader" uid="uid://b1nyiciuywxqs" path="res://Shader/Water.gdshader" id="12_vxmux"]
 [ext_resource type="Script" uid="uid://bxamsm6xbiexk" path="res://Scripts/Component/ItemSpawn.cs" id="13_5bqlb"]
 [ext_resource type="PackedScene" uid="uid://crckltxrgif68" path="res://ScenePacked/Box_2x2.tscn" id="14_1nl4h"]
 [ext_resource type="Script" uid="uid://cqcgo7aoahx60" path="res://Scripts/Data/ItemSpawnData.cs" id="14_rkfdh"]
+[ext_resource type="PackedScene" uid="uid://cu50upjhh4y2l" path="res://ScenePacked/Box_1x2.tscn" id="15_y0u32"]
 
 [sub_resource type="GDScript" id="GDScript_vxmux"]
 resource_name = "Base"
@@ -341,7 +343,7 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player
-	p.SetYarnAction(YarnAction.Create(\"Node_WaitTest\"));
+	p.SetYarnAction(YarnAction.Create(\"Node_WaitTest\",0));
 	pass
 "
 
@@ -548,6 +550,21 @@ Data = SubResource("Resource_1nl4h")
 [node name="Box_2x2" parent="Object" instance=ExtResource("14_1nl4h")]
 position = Vector2(187, 434)
 Def = SubResource("Resource_rkfdh")
+
+[node name="Box_1x2" parent="Object" instance=ExtResource("15_y0u32")]
+position = Vector2(274, 442)
+
+[node name="Box_1x3" parent="Object" instance=ExtResource("15_y0u32")]
+position = Vector2(313, 381)
+
+[node name="Box_1x4" parent="Object" instance=ExtResource("15_y0u32")]
+position = Vector2(229, 356)
+
+[node name="Box_1x5" parent="Object" instance=ExtResource("15_y0u32")]
+position = Vector2(237, 402)
+
+[node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
+position = Vector2(411, 498)
 
 [node name="Water" type="Sprite2D" parent="."]
 texture_repeat = 2

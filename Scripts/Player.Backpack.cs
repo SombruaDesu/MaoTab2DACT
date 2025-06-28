@@ -18,9 +18,16 @@ public partial class Player
     public int Height;
 
     /// <summary>
+    /// 背包精灵层
+    /// </summary>
+    [Export] private Node2D _backpackFairyLayer;
+    
+    /// <summary>
     /// 堆放起始点
     /// </summary>
     [Export] private Node2D _startTile;
+    
+    
     [Export] private Node2D _instanceLayer;
     
     [Export] private AnimationPlayer _backpackTopAnimationPlayer;

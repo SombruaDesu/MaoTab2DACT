@@ -7,8 +7,8 @@
 [sub_resource type="Resource" id="Resource_7a4sk"]
 script = ExtResource("2_hu42y")
 Id = ""
-Size = Vector2i(0, 0)
-CanRotate = false
+Size = Vector2i(1, 1)
+CanRotate = true
 Weight = 0.0
 metadata/_custom_type_script = "uid://qju63k4vfdee"
 

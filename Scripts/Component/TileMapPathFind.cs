@@ -54,7 +54,7 @@ public partial class TileMapPathFind : TileMapLayer
     {
         var newInfoPoint = new PointInfo(-10000, position); // 创建一个新的PointInfo，位置为给定位置
         newInfoPoint.IsPositionPoint = true; // 标记为位置点
-        var tile = LocalToMap(position); // 获取瓷砖位置		
+        var tile = LocalToMap(position); // 获取瓷砖位置
 
         // 如果在下面找到一个瓷砖
         if (GetCellSourceId(new Vector2I(tile.X, tile.Y + 1)) != CELL_IS_EMPTY)
@@ -318,7 +318,7 @@ public partial class TileMapPathFind : TileMapLayer
         if (p1.IsLeftEdge || p1.IsRightEdge)
         {
             var tilePos = LocalToMap(p1.Position);
-            // FindFallPoint期望精确的瓷砖坐标。图中的点位于地面上方一块瓷砖：y-1			
+            // FindFallPoint期望精确的瓷砖坐标。图中的点位于地面上方一块瓷砖：y-1
             // 因此我们将y位置调整为：Y += 1
             tilePos.Y += 1;
 
@@ -340,7 +340,7 @@ public partial class TileMapPathFind : TileMapLayer
                     _astarGraph.ConnectPoints(p1.PointID, pointInfo.PointID,
                         bidirectional: false); // 只允许边 -> fallTile方向
                     DrawDebugLine(p1.Position, pointInfo.Position,
-                        new Color(1, 1, 0, 1)); // 在点之间绘制黄色线									
+                        new Color(1, 1, 0, 1)); // 在点之间绘制黄色线
                 }
             }
         }
@@ -444,7 +444,7 @@ public partial class TileMapPathFind : TileMapLayer
             if (p2.Position.X > p1.Position.X)
             {
                 Vector2 p2Map = LocalToMap(p2.Position); // 获取p2瓷砖位置
-                Vector2 p1Map = LocalToMap(p1.Position); // 获取p1瓷砖位置				
+                Vector2 p1Map = LocalToMap(p1.Position); // 获取p1瓷砖位置
 
                 // 如果p2和p1地图位置之间的距离在跳跃范围内
                 if (p2Map.DistanceTo(p1Map) < JumpDistance + 1)
@@ -482,10 +482,10 @@ public partial class TileMapPathFind : TileMapLayer
             return;
 
         // 头顶与落脚空间检测 ---------------------------------
-        // ① 落脚瓦片上方必须为空（避免撞头）
+        // 落脚瓦片上方必须为空（避免撞头）
         if (GetCellSourceId(new Vector2I(p2Map.X, p2Map.Y - 1)) != CELL_IS_EMPTY)
             return;
-        // ② 落脚点脚下必须是地面
+        // 落脚点脚下必须是地面
         if (GetCellSourceId(new Vector2I(p2Map.X, p2Map.Y + 1)) == CELL_IS_EMPTY)
             return;
         
@@ -589,11 +589,11 @@ public partial class TileMapPathFind : TileMapLayer
     
     private void ConnectHorizontalPoints(PointInfo p1)
     {
-        // ① 先做原来的“纯同一高度”水平连线 -----------------
+        // 先做原来的“纯同一高度”水平连线
         if (p1.IsLeftEdge || p1.IsLeftWall || p1.IsFallTile)
             ConnectFlatHorizontal(p1);
 
-        // ② 再做“允许微小高度差”的台阶连线 ------------------
+        // 再做“允许微小高度差”的台阶连线
         if (p1.IsLeftEdge || p1.IsLeftWall || p1.IsFallTile)
             ConnectStepHorizontal(p1);
     }
@@ -708,9 +708,9 @@ public partial class TileMapPathFind : TileMapLayer
         else
         {
             _pointInfoList.Single(x => x.PointID == existingPointId).IsFallTile =
-                true; // 标记为下落点			
+                true; // 标记为下落点
             var updateInfo = _pointInfoList.Find(x => x.PointID == existingPointId); // 查找现有点信息
-            updateInfo.IsFallTile = true; // 标记为下落瓷砖				
+            updateInfo.IsFallTile = true; // 标记为下落瓷砖
             AddVisualPoint((Vector2I)fallTile, new Color("#ef7d57"),
                 scale: 0.30f); // 将点可视化添加到地图中（如果ShowDebugGraph = true）
         }

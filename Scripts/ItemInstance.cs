@@ -139,14 +139,14 @@ public partial class ItemInstance : RigidBody2D
         canPackup                   = false;
         _interactionArea.Monitoring = false;
         SetCollisionLayerValue(4,false);
-
+        GD.Print(rotated);
         if (rotated)
         {
-            await SmoothMoveAndRotateAsync(new Vector2(-px - 4, py - 4), 90, 0.20f);
+            await SmoothMoveAndRotateAsync(new Vector2(-px + 4, py - 8.0f), 90, 0.20f);
         }
         else
         {
-            await SmoothMoveAndRotateAsync(new Vector2(-px - 4, py - 4), 0, 0.20f);
+            await SmoothMoveAndRotateAsync(new Vector2(-px + 4, py - 8.0f), 0, 0.20f);
         }
         
         // 位置完全就位后才可以丢下

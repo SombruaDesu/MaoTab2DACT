@@ -13,12 +13,15 @@ public partial class YarnAction : GodotObject
 {
     public string Info;
 
+    public EDlgType Type;
+    
     // 静态方法，用于创建并初始化对象
-    public static YarnAction Create(string info)
+    public static YarnAction Create(string info, EDlgType type)
     {
         return new YarnAction
         {
-            Info = info
+            Info = info,
+            Type = type
         };
     }
 }

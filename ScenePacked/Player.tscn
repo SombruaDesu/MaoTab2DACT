@@ -1,18 +1,25 @@
-[gd_scene load_steps=49 format=3 uid="uid://d3clcsfsguycs"]
+[gd_scene load_steps=50 format=3 uid="uid://d3clcsfsguycs"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_upung"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="2_6jq0n"]
-[ext_resource type="Texture2D" uid="uid://jxkyl6gwa4ua" path="res://Texture/Backpack/Backpack_bottom_01.png" id="3_pry5t"]
-[ext_resource type="Texture2D" uid="uid://dilvgymwfssgf" path="res://Texture/Backpack/Backpack_mid_02.png" id="4_281q5"]
-[ext_resource type="Texture2D" uid="uid://dmc1n0gw46i34" path="res://Texture/Backpack/Backpack_mid_01.png" id="5_cbl6t"]
-[ext_resource type="Texture2D" uid="uid://dtpa1l5xsyfl5" path="res://Texture/Backpack/Backpack_mid_03.png" id="6_64dtp"]
-[ext_resource type="Texture2D" uid="uid://udwoaixkyqsp" path="res://Texture/Backpack/Backpack_right_01.png" id="7_eldpu"]
-[ext_resource type="Texture2D" uid="uid://br07ssa3w6867" path="res://Texture/Backpack/Backpack_right_02.png" id="8_qiipt"]
-[ext_resource type="Texture2D" uid="uid://b1v6bavb1vjob" path="res://Texture/Backpack/Backpack_top_01.png" id="9_vk253"]
+[ext_resource type="Texture2D" uid="uid://but3btyghctrf" path="res://Texture/Shelf/shelf03.png" id="4_vk253"]
+[ext_resource type="Texture2D" uid="uid://kfens5abp3g1" path="res://Texture/Shelf/shelf01.png" id="5_eldpu"]
+[ext_resource type="Texture2D" uid="uid://cgit3pij00pvx" path="res://Texture/Shelf/shelf05.png" id="6_vk253"]
+[ext_resource type="Texture2D" uid="uid://bgfsr4w1605e8" path="res://Texture/Shelf/shelf04.png" id="7_qiipt"]
+[ext_resource type="Texture2D" uid="uid://bpfhp5tl5ncxr" path="res://Texture/Shelf/shelf02.png" id="8_vk253"]
+[ext_resource type="Texture2D" uid="uid://cyskbv5p4345n" path="res://Texture/Shelf/shelf06.png" id="9_r31c2"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="10_r31c2"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="11_7wskr"]
+[ext_resource type="Texture2D" uid="uid://kjsf2vksy2kb" path="res://Texture/Character/character_run0.png" id="11_vk253"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="12_jieuq"]
+[ext_resource type="Texture2D" uid="uid://0x6q5lsmyj4c" path="res://Texture/Character/character_run1.png" id="12_r31c2"]
+[ext_resource type="Texture2D" uid="uid://b35sxcqpgh5k0" path="res://Texture/Character/character_run2.png" id="13_7wskr"]
 [ext_resource type="Script" uid="uid://c0gq0eowwx314" path="res://Scripts/Ray.cs" id="13_favlc"]
+[ext_resource type="Texture2D" uid="uid://cd1qnm3cu1qja" path="res://Texture/Character/character_run3.png" id="14_jieuq"]
+[ext_resource type="Texture2D" uid="uid://bda3hy47b56s0" path="res://Texture/Character/character_run4.png" id="15_favlc"]
+[ext_resource type="Texture2D" uid="uid://usmyvkin3s3j" path="res://Texture/Character/character_run5.png" id="16_nhktr"]
+[ext_resource type="Texture2D" uid="uid://djpmb8nekhimp" path="res://Texture/Character/character_run6.png" id="17_kal0s"]
+[ext_resource type="Texture2D" uid="uid://bnxrgmpt1jyxy" path="res://Texture/Character/character_run7.png" id="18_2j7rw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
 size = Vector2(20, 22)
@@ -72,11 +79,23 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(13, 2)]
+"values": [Vector2(8, 2.0000005)]
 }
 
 [sub_resource type="Animation" id="Animation_mxv3s"]
 length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Right:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(8, 2.0000005)]
+}
 
 [sub_resource type="Animation" id="Animation_kdf0d"]
 resource_name = "Top_1"
@@ -128,19 +147,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 2)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Mid2:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -9)]
+"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_p78xu"]
@@ -193,19 +200,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 3)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Mid2:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -14)]
+"values": [Vector2(1, 1.145)]
 }
 
 [sub_resource type="Animation" id="Animation_l83d4"]
@@ -258,19 +253,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1, 4)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Mid2:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -18)]
+"values": [Vector2(1, 2)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qf4bv"]
@@ -310,30 +293,6 @@ region = Rect2(99, 0, 33, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_p78xu"]
 atlas = ExtResource("10_r31c2")
 region = Rect2(0, 160, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ijo77"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(0, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ug3b"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(33, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mfa3w"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(66, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kdf0d"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(99, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qf4bv"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(132, 32, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mxv3s"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(165, 32, 33, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mu4ax"]
 atlas = ExtResource("10_r31c2")
@@ -384,22 +343,28 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ijo77")
+"texture": ExtResource("11_vk253")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3ug3b")
+"texture": ExtResource("12_r31c2")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mfa3w")
+"texture": ExtResource("13_7wskr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_kdf0d")
+"texture": ExtResource("14_jieuq")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qf4bv")
+"texture": ExtResource("15_favlc")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_mxv3s")
+"texture": ExtResource("16_nhktr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_kal0s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_2j7rw")
 }],
 "loop": true,
 "name": &"Run",
@@ -532,7 +497,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_g126i"]
 resource_name = "Idle"
-length = 0.16667
+length = 0.23333667
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -553,10 +518,10 @@ tracks/1/path = NodePath("Sprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.16667),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.0333333, 0.0666667, 0.1, 0.133333, 0.16667, 0.20000002, 0.23333335),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5]
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
 [sub_resource type="Animation" id="Animation_3ug3b"]
@@ -648,10 +613,11 @@ gravity = Vector3(0, 103.975, 0)
 scale_min = 0.75
 alpha_curve = SubResource("CurveTexture_mxvw5")
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_startTile", "_instanceLayer", "_backpackTopAnimationPlayer", "_backpackBottomAnimationPlayer", "_sprite", "_headHRay", "_footHRay", "RainHitParticles")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_backpackFairyLayer", "_startTile", "_instanceLayer", "_backpackTopAnimationPlayer", "_backpackBottomAnimationPlayer", "_sprite", "_headHRay", "_footHRay", "RainHitParticles")]
 platform_floor_layers = 4294901761
 script = ExtResource("1_upung")
 _animationPlayer = NodePath("Sprite2D/AnimationPlayer")
+_backpackFairyLayer = NodePath("Backpack")
 _startTile = NodePath("Backpack")
 _instanceLayer = NodePath("Backpack/InstanceLayer")
 _backpackTopAnimationPlayer = NodePath("Backpack/TextrueLayer/Top-MidAnimation")
@@ -669,7 +635,7 @@ shape = SubResource("RectangleShape2D_mu4ax")
 position = Vector2(0, 16)
 
 [node name="DebugLayer" type="Node2D" parent="Backpack"]
-visible = false
+position = Vector2(8, -3)
 
 [node name="BackpackTile" type="Sprite2D" parent="Backpack/DebugLayer"]
 modulate = Color(0, 0, 0, 1)
@@ -764,37 +730,34 @@ texture = ExtResource("2_6jq0n")
 [node name="InstanceLayer" type="Node2D" parent="Backpack"]
 
 [node name="TextrueLayer" type="Node2D" parent="Backpack"]
-position = Vector2(-6, -8)
+position = Vector2(-2, -11)
 rotation = 3.1415927
 scale = Vector2(1, -1)
 
-[node name="Bottom" type="Sprite2D" parent="Backpack/TextrueLayer"]
-texture = ExtResource("3_pry5t")
-
 [node name="Mid_C" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(0, -9)
+position = Vector2(0, -19)
 scale = Vector2(1, 2)
-texture = ExtResource("4_281q5")
-
-[node name="Mid2" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(0, -9)
-texture = ExtResource("5_cbl6t")
+texture = ExtResource("4_vk253")
 
 [node name="Mid3" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(0, -11)
-texture = ExtResource("6_64dtp")
+position = Vector2(0, -20)
+texture = ExtResource("6_vk253")
 
 [node name="Right" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(5, 2)
-texture = ExtResource("7_eldpu")
+position = Vector2(8, 2.0000005)
+texture = ExtResource("5_eldpu")
 
 [node name="Right2" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(6, -3)
-texture = ExtResource("8_qiipt")
+position = Vector2(6.0000005, -0.9999995)
+texture = ExtResource("8_vk253")
+
+[node name="背板" type="Sprite2D" parent="Backpack/TextrueLayer"]
+position = Vector2(7.1525574e-07, -2)
+texture = ExtResource("7_qiipt")
 
 [node name="Top" type="Sprite2D" parent="Backpack/TextrueLayer"]
-position = Vector2(0, -18)
-texture = ExtResource("9_vk253")
+position = Vector2(0, -34)
+texture = ExtResource("9_r31c2")
 
 [node name="Top-MidAnimation" type="AnimationPlayer" parent="Backpack/TextrueLayer"]
 libraries = {
@@ -849,6 +812,7 @@ width = 1.0
 default_color = Color(1, 0, 0, 1)
 
 [node name="RainHit" type="GPUParticles2D" parent="."]
+emitting = false
 speed_scale = 3.0
 explosiveness = 0.04
 local_coords = true

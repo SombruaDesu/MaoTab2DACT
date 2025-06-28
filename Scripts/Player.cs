@@ -334,14 +334,14 @@ public partial class Player : CharacterBody2D
             _sprite.FlipH = true;
             _footHRay.SetTargetPosition(new Vector2(-10.2f, 0));
             _headHRay.SetTargetPosition(new Vector2(-10.2f, 0));
-            _startTile.Scale = new Vector2(-1f, 1f);
+            _backpackFairyLayer.Scale = new Vector2(-1f, 1f);
         }
         else
         {
             _sprite.FlipH = false;
             _footHRay.SetTargetPosition(new Vector2(10.2f, 0));
             _headHRay.SetTargetPosition(new Vector2(10.2f, 0));
-            _startTile.Scale = new Vector2(1f, 1f);
+            _backpackFairyLayer.Scale = new Vector2(1f, 1f);
         }
 
         Data.Facing = facing;

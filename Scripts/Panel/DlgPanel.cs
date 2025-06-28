@@ -24,6 +24,8 @@ public partial class DlgPanel : Control
     
     [Export] private ProgressBar dlgWaitBar;
     
+    [Export] private AnimationAsyncPlayer animationPlayer;
+    
     public void Init()
     {
         Hide(false);
@@ -37,6 +39,11 @@ public partial class DlgPanel : Control
         };
     }
     
+    public async void EnterMovieMode()
+    {
+        await animationPlayer.PlayAsync("EnterMovie");
+        
+    }
     
     public async Task WaitDlg(
         Action                  action,
