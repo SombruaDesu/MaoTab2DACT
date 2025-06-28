@@ -74,6 +74,8 @@ public partial class DlgPanel : Control
     
     public async Task ShowDlg()
     {
+        if(_isShow) return;
+        
         _isShow = true;
         continueMask.Visible = true;
         await movieAnimationPlayer.PlayAsync("Show");
@@ -82,6 +84,8 @@ public partial class DlgPanel : Control
 
     public async Task HideDlg()
     {
+        if(!_isShow) return;
+        
         await movieAnimationPlayer.PlayAsync("Hide");
         await movieAnimationPlayer.PlayAsync("Hide");
         _isShow              = false;

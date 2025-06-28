@@ -804,6 +804,7 @@ libraries = {
 }
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+light_mask = 2
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ijo77")
 animation = &"Idle"
@@ -817,7 +818,8 @@ speed_scale = 0.25
 script = ExtResource("11_7wskr")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
+scale = Vector2(0.495, 0.495)
+color = Color(1, 1, 0.76862746, 1)
 shadow_enabled = true
 shadow_color = Color(0, 0, 0, 0.737255)
 texture = ExtResource("12_jieuq")

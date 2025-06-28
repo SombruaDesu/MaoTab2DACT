@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://dl6rkrs7b070a"]
+[gd_scene load_steps=34 format=4 uid="uid://dl6rkrs7b070a"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_ivcmn"]
-[ext_resource type="Texture2D" uid="uid://dx6ie7hnslk11" path="res://Texture/Island/loopsky_bg.png" id="2_0mvk3"]
+[ext_resource type="Texture2D" uid="uid://cqide4di4f45e" path="res://Texture/Island/loopsky_bg_yintian.png" id="2_stkvx"]
 [ext_resource type="Texture2D" uid="uid://pqfufwrmq1hn" path="res://Texture/Island/clound_bg_02.png" id="4_y5rbd"]
 [ext_resource type="Texture2D" uid="uid://b7bux74lnoayy" path="res://Texture/Island/clound_bg_01.png" id="5_4bs74"]
+[ext_resource type="Texture2D" uid="uid://cipmuiusw674p" path="res://Texture/Island/far_bg_01.png" id="5_52r26"]
 [ext_resource type="Texture2D" uid="uid://cy6dxbaip63us" path="res://Texture/Island/atlas_bg_tile.png" id="5_hrqeg"]
 [ext_resource type="Texture2D" uid="uid://c2dy2go7aky35" path="res://Texture/Island/grass_bg_02.png" id="8_0a3a3"]
 [ext_resource type="Texture2D" uid="uid://6bvequ5qxc1u" path="res://Texture/Island/tent_bg.png" id="8_e28oj"]
@@ -19,6 +20,47 @@
 [ext_resource type="Texture2D" uid="uid://dt2tafl4qx13i" path="res://Texture/Island/frontstone_bg_01.png" id="13_wkxew"]
 [ext_resource type="Texture2D" uid="uid://bibanci218bn1" path="res://Texture/Island/grass_bg_03.png" id="14_0mvk3"]
 [ext_resource type="Texture2D" uid="uid://csnkwwo2ario7" path="res://Texture/Island/front_bg_02.png" id="18_0mvk3"]
+[ext_resource type="Texture2D" uid="uid://2q0b8nv28atb" path="res://Texture/Island/fupin_bg.png" id="21_stkvx"]
+[ext_resource type="Texture2D" uid="uid://b20k1ompdilsq" path="res://Texture/Island/front_bg_01.png" id="22_h0m7a"]
+
+[sub_resource type="GDScript" id="GDScript_ivcmn"]
+resource_name = "PaoMaDeng"
+script/source = "extends Node2D
+
+var sky: Parallax2D
+var cloud: Parallax2D
+var cloud2: Parallax2D
+var cloud3: Parallax2D
+var backBuild: Parallax2D
+var waterFace: Parallax2D
+var water: Node2D
+
+var speed:float
+var targetSpeed:float
+
+func _ready() -> void:
+	sky = $\"天空滚动层\" as Parallax2D
+	cloud = $\"云朵滚动层\" as Parallax2D
+	cloud2 = $\"云朵滚动层2\" as Parallax2D
+	cloud3 = $\"云朵滚动层3\" as Parallax2D
+	backBuild = $\"背景废墟滚动层\" as Parallax2D
+	water = $\"../水面\" as Node2D
+	waterFace = $\"../水面滚动层\" as Parallax2D
+	speed = -1
+	targetSpeed = -1
+	pass
+
+func _process(delta: float) -> void:
+	speed = lerpf(speed,targetSpeed,delta)
+	sky.scroll_offset.x += speed * 0.125
+	cloud.scroll_offset.x += speed * 0.3
+	cloud2.scroll_offset.x += speed * 0.15
+	cloud3.scroll_offset.x += speed * 0.5
+	water.position.x += speed
+	waterFace.position.x += speed
+	backBuild.position.x += speed * 0.8
+	pass
+"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nauyv"]
 texture = ExtResource("5_hrqeg")
@@ -265,6 +307,10 @@ tile_size = Vector2i(8, 8)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_nauyv")
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_stkvx"]
+cull_mode = 2
+polygon = PackedVector2Array(-41.28661, 550.5873, 2.2659607, 526.95294, 244.555, 526.95294, 252.4331, 530.9663, 260.60852, 549.6954, 260.45984, 551.0332)
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vxmux"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5bqlb"]
@@ -284,7 +330,7 @@ noise = SubResource("FastNoiseLite_rkfdh")
 shader = ExtResource("11_0mvk3")
 shader_parameter/shader_speed = 1.0
 shader_parameter/ripple_clock = 0.0
-shader_parameter/inv_scale = Vector2(100, 1)
+shader_parameter/inv_scale = Vector2(100, 1.085)
 shader_parameter/y_scale = 1.0
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_5bqlb")
 shader_parameter/distortion_strength = 0.02999999999883584
@@ -321,7 +367,7 @@ metadata/_snap_enabled = true
 
 [node name="Island01" type="Node2D" node_paths=PackedStringArray("SeaFace", "ObjectNode")]
 script = ExtResource("1_ivcmn")
-LevelBoundary = Vector3i(-50, 0, 590)
+LevelBoundary = Vector3i(-5000, 0, 645)
 SeaFacePosition = 654.0
 SeaFace = NodePath("水面")
 ObjectNode = NodePath("ObjNodes")
@@ -334,33 +380,62 @@ _spawnPoint = Dictionary[String, NodePath]({
 position = Vector2(78.4057, 486.11047)
 
 [node name="ObjNodes" type="Node2D" parent="."]
+script = SubResource("GDScript_ivcmn")
 
 [node name="天空滚动层" type="Parallax2D" parent="ObjNodes"]
-scroll_offset = Vector2(783.3845, 0)
+scroll_offset = Vector2(-565.8125, -0.8941345)
 repeat_size = Vector2(1011, 0)
 repeat_times = 12
 
 [node name="天空" type="Sprite2D" parent="ObjNodes/天空滚动层"]
+light_mask = 0
 position = Vector2(263.94562, 356.78867)
-texture = ExtResource("2_0mvk3")
+texture = ExtResource("2_stkvx")
 
 [node name="云朵滚动层" type="Parallax2D" parent="ObjNodes"]
-scroll_offset = Vector2(1089.3225, 68.732056)
-repeat_size = Vector2(750, 0)
-repeat_times = 6
+scroll_offset = Vector2(0, 0.13697052)
+repeat_size = Vector2(1000, 0)
+repeat_times = 12
 
 [node name="云朵" type="Sprite2D" parent="ObjNodes/云朵滚动层"]
+light_mask = 0
 position = Vector2(419.62915, 353)
 texture = ExtResource("4_y5rbd")
 
-[node name="云朵滚动层" type="Parallax2D" parent="ObjNodes/云朵滚动层"]
-scroll_offset = Vector2(-96, -6)
-repeat_size = Vector2(800, 0)
+[node name="云朵滚动层2" type="Parallax2D" parent="ObjNodes"]
+scroll_offset = Vector2(-210.31863, 129.87077)
+repeat_size = Vector2(2400, 0)
 repeat_times = 6
+ignore_camera_scroll = true
 
-[node name="云朵" type="Sprite2D" parent="ObjNodes/云朵滚动层/云朵滚动层"]
-position = Vector2(309.62915, 377)
+[node name="云朵" type="Sprite2D" parent="ObjNodes/云朵滚动层2"]
+light_mask = 0
+position = Vector2(255.64453, 249.25897)
 texture = ExtResource("5_4bs74")
+
+[node name="云朵滚动层3" type="Parallax2D" parent="ObjNodes"]
+scroll_offset = Vector2(-210.31863, 129.87077)
+repeat_size = Vector2(2400, 0)
+repeat_times = 6
+ignore_camera_scroll = true
+
+[node name="云朵" type="Sprite2D" parent="ObjNodes/云朵滚动层3"]
+light_mask = 0
+position = Vector2(413.16238, 104.5101)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_y5rbd")
+flip_h = true
+
+[node name="背景废墟滚动层" type="Parallax2D" parent="ObjNodes"]
+scroll_offset = Vector2(-210.31863, 129.87077)
+repeat_size = Vector2(2400, 0)
+repeat_times = 6
+ignore_camera_scroll = true
+
+[node name="云朵" type="Sprite2D" parent="ObjNodes/背景废墟滚动层"]
+light_mask = 0
+position = Vector2(609.15204, 369.04193)
+texture = ExtResource("5_52r26")
 
 [node name="会动的岛" type="Node2D" parent="ObjNodes"]
 
@@ -417,19 +492,52 @@ texture = ExtResource("13_wkxew")
 position = Vector2(74.61631, 546.64)
 texture = ExtResource("13_beh1e")
 
+[node name="LightOccluder2D" type="LightOccluder2D" parent="ObjNodes/会动的岛"]
+visible = false
+occluder = SubResource("OccluderPolygon2D_stkvx")
+
 [node name="岛礁" type="Node2D" parent="ObjNodes"]
+visible = false
 
 [node name="LeftislandBg" type="Sprite2D" parent="ObjNodes/岛礁"]
 position = Vector2(-16.093071, 484.63422)
 texture = ExtResource("13_mmmks")
 
-[node name="FrontBg02" type="Sprite2D" parent="ObjNodes"]
+[node name="FrontBg02" type="Sprite2D" parent="ObjNodes/岛礁"]
 position = Vector2(18.726532, 432.09183)
 texture = ExtResource("18_0mvk3")
 
 [node name="水面" type="Sprite2D" parent="."]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_5bqlb")
-position = Vector2(47205.336, 653)
+position = Vector2(50111.754, 653)
 scale = Vector2(100, 0.2)
 texture = SubResource("GradientTexture2D_0n26d")
+
+[node name="水面滚动层" type="Parallax2D" parent="."]
+scroll_offset = Vector2(-210.31863, 129.87077)
+repeat_size = Vector2(2400, 0)
+repeat_times = 6
+ignore_camera_scroll = true
+
+[node name="叶子" type="Sprite2D" parent="水面滚动层"]
+position = Vector2(510.02606, 451.9815)
+scale = Vector2(1, 0.585)
+texture = ExtResource("21_stkvx")
+
+[node name="石头" type="Sprite2D" parent="水面滚动层"]
+position = Vector2(640.772, 517.7896)
+texture = ExtResource("22_h0m7a")
+offset = Vector2(0, -45)
+
+[node name="叶子3" type="Sprite2D" parent="水面滚动层"]
+position = Vector2(-33.327805, 462.8966)
+scale = Vector2(1, 0.585)
+texture = ExtResource("21_stkvx")
+flip_h = true
+
+[node name="叶子2" type="Sprite2D" parent="水面滚动层"]
+position = Vector2(161.03525, 488.38043)
+scale = Vector2(1.37, 0.695)
+texture = ExtResource("21_stkvx")
+flip_v = true
