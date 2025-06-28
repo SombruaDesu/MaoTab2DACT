@@ -119,8 +119,15 @@ title: Node_WaitTest
 
 title: Node_CoreWork
 ---
-这是一个炉子
-->关掉它
+\[b\]炉子\[/b\]\\n这是一个炉子
+<<define>>
+·extends Node
+·func _ready():
+·   GameState.GetCamera().FollowPosition(Vector2(368,560))
+·   GameState.GetCamera().SetZoom(2)
+·   queue_free()
+<<do>>
+->关掉它🆒
     <<define>>
     ·extends Node
     ·func _ready():
@@ -142,6 +149,8 @@ title: Node_CoreWork
     ·func _ready():
     ·   var player = GameState.GetLevelNode("coreFurnace") as AnimatedSprite2D
     ·   player.play("Work" + str(GameState.GetInt("火力")))
+    ·   GameState.GetCamera().FollowTarget(GameState.GetPlayer())
+	·   GameState.GetCamera().SetZoom(1.6)
     ·   queue_free()
 <<do>>
 <<end>>
