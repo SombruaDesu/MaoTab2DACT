@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -126,7 +127,7 @@ public partial class Player : CharacterBody2D
 
     // 初始化标记
     private bool _initialized;
-
+    
     /// <summary>
     /// 初始化玩家状态（游戏本地生成时调用，仅会调用一次类似 _Ready ）
     /// </summary>
@@ -152,12 +153,21 @@ public partial class Player : CharacterBody2D
         SetFacing(Data.Facing);
         InitAnimation();
     }
+
+    private bool freezeAction;
     
-    public void Pause()
+    public void Freeze()
     {
-        
+        SetCollisionLayerValue(1,false);
+        freezeAction = true;
     }
 
+    public void UnFreeze()
+    {
+        SetCollisionLayerValue(1,true);
+        freezeAction = false;
+    }
+    
     private void ResetInput()
     {
         InputMoveDirection = Vector2.Zero;
@@ -378,11 +388,17 @@ public partial class Player : CharacterBody2D
         _isWallHanging = _headHRay.IsColliding() && _footHRay.IsColliding() && _wallHangRequested;
     }
 
+    private bool isLanding;
+    
     /// <summary>
     /// 着落，重置玩家的跳跃相关数值
     /// </summary>
     private void Landing()
     {
+        if(isLanding) return;
+        isLanding = true;
+        
+        PlayStepAudio();
         _coyoteTimer      = CoyoteTime;
         _jumpTime         = 0;
         _jumpCount        = 0; // 重置跳跃次数
@@ -437,6 +453,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
+            isLanding    = false;
             _coyoteTimer = Mathf.Max(_coyoteTimer - dt, 0);
         }
 

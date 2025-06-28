@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://d3clcsfsguycs"]
+[gd_scene load_steps=61 format=3 uid="uid://d3clcsfsguycs"]
 
 [ext_resource type="Script" uid="uid://xf7ykquwvw1d" path="res://Scripts/Player.cs" id="1_upung"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="2_6jq0n"]
@@ -31,6 +31,14 @@
 [ext_resource type="Texture2D" uid="uid://bnxrgmpt1jyxy" path="res://Texture/Character/character_run7.png" id="18_2j7rw"]
 [ext_resource type="Texture2D" uid="uid://tghj82pxmqxt" path="res://Texture/Character/Jump/character01jump0000.png" id="19_yrhg5"]
 [ext_resource type="Texture2D" uid="uid://c5j5iyp7wa1q6" path="res://Texture/Character/character01climb.png" id="28_15ue1"]
+[ext_resource type="AudioStream" uid="uid://c57ui8qi6rmib" path="res://Audio/Step/step1.mp3" id="32_ge10i"]
+[ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="33_4o1ho"]
+[ext_resource type="AudioStream" uid="uid://ccx8l42thuv7r" path="res://Audio/Step/step2.mp3" id="34_uowfm"]
+[ext_resource type="AudioStream" uid="uid://ch1jqsqank7s7" path="res://Audio/Step/step3.mp3" id="35_55nts"]
+[ext_resource type="AudioStream" uid="uid://cm6pkuskip8ca" path="res://Audio/Step/step4.mp3" id="36_kchim"]
+[ext_resource type="AudioStream" uid="uid://d1kgp41h4b3km" path="res://Audio/Step/step5.mp3" id="37_qp03m"]
+[ext_resource type="AudioStream" uid="uid://ddh04epwe4pab" path="res://Audio/Step/step6.mp3" id="38_gq17i"]
+[ext_resource type="AudioStream" uid="uid://gvytijr8v3ty" path="res://Audio/Step/step7.mp3" id="39_3bk4k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
 size = Vector2(15, 26)
@@ -458,6 +466,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [&"Jump"]
 }
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"PlayStepAudio"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_xmq01"]
 length = 0.001
@@ -513,6 +535,26 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.08146824, 0.16666667, 0.48964307),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"PlayStepAudio"
+}, {
+"args": [],
+"method": &"PlayStepAudio"
+}, {
+"args": [],
+"method": &"PlayStepAudio"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_3ug3b"]
@@ -604,10 +646,11 @@ gravity = Vector3(0, 103.975, 0)
 scale_min = 0.75
 alpha_curve = SubResource("CurveTexture_mxvw5")
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_backpackFairyLayer", "_startTile", "_instanceLayer", "_backpackTopAnimationPlayer", "_backpackBottomAnimationPlayer", "_sprite", "_headHRay", "_footHRay", "RainHitParticles")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("_animationPlayer", "_audioPlayers", "_backpackFairyLayer", "_startTile", "_instanceLayer", "_backpackTopAnimationPlayer", "_backpackBottomAnimationPlayer", "_sprite", "_headHRay", "_footHRay", "RainHitParticles")]
 platform_floor_layers = 4294901761
 script = ExtResource("1_upung")
 _animationPlayer = NodePath("Sprite2D/AnimationPlayer")
+_audioPlayers = [NodePath("StepAudio/AudioPlayer"), NodePath("StepAudio/AudioPlayer2"), NodePath("StepAudio/AudioPlayer3"), NodePath("StepAudio/AudioPlayer4"), NodePath("StepAudio/AudioPlayer5"), NodePath("StepAudio/AudioPlayer6"), NodePath("StepAudio/AudioPlayer7")]
 _backpackFairyLayer = NodePath("Backpack")
 _startTile = NodePath("Backpack")
 _instanceLayer = NodePath("Backpack/InstanceLayer")
@@ -808,3 +851,40 @@ speed_scale = 3.0
 explosiveness = 0.04
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_o7g6l")
+
+[node name="StepAudio" type="Node" parent="."]
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("32_ge10i")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer2" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("34_uowfm")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer3" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("35_55nts")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer4" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("36_kchim")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer5" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("37_qp03m")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer6" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("38_gq17i")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"
+
+[node name="AudioPlayer7" type="AudioStreamPlayer" parent="StepAudio"]
+stream = ExtResource("39_3bk4k")
+script = ExtResource("33_4o1ho")
+metadata/_custom_type_script = "uid://cu0my1j7f18qr"

@@ -3,6 +3,7 @@
  * @Description: 关卡对象，用于管理关卡内实体
  */
 
+using System;
 using Godot;
 using Godot.Collections;
 
@@ -50,7 +51,8 @@ public partial class Level : Node
             }
         }
     }
-
+    
+    
     [Export] private string LevelName;
     [Export] private Dictionary<string,NodePath> _spawnPoint;
     public Dictionary<string, Node2D> SpawnPoint = new();

@@ -6,12 +6,9 @@
 [ext_resource type="Script" uid="uid://btfs01nmb4bbk" path="res://Scripts/Component/AudioMixPlayer.cs" id="3_r0du0"]
 [ext_resource type="Script" uid="uid://cekqq2gf7y07n" path="res://Scripts/Interface.cs" id="3_trn2v"]
 [ext_resource type="Script" uid="uid://dskxq5sthwi52" path="res://Scripts/Component/WeatherMgr.cs" id="3_wkp8b"]
-[ext_resource type="AudioStream" uid="uid://bkqggp80p1mhq" path="res://Audio/Mili - Old City.mp3" id="4_lgr22"]
 [ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="5_3dxm6"]
 [ext_resource type="Script" uid="uid://c51j6aviajr8h" path="res://Scripts/Panel/DevPanel.cs" id="6_20pc6"]
-[ext_resource type="AudioStream" uid="uid://blobw6njkvn22" path="res://Audio/Mili - Old City Market.mp3" id="6_trn2v"]
 [ext_resource type="Shader" uid="uid://kf7otpffh6n7" path="res://Shader/DistortionSpeedLines.gdshader" id="7_5vvyt"]
-[ext_resource type="AudioStream" uid="uid://ci6xtwak1rqax" path="res://Audio/Mili - Old City ~ Respite.mp3" id="7_lgr22"]
 [ext_resource type="Texture2D" uid="uid://c3cbywna1muyn" path="res://Texture/UI/Watch_Bottom_01.png" id="8_c6i3y"]
 [ext_resource type="Script" uid="uid://cvjfdlhnxkckj" path="res://Scripts/Panel/HUD.cs" id="8_devvj"]
 [ext_resource type="Texture2D" uid="uid://ff62jq8gs6sl" path="res://Texture/UI/Watch_Bottom_02.png" id="8_fpfj3"]
@@ -214,6 +211,44 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_devvj"]
+resource_name = "Show"
+length = 0.5
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Watch:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1200, 3), Vector2(918, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_3b0ty"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Watch:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(918, 3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3b0ty"]
+_data = {
+&"RESET": SubResource("Animation_3b0ty"),
+&"Show": SubResource("Animation_devvj")
+}
+
 [node name="Root" type="Node" node_paths=PackedStringArray("_weatherMgr", "_scene", "_ui", "_devUi", "_hud", "_audioMixPlayer")]
 script = ExtResource("1_glv2v")
 _weatherMgr = NodePath("Scene/Weather")
@@ -325,35 +360,36 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("8_devvj")
-Bar = NodePath("TextureRect2/TextureProgressBar")
-emo = NodePath("TextureRect2/Emo")
+Bar = NodePath("Watch/TextureProgressBar")
+emo = NodePath("Watch/Emo")
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/HUD"]
+[node name="Watch" type="TextureRect" parent="CanvasLayer/HUD"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 918.0
 offset_top = 3.0
-offset_right = -4.0
+offset_right = -3.9992676
 offset_bottom = -415.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("8_fpfj3")
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/TextureRect2"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD/Watch"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("9_sc1dx")
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/HUD/TextureRect2"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/HUD/Watch"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("10_fpfj3")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/HUD/TextureRect2"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="CanvasLayer/HUD/Watch"]
 layout_mode = 0
 offset_right = 230.0
 offset_bottom = 230.0
@@ -366,16 +402,21 @@ tint_under = Color(0.21176471, 0.41960785, 0.39215687, 1)
 tint_over = Color(0.47058824, 0.6666667, 0.654902, 1)
 tint_progress = Color(0.47058824, 0.6666667, 0.654902, 1)
 
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/HUD/TextureRect2"]
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/HUD/Watch"]
 layout_mode = 0
 offset_right = 230.0
 offset_bottom = 230.0
 texture = ExtResource("11_sc1dx")
 
-[node name="Emo" type="AnimatedSprite2D" parent="CanvasLayer/HUD/TextureRect2"]
+[node name="Emo" type="AnimatedSprite2D" parent="CanvasLayer/HUD/Watch"]
 position = Vector2(115, 115)
 sprite_frames = SubResource("SpriteFrames_sc1dx")
 animation = &"3"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/HUD"]
+libraries = {
+&"": SubResource("AnimationLibrary_3b0ty")
+}
 
 [node name="Dev" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("weatherSlider", "weatherSpeedSlider", "LightningButton")]
 layout_mode = 3
@@ -424,13 +465,10 @@ text = "Lightning()"
 script = ExtResource("3_r0du0")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("6_trn2v")
 script = ExtResource("5_3dxm6")
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("4_lgr22")
 script = ExtResource("5_3dxm6")
 
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("7_lgr22")
 script = ExtResource("5_3dxm6")

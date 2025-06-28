@@ -35,9 +35,9 @@ public partial class Logic
             await Game.Interface.LoadStart();
 
             player.Init(true);
-
+            
             await Game.Scene.LoadLevel("TestLevel");
-
+            
             networkManager.Init(true);
 
             gameStarted = true;

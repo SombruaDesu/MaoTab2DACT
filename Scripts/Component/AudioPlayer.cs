@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 
@@ -11,7 +12,8 @@ namespace MaoTab.Scripts.Component;
 
 /// <summary>
 /// 音频播放器
-/// </summary>
+/// </summary> 
+[GlobalClass]
 public partial class AudioPlayer : AudioStreamPlayer
 {
     /// <summary>
@@ -62,6 +64,25 @@ public partial class AudioPlayer : AudioStreamPlayer
         Volume = defVolume;
         
         Play();
+    }
+
+    public async Task PlayAsyncAudio(float defVolume,CancellationTokenSource tokenSource)
+    {
+        PlayAudio(defVolume);
+        
+        try
+        {
+            // 持续循环，直到动画播放完毕或异步播放被取消
+            while (!tokenSource.IsCancellationRequested &&
+                   IsPlaying())
+            {
+                // 等待下一帧
+                await Task.Delay(10, tokenSource.Token); // 使用取消令牌来支持任务取消
+            }
+        }
+        catch (TaskCanceledException)
+        {
+        }
     }
 
     /// <summary>

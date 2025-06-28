@@ -3,6 +3,7 @@
  * @Description: 场景对象，用于管理、加载关卡等
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -122,6 +123,7 @@ public partial class Scene : Node2D
         
         PrvLevel = CurLevel; // 缓存上一个关卡对象，方便加载关卡后卸载
         
+        Game.MainPlayer.Freeze();
         await Game.Interface.LoadStart();
         
         if (await LoadLevel(levelName,spawnPointName))
@@ -131,7 +133,7 @@ public partial class Scene : Node2D
         }
         
         await Game.Interface.LoadOver();
-        
+        Game.MainPlayer.UnFreeze();
     }
 
     private Task UnloadLevel()
@@ -141,7 +143,7 @@ public partial class Scene : Node2D
            return Task.CompletedTask;
         }
         
-        PrvLevel.QueueFree();
+        PrvLevel.Free();
         PrvLevel = null;
         return Task.CompletedTask;
     }
@@ -150,24 +152,65 @@ public partial class Scene : Node2D
     {
         GD.Print("----\n开始加载关卡：" + levelName);
         
-        var packed = ResourceLoader.Load<PackedScene>($"res://Level/{levelName}.tscn");
-        var node = packed?.Instantiate();
-        if (node is Level level)
+        var packed = ResourceLoader.Load<PackedScene>($"res://Level/{levelName}.tscn",null,
+            ResourceLoader.CacheMode.Ignore);
+        
+        var node = packed?.Instantiate<Level>();
+        if (node != null)
         {
-            level.Init();
+            node.Init();
             
-            Game.WeatherMgr.Refresh(level.SeaFace);
-            
-            if (level.SpawnPoint == null || level.SpawnPoint.Count == 0)
+            if (node.SpawnPoint == null || node.SpawnPoint.Count == 0)
             {
                 GD.PrintErr("----\n关卡加载失败：" + levelName + " 关卡不存在玩家刷新位置");
                 return Task.FromResult(false);
             }
             
+            Game.WeatherMgr.Refresh(node.SeaFace);
+            
             SafePoint.Clear();
             
-            CurLevel = level;
-            Level.AddChild(level);
+            CurLevel = node;
+            Level.AddChild(node);
+            
+            // 如果玩家存在则把它丢到关卡的刷新点位
+            if (Game.MainPlayer != null)
+            {
+                if (string.IsNullOrWhiteSpace(spawnPointName))
+                {
+                    // 如果刷新点没有设置，则默认使用第一个出生点
+                    var pos = node.SpawnPoint.FirstOrDefault().Value.Position;
+                    Game.MainPlayer.Position = pos;
+                    GD.PrintRich("----\n[color=#e16032]" +
+                                 "关卡加载完成：" + levelName + 
+                                 "，由于没有指定玩家刷新位置" +
+                                 "，使用默认刷新点：" + node.SpawnPoint.FirstOrDefault().Key +
+                                 "，位置：" + pos);
+                }
+                else
+                {
+                    if (node.SpawnPoint.TryGetValue(spawnPointName, out Node2D value))
+                    {
+                        var pos = value.Position;
+                        Game.MainPlayer.Position = pos;
+                        GD.PrintRich("----\n[color=#57b289]" +
+                                     "关卡加载完成：" + levelName + 
+                                     "，关卡加载完成，" + "使用刷新点：" + node.SpawnPoint.FirstOrDefault().Key +
+                                     "，位置：" + pos);
+                    }
+                    else
+                    {
+                        // 如果刷新点没有找到，也默认使用第一个出生点
+                        var pos = node.SpawnPoint.FirstOrDefault().Value.Position;
+                        Game.MainPlayer.Position = pos;
+                        GD.PrintRich("----\n[color=#e16032]" +
+                                     "关卡加载完成：" + levelName + 
+                                     "，由于没有找到设置的玩家刷新位置：" + spawnPointName +
+                                     "，使用默认刷新点：" + node.SpawnPoint.FirstOrDefault().Key +
+                                     "，位置：" + pos);
+                    }
+                }
+            }
         }
         else
         {
@@ -184,45 +227,6 @@ public partial class Scene : Node2D
         else
         {
             AllLevelData.Add(levelName, CurLevel.Data);
-        }
-
-        // 如果玩家存在则把它丢到关卡的刷新点位
-        if (Game.MainPlayer != null)
-        {
-            if (string.IsNullOrWhiteSpace(spawnPointName))
-            {
-                // 如果刷新点没有设置，则默认使用第一个出生点
-                var pos = CurLevel.SpawnPoint.FirstOrDefault().Value.Position;
-                Game.MainPlayer.Position = pos;
-                GD.PrintRich("----\n[color=#e16032]" +
-                             "关卡加载完成：" + levelName + 
-                             "，由于没有指定玩家刷新位置" +
-                             "，使用默认刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
-                             "，位置：" + pos);
-            }
-            else
-            {
-                if (CurLevel.SpawnPoint.ContainsKey(spawnPointName))
-                {
-                    var pos = CurLevel.SpawnPoint[spawnPointName].Position;
-                    Game.MainPlayer.Position = pos;
-                    GD.PrintRich("----\n[color=#57b289]" +
-                                 "关卡加载完成：" + levelName + 
-                                 "，关卡加载完成，" + "使用刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
-                                 "，位置：" + pos);
-                }
-                else
-                {
-                    // 如果刷新点没有找到，也默认使用第一个出生点
-                    var pos = CurLevel.SpawnPoint.FirstOrDefault().Value.Position;
-                    Game.MainPlayer.Position = pos;
-                    GD.PrintRich("----\n[color=#e16032]" +
-                                 "关卡加载完成：" + levelName + 
-                                 "，由于没有找到设置的玩家刷新位置：" + spawnPointName +
-                                 "，使用默认刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
-                                 "，位置：" + pos);
-                }
-            }
         }
         
         return Task.FromResult(true);

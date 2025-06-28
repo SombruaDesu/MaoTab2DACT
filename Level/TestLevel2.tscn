@@ -132,15 +132,14 @@ func _on_body_entered(body: Node2D) -> void:
 resource_name = "Box"
 script/source = "extends Area2D
 
-# 定义风的力度 横向以及垂直
-var wind = Vector2(2400,0)
 
 func _on_body_entered(body: Node2D) -> void: # 当有玩家离开“进入”脚本所挂载的碰撞盒区域时
 	if body is not Player: # 先检测碰撞的对象是不是玩家
 		return # 不是则返回，跳过后面的功能，如果是则继续
 		
 	var p = body as Player;  # 把碰撞对象转换为玩家
-	p.Dead();
+	print(\"2\")
+	p.Kill();
 	pass
 "
 

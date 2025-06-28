@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=43 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -8,13 +8,9 @@
 [ext_resource type="Script" uid="uid://bq7dxbbsoe3ku" path="res://Scripts/RoleAgent.cs" id="7_xmwv1"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="8_msip7"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
-[ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Box_1x1.tscn" id="10_ljrhq"]
 [ext_resource type="Script" uid="uid://qju63k4vfdee" path="res://Scripts/Data/ItemDefinition.cs" id="12_5bqlb"]
 [ext_resource type="Shader" uid="uid://b1nyiciuywxqs" path="res://Shader/Water.gdshader" id="12_vxmux"]
-[ext_resource type="Script" uid="uid://bxamsm6xbiexk" path="res://Scripts/Component/ItemSpawn.cs" id="13_5bqlb"]
 [ext_resource type="PackedScene" uid="uid://crckltxrgif68" path="res://ScenePacked/Box_2x2.tscn" id="14_1nl4h"]
-[ext_resource type="Script" uid="uid://cqcgo7aoahx60" path="res://Scripts/Data/ItemSpawnData.cs" id="14_rkfdh"]
-[ext_resource type="PackedScene" uid="uid://cu50upjhh4y2l" path="res://ScenePacked/Box_1x2.tscn" id="15_y0u32"]
 
 [sub_resource type="GDScript" id="GDScript_vxmux"]
 resource_name = "Base"
@@ -355,59 +351,23 @@ func _on_body_exited(body: Node2D) -> void:
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1nl4h"]
 size = Vector2(16, 16)
 
-[sub_resource type="Resource" id="Resource_1nl4h"]
-script = ExtResource("14_rkfdh")
-IdList = null
-metadata/_custom_type_script = "uid://cqcgo7aoahx60"
-
 [sub_resource type="Resource" id="Resource_rkfdh"]
 script = ExtResource("12_5bqlb")
 Id = "火种"
 Size = Vector2i(2, 2)
 metadata/_custom_type_script = "uid://qju63k4vfdee"
 
-[sub_resource type="Resource" id="Resource_y0u32"]
-script = ExtResource("12_5bqlb")
-Size = Vector2i(2, 1)
-CanRotate = true
-metadata/_custom_type_script = "uid://qju63k4vfdee"
-
-[sub_resource type="Resource" id="Resource_pudhq"]
-script = ExtResource("12_5bqlb")
-Size = Vector2i(2, 1)
-CanRotate = true
-metadata/_custom_type_script = "uid://qju63k4vfdee"
-
-[sub_resource type="Resource" id="Resource_urqq3"]
-script = ExtResource("12_5bqlb")
-Size = Vector2i(2, 1)
-CanRotate = true
-metadata/_custom_type_script = "uid://qju63k4vfdee"
-
-[sub_resource type="Resource" id="Resource_fcsoj"]
-script = ExtResource("12_5bqlb")
-Size = Vector2i(2, 1)
-CanRotate = true
-metadata/_custom_type_script = "uid://qju63k4vfdee"
-
-[sub_resource type="Resource" id="Resource_05fte"]
-script = ExtResource("12_5bqlb")
-Size = Vector2i(1, 1)
-CanRotate = true
-metadata/_custom_type_script = "uid://qju63k4vfdee"
-
 [sub_resource type="GDScript" id="GDScript_pudhq"]
 resource_name = "Box"
 script/source = "extends Area2D
 
-# 定义风的力度 横向以及垂直
-var wind = Vector2(2400,0)
 
 func _on_body_entered(body: Node2D) -> void: # 当有玩家离开“进入”脚本所挂载的碰撞盒区域时
 	if body is not Player: # 先检测碰撞的对象是不是玩家
 		return # 不是则返回，跳过后面的功能，如果是则继续
 		
 	var p = body as Player;  # 把碰撞对象转换为玩家
+	print(\"1\")
 	p.Kill();
 	pass
 "
@@ -485,7 +445,7 @@ _spawnPoint = Dictionary[String, NodePath]({
 position = Vector2(418, 423)
 
 [node name="SpawnPoint2" type="Node2D" parent="."]
-position = Vector2(136, 456)
+position = Vector2(132, 449)
 
 [node name="Background" type="Sprite2D" parent="."]
 modulate = Color(0.3019608, 0.3019608, 0.3019608, 1)
@@ -593,34 +553,9 @@ script = SubResource("GDScript_y0u32")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Object/对话碰撞盒"]
 shape = SubResource("RectangleShape2D_1nl4h")
 
-[node name="Node2D2" type="Node2D" parent="Object"]
-position = Vector2(370, 8)
-script = ExtResource("13_5bqlb")
-Data = SubResource("Resource_1nl4h")
-
 [node name="Box_2x2" parent="Object" instance=ExtResource("14_1nl4h")]
 position = Vector2(187, 434)
 Def = SubResource("Resource_rkfdh")
-
-[node name="Box_1x2" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(274, 442)
-Def = SubResource("Resource_y0u32")
-
-[node name="Box_1x3" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(313, 381)
-Def = SubResource("Resource_pudhq")
-
-[node name="Box_1x4" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(229, 356)
-Def = SubResource("Resource_urqq3")
-
-[node name="Box_1x5" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(188, 399)
-Def = SubResource("Resource_fcsoj")
-
-[node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
-position = Vector2(411, 496)
-Def = SubResource("Resource_05fte")
 
 [node name="DeadZone" type="Area2D" parent="Object"]
 position = Vector2(579, 706)

@@ -74,6 +74,7 @@ public partial class Player
  
     public void Kill()
     {
+        if(freezeAction) return;
         Dead();
     }
     

@@ -16,6 +16,8 @@ public static partial class Game
     /// 从Root初始化完毕时起，游戏循环次数
     /// </summary>
     public static int Loop;
+
+    public static bool IsLoading;
     
     /// <summary>
     /// 当前客户端控制的角色
