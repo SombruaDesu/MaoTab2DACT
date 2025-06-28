@@ -58,7 +58,7 @@ func _process(delta: float) -> void:
 	cloud3.scroll_offset.x += speed * 0.5
 	water.position.x += speed
 	waterFace.position.x += speed
-	backBuild.position.x += speed * 0.8
+	backBuild.position.x += speed * 0.6
 	pass
 "
 
