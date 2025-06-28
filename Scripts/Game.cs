@@ -4,6 +4,7 @@
  */
 
 using System.Collections.Generic;
+using Godot;
 
 namespace MaoTab.Scripts;
 
@@ -22,8 +23,6 @@ public static partial class Game
     public static Player MainPlayer;
     
     public static Player OtherPlayer;
-    
-    public static HashSet<string> Tags = new();
     
     public static void Tick(double delta)
     {

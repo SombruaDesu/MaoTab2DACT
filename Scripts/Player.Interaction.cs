@@ -3,6 +3,8 @@
  * @Description: 玩家对象，交互接口部分 Player.Interaction
  */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
@@ -10,7 +12,7 @@ namespace MaoTab.Scripts;
 
 public partial class Player
 {
-    private YarnAction _curYarnAction;
+    private HashSet<YarnAction> _curYarnActionList = [];
     
     private string       _curGdsTag = string.Empty;
     private Callable     _curGdsAction;
@@ -21,20 +23,27 @@ public partial class Player
     private ItemInstance _canPickupItem;
 
     private bool allowPickup = true;
-    
-    public void ClearAction()
+
+    public void ClearAllActions()
     {
-        _curYarnAction = null;
+        _curYarnActionList.Clear();
+        ClearGdsAction();
+    }
+    
+    public void ClearGdsAction()
+    {
         _curGdsTag =  string.Empty;
+    }
+
+    public void RemoveYarnAction(YarnAction  action)
+    {
+        if(_curYarnActionList.Contains(action))
+            _curYarnActionList.Remove(action);
     }
     
     public void SetYarnAction(YarnAction yarnAction)
     {
-        // 角色没有事件时才挂载
-        if (_curYarnAction == null)
-        {
-            _curYarnAction = yarnAction;
-        }
+        _curYarnActionList.Add(yarnAction);
     }
 
     public void SetCanPickupItem(ItemInstance item)
@@ -54,16 +63,17 @@ public partial class Player
     public void DoGdsAction(Callable callable)
     {
         callable.Call();
-        ClearAction();
+        ClearGdsAction();
     }
     
     public void DoYarnAction(YarnAction action)
     {
         if (action.Info != string.Empty)
         {
-            Game.Yarn.PlayNode(_curYarnAction.Info);
+            Game.Yarn.PlayNode(action.Info);
         }
-        ClearAction();
+
+        RemoveYarnAction(action);
     }
     
     public async Task InteractionInput()
@@ -75,11 +85,11 @@ public partial class Player
             allowPickup = true;
         }
         
-        if (_curYarnAction != null)
+        if (_curYarnActionList.Count > 0)
         {
-            if (_curYarnAction.Info != string.Empty)
-                Game.Yarn.PlayNode(_curYarnAction.Info);
-            
+            var yarnAction = _curYarnActionList.First();
+            if (yarnAction.Info != string.Empty)
+                Game.Yarn.PlayNode(yarnAction.Info);
         }
 
         if (_curGdsTag != string.Empty)

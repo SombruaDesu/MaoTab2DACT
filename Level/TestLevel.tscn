@@ -45,10 +45,6 @@ resource_name = "Door"
 script/source = "
 extends Area2D
 
-func _ready() -> void:
-	print(\"DOOR1\");
-	pass
-
 func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
@@ -64,7 +60,7 @@ func _on_body_exited(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player
-	p.ClearAction()
+	p.ClearGdsAction()
 	pass
 "
 
@@ -338,12 +334,21 @@ size = Vector2(16, 16)
 resource_name = "Door"
 script/source = "extends Area2D
 
+var yarnAction = YarnAction.Create(\"Node_WaitTest\",0)
+
 # 当玩家碰撞时
 func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player
-	p.SetYarnAction(YarnAction.Create(\"Node_WaitTest\",0));
+	p.SetYarnAction(yarnAction);
+	pass
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is not Player:
+			return
+	var p = body as Player
+	p.RemoveYarnAction(yarnAction);
 	pass
 "
 
@@ -608,7 +613,7 @@ position = Vector2(188, 399)
 Def = SubResource("Resource_fcsoj")
 
 [node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
-position = Vector2(411, 498)
+position = Vector2(411, 496)
 Def = SubResource("Resource_05fte")
 
 [node name="Water" type="Sprite2D" parent="."]

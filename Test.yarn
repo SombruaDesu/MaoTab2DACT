@@ -114,6 +114,35 @@ title: Node_WaitTest
 <<else>>
     没什么事了，一边玩去吧。
 <<endif>>
+<<end>>
+===
 
+title: Node_CoreWork
+---
+这是一个炉子
+->关掉它
+    <<define>>
+    ·extends Node
+    ·func _ready():
+    ·   if(GameState.GetInt("火力") >= 1):
+    ·       GameState.AddInt("火力",-1)
+    ·   queue_free()
+    <<do>>
+->加大火力
+    <<define>>
+    ·extends Node
+    ·func _ready():
+    ·   if(GameState.GetInt("火力") < 2):
+    ·       GameState.AddInt("火力",1)
+    ·   queue_free()
+    <<do>>
+
+<<define>>
+    ·extends Node
+    ·func _ready():
+    ·   var player = GameState.GetLevelNode("coreFurnace") as AnimatedSprite2D
+    ·   player.play("Work" + str(GameState.GetInt("火力")))
+    ·   queue_free()
+<<do>>
 <<end>>
 ===

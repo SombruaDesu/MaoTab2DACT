@@ -18,6 +18,41 @@ public partial class GameState : Node
 {
     public static Dictionary<string,Node> CacheNodes = new();
     
+    public static Godot.Collections.Dictionary<string,Variant> VariantBase = new ();
+
+    public static void AddInt(string key,int value)
+    {
+        if (VariantBase.ContainsKey(key))
+        {
+            VariantBase[key] = VariantBase[key].AsInt32() + value;
+        }
+        else
+        {
+            VariantBase.Add(key,value);
+        }
+    }
+
+    public static int TryGetInt(string key,int defaultValue)
+    {
+        if (VariantBase.ContainsKey(key))
+        {
+            return VariantBase[key].AsInt32();
+        }
+
+        VariantBase.Add(key,defaultValue);
+        return defaultValue;
+    }
+    
+    public static int GetInt(string key)
+    {
+        if (VariantBase.ContainsKey(key))
+        {
+            return VariantBase[key].AsInt32();
+        }
+
+        return 0;
+    }
+    
     public static Camera GetCamera()
     {
         return Game.Camera;
@@ -59,6 +94,7 @@ public partial class GameState : Node
 
     public static void ChangeLevel(string levelName,string pointName)
     {
+        Game.MainPlayer.ClearAllActions();
         Game.Scene.ChangeLevel(levelName,pointName);
     }
     

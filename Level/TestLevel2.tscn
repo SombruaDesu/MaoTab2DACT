@@ -1,9 +1,25 @@
-[gd_scene load_steps=58 format=3 uid="uid://d2a6wwofpe4hi"]
+[gd_scene load_steps=77 format=3 uid="uid://d2a6wwofpe4hi"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_i0eq3"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_ptkd6"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="3_a8tq4"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="4_on546"]
+[ext_resource type="Texture2D" uid="uid://t61bfx24etof" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000000.png" id="5_wvdkb"]
+[ext_resource type="Texture2D" uid="uid://bh2b11gaxh05u" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000001.png" id="6_j1rdh"]
+[ext_resource type="Texture2D" uid="uid://dqitj2tbwuckj" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000002.png" id="7_ccdqt"]
+[ext_resource type="Texture2D" uid="uid://cv4e6xb1my6qq" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000003.png" id="8_5wagv"]
+[ext_resource type="Texture2D" uid="uid://dh1jhiv6dp4wt" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000004.png" id="9_opyf8"]
+[ext_resource type="Texture2D" uid="uid://b06r4mfi8vfeb" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000005.png" id="10_lxhtb"]
+[ext_resource type="Texture2D" uid="uid://bc7vmgmck147m" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000006.png" id="11_twuk4"]
+[ext_resource type="Texture2D" uid="uid://co21jggyoealj" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000007.png" id="12_nltso"]
+[ext_resource type="Texture2D" uid="uid://bbni6d4meirkt" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010000.png" id="13_heb3t"]
+[ext_resource type="Texture2D" uid="uid://c0o35j373kf2e" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010001.png" id="14_dtlxh"]
+[ext_resource type="Texture2D" uid="uid://jopgknjw4hbr" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010002.png" id="15_8lqp8"]
+[ext_resource type="Texture2D" uid="uid://dsuvfrovyd52f" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010003.png" id="16_m5dsx"]
+[ext_resource type="Texture2D" uid="uid://brxnb035c3i2m" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020000.png" id="17_bfh4q"]
+[ext_resource type="Texture2D" uid="uid://b4d3t1kedsih7" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020001.png" id="18_ggd5i"]
+[ext_resource type="Texture2D" uid="uid://dtp807n1i87kk" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020002.png" id="19_s58e2"]
+[ext_resource type="Texture2D" uid="uid://bsnafy6gjmu8i" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020003.png" id="20_63ri4"]
 
 [sub_resource type="Animation" id="Animation_1yrnh"]
 resource_name = "new_animation"
@@ -34,7 +50,7 @@ func _on_body_exited(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player;
-	p.ClearAction()
+	p.ClearGdsAction()
 	pass
 "
 
@@ -194,6 +210,8 @@ point_count = 8
 resource_name = "Box"
 script/source = "extends Area2D
 
+var yarnAction = YarnAction.Create(\"Node_TestDlg\",0)
+
 func _ready() -> void: #当游戏开始时
 	var a = $AnimationAsyncPlayer as AnimationAsyncPlayer; # 获取场景里的人物模型
 	if(GameState.HasLevelTag(\"this\",\"Fox走到边上\")):
@@ -205,14 +223,14 @@ func _on_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player;
-	p.SetYarnAction(YarnAction.Create(\"Node_TestDlg\"));
+	p.SetYarnAction(yarnAction);
 	pass
 
 func _on_body_exited(body: Node2D) -> void:
 	if body is not Player:
 		return
 	var p = body as Player;
-	p.ClearAction();
+	p.RemoveYarnAction(yarnAction);
 	pass
 "
 
@@ -637,6 +655,103 @@ collision_bounce = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7x0wu"]
 size = Vector2(30, 30)
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_heb3t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_wvdkb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j1rdh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ccdqt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_5wagv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_opyf8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_lxhtb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_twuk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_nltso")
+}],
+"loop": true,
+"name": &"Work0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_heb3t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_dtlxh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_8lqp8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_m5dsx")
+}],
+"loop": true,
+"name": &"Work1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_bfh4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ggd5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_s58e2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_63ri4")
+}],
+"loop": true,
+"name": &"Work2",
+"speed": 5.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_heb3t"]
+resource_name = "Door"
+script/source = "extends Area2D
+
+var yarnAction = YarnAction.Create(\"Node_CoreWork\",0)
+
+func _ready() -> void:
+	var player = $\"..\" as AnimatedSprite2D
+	var level = GameState.TryGetInt(\"火力\",0)
+	player.play(\"Work\" + str(level))
+	pass
+
+# 当玩家碰撞时
+func _on_body_entered(body: Node2D) -> void:
+	if body is not Player:
+		return
+	var p = body as Player
+	p.SetYarnAction(yarnAction);
+	pass
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is not Player:
+			return
+	var p = body as Player
+	p.RemoveYarnAction(yarnAction);
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtlxh"]
+size = Vector2(16, 16)
+
 [node name="TestLevel2" type="Node2D"]
 script = ExtResource("1_i0eq3")
 LevelName = "TestLevel2"
@@ -1004,6 +1119,20 @@ texture = ExtResource("2_ptkd6")
 [node name="LightOccluder2D" type="LightOccluder2D" parent="RigidBody2D3/Plan"]
 occluder = SubResource("OccluderPolygon2D_wkp8b")
 
+[node name="coreFurnace" type="AnimatedSprite2D" parent="."]
+position = Vector2(368, 560)
+sprite_frames = SubResource("SpriteFrames_heb3t")
+animation = &"Work2"
+frame_progress = 0.3435389
+
+[node name="对话碰撞盒" type="Area2D" parent="coreFurnace"]
+rotation = 1.5708
+scale = Vector2(8.915, 8.915)
+script = SubResource("GDScript_heb3t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="coreFurnace/对话碰撞盒"]
+shape = SubResource("RectangleShape2D_dtlxh")
+
 [connection signal="body_entered" from="门/门Zone" to="门/门Zone" method="_on_body_entered"]
 [connection signal="body_exited" from="门/门Zone" to="门/门Zone" method="_on_body_exited"]
 [connection signal="body_entered" from="Plan/Area2D" to="Plan/Area2D" method="_on_body_entered"]
@@ -1016,3 +1145,5 @@ occluder = SubResource("OccluderPolygon2D_wkp8b")
 [connection signal="body_exited" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_exited"]
 [connection signal="body_entered" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_entered"]
 [connection signal="body_exited" from="Wind/WindZone2" to="Wind/WindZone2" method="_on_body_exited"]
+[connection signal="body_entered" from="coreFurnace/对话碰撞盒" to="coreFurnace/对话碰撞盒" method="_on_body_entered"]
+[connection signal="body_exited" from="coreFurnace/对话碰撞盒" to="coreFurnace/对话碰撞盒" method="_on_body_exited"]

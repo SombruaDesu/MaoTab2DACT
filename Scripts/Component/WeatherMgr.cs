@@ -23,17 +23,13 @@ public partial class WeatherMgr : Node2D
 
     private ParticleProcessMaterial ParticleMaterial;
     private ParticleProcessMaterial NoCollisionParticleMaterial;
-    
-    private const float MinSpeedScale = 3.75f;
-    
+        
     [Export] Curve TrailLifetimeWeightCurve;
     [Export] Curve SpeedWeightCurve;
     [Export] Curve GravityWeightCurve;
     [Export] Curve RippleSpeedCurve;
 
     [Export] private AnimationPlayer LightningAnimation;
-    
-    private const float MinTrailLifetime = 0.05f;
     
     private float currentStrength;
     
