@@ -12,6 +12,7 @@ public partial class DevPanel : Control
     {
         weatherSlider.ValueChanged += value =>
         {
+            GD.Print(weatherSlider.Value);
             Game.WeatherStrength = (float)value;
         };
 
@@ -22,7 +23,7 @@ public partial class DevPanel : Control
 
         LightningButton.ButtonUp += () =>
         {
-            Game.WeatherMgr.Lightning();
+            Game.WeatherMgr.HasLightning = true;
         };
     }
 }

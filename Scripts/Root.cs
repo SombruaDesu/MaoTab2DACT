@@ -82,6 +82,7 @@ public partial class Root : Node
     [Export] private Scene _scene;
     [Export] private Interface _ui;
     [Export] private DevPanel _devUi;
+    [Export] private HUD _hud;
     
     [Export] private Component.AudioMixPlayer _audioMixPlayer;  // 临时在这里控制音效节点
     
@@ -120,7 +121,8 @@ public partial class Root : Node
         Game.Yarn = yarn;
         yarn.Init(yarnProject);
         yarn.PlayNode("Node_Start");
-        
+     
+     
         _logic.Init();
     }
     
@@ -128,5 +130,6 @@ public partial class Root : Node
     {
         Game.Tick(delta);
         _logic.Tick();
+        _hud.Tick();
     }
 }

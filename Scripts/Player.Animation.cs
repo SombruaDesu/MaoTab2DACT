@@ -4,8 +4,8 @@
  */
 
 using System;
-using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 using MaoTab.Scripts.Component;
 
 namespace MaoTab.Scripts;
@@ -13,6 +13,8 @@ namespace MaoTab.Scripts;
 public partial class Player
 {
     [Export] private AnimationAsyncPlayer _animationPlayer;
+    
+    [Export] private Array<AudioPlayer> _audioPlayers;
     
     public enum EAnimationState : byte
     {
@@ -29,14 +31,20 @@ public partial class Player
     /// <summary>
     /// 动画速度
     /// </summary>
-    private Dictionary<EAnimationState, float> _animationSpeed;
+    private global::System.Collections.Generic.Dictionary<EAnimationState, float> _animationSpeed;
+    
+    public void PlayStepAudio()
+    {
+        var id = Random.Shared.Next(0, _audioPlayers.Count);
+        _audioPlayers[id].Play();
+    }
     
     /// <summary>
     /// 初始化动画
     /// </summary>
     private void InitAnimation()
     {
-        _animationSpeed = new Dictionary<EAnimationState, float>
+        _animationSpeed = new global::System.Collections.Generic.Dictionary<EAnimationState, float>
         {
             { EAnimationState.None, 0f },
             { EAnimationState.Idle, 1f },

@@ -10,22 +10,28 @@ namespace MaoTab.Scripts.Panel;
 
 public partial class HomePanel : Control
 {
-    [Export] private Button _hostButton;
-    [Export] private Button _joinButton;
+    [Export] private Button _jButton;
+    [Export] private Button _spaceButton;
+    [Export] private Button _wButton;
     
     public void Init()
     {
-        _hostButton.ButtonUp += () =>
+        _jButton.ButtonUp += () =>
         {
-            OnHostGame?.Invoke();
+            OnHostGame?.Invoke("j");
         };
         
-        _joinButton.ButtonUp += () =>
+        _spaceButton.ButtonUp += () =>
         {
-            OnJoinGame?.Invoke();
+            OnHostGame?.Invoke("space");
+        };
+        
+        _wButton.ButtonUp += () =>
+        {
+            OnHostGame?.Invoke("w");
         };
     }
 
-    public Action OnHostGame;
+    public Action<string> OnHostGame;
     public Action OnJoinGame;
 }

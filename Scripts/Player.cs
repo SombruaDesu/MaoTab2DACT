@@ -4,6 +4,7 @@
  */
 
 using System;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -126,7 +127,7 @@ public partial class Player : CharacterBody2D
 
     // 初始化标记
     private bool _initialized;
-
+    
     /// <summary>
     /// 初始化玩家状态（游戏本地生成时调用，仅会调用一次类似 _Ready ）
     /// </summary>
@@ -152,12 +153,21 @@ public partial class Player : CharacterBody2D
         SetFacing(Data.Facing);
         InitAnimation();
     }
+
+    private bool freezeAction;
     
-    public void Pause()
+    public void Freeze()
     {
-        
+        SetCollisionLayerValue(1,false);
+        freezeAction = true;
     }
 
+    public void UnFreeze()
+    {
+        SetCollisionLayerValue(1,true);
+        freezeAction = false;
+    }
+    
     private void ResetInput()
     {
         InputMoveDirection = Vector2.Zero;
@@ -173,8 +183,8 @@ public partial class Player : CharacterBody2D
     /// </summary>
     public void Tick()
     {
-        if (!_initialized)
-            return;
+        if (!_initialized) return;
+        if(_isDead) return;
         
         float dt = (float)Game.PhysicsDelta; // 缓存每帧物理时间增量
         
@@ -326,21 +336,23 @@ public partial class Player : CharacterBody2D
         SetFacing(newDir);
     }
 
+    private const float WallHangDir = 8.5f;
+    
     private void SetFacing(bool facing)
     {
         // 根据输入调整角色精灵和射线朝向
         if (facing)
         {
             _sprite.FlipH = true;
-            _footHRay.SetTargetPosition(new Vector2(-10.2f, 0));
-            _headHRay.SetTargetPosition(new Vector2(-10.2f, 0));
+            _footHRay.SetTargetPosition(new Vector2(-WallHangDir, 0));
+            _headHRay.SetTargetPosition(new Vector2(-WallHangDir, 0));
             _backpackFairyLayer.Scale = new Vector2(-1f, 1f);
         }
         else
         {
             _sprite.FlipH = false;
-            _footHRay.SetTargetPosition(new Vector2(10.2f, 0));
-            _headHRay.SetTargetPosition(new Vector2(10.2f, 0));
+            _footHRay.SetTargetPosition(new Vector2(WallHangDir, 0));
+            _headHRay.SetTargetPosition(new Vector2(WallHangDir, 0));
             _backpackFairyLayer.Scale = new Vector2(1f, 1f);
         }
 
@@ -363,6 +375,8 @@ public partial class Player : CharacterBody2D
             {
                 _isWallHanging = false;
             }
+            
+            _pendingExternalImpulse = Vector2.Zero;
             return;
         }
         
@@ -374,11 +388,17 @@ public partial class Player : CharacterBody2D
         _isWallHanging = _headHRay.IsColliding() && _footHRay.IsColliding() && _wallHangRequested;
     }
 
+    private bool isLanding;
+    
     /// <summary>
     /// 着落，重置玩家的跳跃相关数值
     /// </summary>
     private void Landing()
     {
+        if(isLanding) return;
+        isLanding = true;
+        
+        PlayStepAudio();
         _coyoteTimer      = CoyoteTime;
         _jumpTime         = 0;
         _jumpCount        = 0; // 重置跳跃次数
@@ -433,6 +453,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
+            isLanding    = false;
             _coyoteTimer = Mathf.Max(_coyoteTimer - dt, 0);
         }
 
@@ -512,6 +533,17 @@ public partial class Player : CharacterBody2D
         }
     }
 
+    private bool AllowInput
+    {
+        get
+        {
+            if(_isHarm || _isDead)
+                return false;
+            
+            return true;
+        }
+    }
+
     /// <summary>
     /// 玩家输入接口（每帧调用，由 Root 传入当前输入）
     /// </summary>
@@ -522,7 +554,7 @@ public partial class Player : CharacterBody2D
     {
         if (!Data.Movable) return;
 
-        if (_isHarm)
+        if (!AllowInput)
         {
             ResetInput();
             return;

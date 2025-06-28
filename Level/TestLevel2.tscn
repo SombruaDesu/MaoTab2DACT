@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=3 uid="uid://d2a6wwofpe4hi"]
+[gd_scene load_steps=79 format=3 uid="uid://d2a6wwofpe4hi"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_i0eq3"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_ptkd6"]
@@ -127,6 +127,24 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	pass
 "
+
+[sub_resource type="GDScript" id="GDScript_dtlxh"]
+resource_name = "Box"
+script/source = "extends Area2D
+
+
+func _on_body_entered(body: Node2D) -> void: # 当有玩家离开“进入”脚本所挂载的碰撞盒区域时
+	if body is not Player: # 先检测碰撞的对象是不是玩家
+		return # 不是则返回，跳过后面的功能，如果是则继续
+		
+	var p = body as Player;  # 把碰撞对象转换为玩家
+	print(\"2\")
+	p.Kill();
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_heb3t"]
+size = Vector2(2000, 286)
 
 [sub_resource type="Curve" id="Curve_lgr22"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.0874317, 1), 0.0, 0.0, 0, 0, Vector2(0.677596, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -1020,6 +1038,14 @@ script = SubResource("GDScript_lgr22")
 position = Vector2(0.5, 0)
 shape = SubResource("RectangleShape2D_trn2v")
 
+[node name="DeadZone" type="Area2D" parent="."]
+position = Vector2(632, 856)
+script = SubResource("GDScript_dtlxh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeadZone"]
+shape = SubResource("RectangleShape2D_heb3t")
+metadata/_edit_lock_ = true
+
 [node name="WindParticles" type="GPUParticles2D" parent="."]
 position = Vector2(-71, 62)
 amount = 360
@@ -1027,12 +1053,10 @@ lifetime = 5.73
 visibility_rect = Rect2(-100, -100, 2000, 2000)
 draw_order = 0
 process_material = SubResource("ParticleProcessMaterial_03owx")
-metadata/_edit_lock_ = true
 
 [node name="WindZone" type="Area2D" parent="WindParticles"]
 position = Vector2(173, 22)
 script = SubResource("GDScript_1yrnh")
-metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WindParticles/WindZone"]
 position = Vector2(506.25, 66)
@@ -1139,6 +1163,8 @@ shape = SubResource("RectangleShape2D_dtlxh")
 [connection signal="body_entered" from="Plan2/Area2D" to="Plan2/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="Plan4/Area2D" to="Plan4/Area2D" method="_on_body_entered"]
 [connection signal="body_entered" from="Plan8/Area2D" to="Plan8/Area2D" method="_on_body_entered"]
+[connection signal="body_entered" from="DeadZone" to="DeadZone" method="_on_body_entered"]
+[connection signal="body_exited" from="DeadZone" to="DeadZone" method="_on_body_exited"]
 [connection signal="body_entered" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_entered"]
 [connection signal="body_exited" from="WindParticles/WindZone" to="WindParticles/WindZone" method="_on_body_exited"]
 [connection signal="body_entered" from="Path2D/PathFollow2D/ITestZone" to="Path2D/PathFollow2D/ITestZone" method="_on_body_entered"]

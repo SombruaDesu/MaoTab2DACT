@@ -20,6 +20,21 @@ public static class MathfHelper
         );
     }
     
+    public static float FLerp(float a, float b, float t)
+    {
+        // 限制 t 在 0 到 1 之间
+        t = Math.Clamp(t, 0f, 1f);
+        return a + (b - a) * t;
+    }
+    
+    public static double DLerp(double a, double b, double t)
+    {
+        // 限制 t 在 0 到 1 之间
+        t = Math.Clamp(t, 0f, 1f);
+        return a + (b - a) * t;
+    }
+
+    
     /// <summary>
     /// 计算 current 指向 target 的单位方向向量。
     /// </summary>

@@ -150,12 +150,14 @@ AnimTextLabel = NodePath("Text")
 
 [node name="Text" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
 layout_mode = 2
+bbcode_enabled = true
 text = "Dlg"
 fit_content = true
 
 [node name="SizeText" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+bbcode_enabled = true
 text = "Dlg"
 fit_content = true
 

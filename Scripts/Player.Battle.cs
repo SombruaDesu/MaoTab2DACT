@@ -4,6 +4,7 @@
  */
 
 using System.Linq;
+using System.Threading.Tasks;
 using Godot;
 
 namespace MaoTab.Scripts;
@@ -15,6 +16,8 @@ public partial class Player
     private const float AttackCooldownDuration = 0.1f; // 攻击冷却时间（秒）
 
     private bool _isHarm;
+    private bool _isDead;
+    
     
     public void HarmFromPoint(Vector2  point,Vector2 power)
     {
@@ -68,7 +71,24 @@ public partial class Player
         // 开始攻击冷却计时
         _attackCooldownTimer = AttackCooldownDuration;
     }
-
+ 
+    public void Kill()
+    {
+        if(freezeAction) return;
+        Dead();
+    }
+    
+    public async Task Dead()
+    {
+        _isDead         = true;
+        _targetVelocity = Vector2.Zero; 
+        
+        await Game.Interface.LoadStart();
+        Position = Game.Scene.GetLastSafePoint();
+        Game.Interface.LoadOver();
+        _isDead = false;
+    }
+    
     public void UpdateBattleSystem()
     {
         if (_isAttack)

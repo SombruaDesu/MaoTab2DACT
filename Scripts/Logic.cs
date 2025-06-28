@@ -15,7 +15,7 @@ public partial class Logic
 {
     protected bool   gameStarted;
     protected Player player;
-
+    private   string jumpKey;
     public async Task Init()
     {
         var networkManager = new NetworkManager();
@@ -27,16 +27,17 @@ public partial class Logic
 
         var home = Game.Interface.HomePanel;
 
-        home.OnHostGame += async void () =>
+        home.OnHostGame += async void (key) =>
         {
+            jumpKey      = key;
             home.Visible = false;
 
             await Game.Interface.LoadStart();
 
             player.Init(true);
-
+            
             await Game.Scene.LoadLevel("TestLevel");
-
+            
             networkManager.Init(true);
 
             gameStarted = true;
@@ -125,15 +126,15 @@ public partial class Logic
             direction.X += 1; // 向右
         }
 
-        if (Input.IsActionPressed("w"))
+        if (Input.IsActionPressed(jumpKey))
         {
             direction.Y += 1; // 跳跃
         }
 
-        if (Input.IsActionPressed("j"))
+        /*if (Input.IsActionPressed("j"))
         {
             player.AttackInput();
-        }
+        }*/
 
         if (Input.IsActionJustReleased("f"))
         {
@@ -144,7 +145,8 @@ public partial class Logic
         player.Tick();
 
         Game.WeatherMgr.Tick();
-
+        Game.Scene.Tick();
+        
         // 网络同步
         if (Game.OtherPlayer != null)
         {
