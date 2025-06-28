@@ -14,6 +14,8 @@ public partial class Level : Node
 {
     public LevelData Data = new();
 
+    
+    [Export] private Vector3I        LevelBoundary;
     [Export] private TileMapPathFind _pathLayer;
     
     [Export] public float SeaFacePosition;
@@ -35,6 +37,10 @@ public partial class Level : Node
     {
         Data.Name = LevelName;
 
+        Game.Camera.LimitBottom = LevelBoundary.Z;
+        Game.Camera.LimitLeft = LevelBoundary.X;
+        // Game.Camera.LimitLeft = LevelBoundary.X;
+        
         if(_pathLayer != null)
             _pathLayer.Init();
         

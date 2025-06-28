@@ -20,15 +20,15 @@ public partial class YarnRuntime
             Continue();
         });
         
-        CommandDispatcher.AddCommandHandler("end", () =>
+        CommandDispatcher.AddCommandHandler("end", async () =>
         {
-            Game.Interface.DlgPanel.Hide(false);
+            await Game.Interface.DlgPanel.HideDlg();
             IsRunning = false;
         });
         
-        CommandDispatcher.AddCommandHandler("pass", () =>
+        CommandDispatcher.AddCommandHandler("pass", async () =>
         {
-            Game.Interface.DlgPanel.Hide(false);
+            await Game.Interface.DlgPanel.HideDlg();
             Continue();
         });
         

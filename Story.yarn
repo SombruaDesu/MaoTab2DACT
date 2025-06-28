@@ -1,5 +1,5 @@
 title: Node_Start
-position: 250,148
+position: 265,191
 ---
 <<end>>
 ===
@@ -80,6 +80,7 @@ group: TestLevel
 ===
 
 title: Node_WaitTest
+position: 56,54
 ---
 你好
 ->沉默
@@ -118,6 +119,7 @@ title: Node_WaitTest
 ===
 
 title: Node_CoreWork
+position: 39,199
 ---
 \[b\]炉子\[/b\]\\n这是一个炉子
 <<define>>

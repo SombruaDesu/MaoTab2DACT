@@ -36,7 +36,7 @@ public partial class Logic
 
             player.Init(true);
             
-            await Game.Scene.LoadLevel("TestLevel");
+            await Game.Scene.LoadLevel("Island01");
             
             networkManager.Init(true);
 
@@ -97,7 +97,7 @@ public partial class Logic
 
             player.Init(true);
 
-            await Game.Scene.LoadLevel("TestLevel");
+            await Game.Scene.LoadLevel("Island01");
 
             Game.Camera.FollowTarget(player);
 

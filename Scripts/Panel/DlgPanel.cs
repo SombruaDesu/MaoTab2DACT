@@ -24,14 +24,12 @@ public partial class DlgPanel : Control
     
     [Export] private ProgressBar dlgWaitBar;
     
-    [Export] private AnimationAsyncPlayer animationPlayer;
+    [Export] private AnimationAsyncPlayer movieAnimationPlayer;
     
     [Export] private AnimationAsyncPlayer illPlayer;
     
     public void Init()
     {
-        Hide(false);
-        
         dlgWaitBar.Visible = false;
         
         continueMask.ButtonUp += () =>
@@ -41,21 +39,17 @@ public partial class DlgPanel : Control
         };
     }
     
-    public async void EnterMovieMode()
-    {
-        await animationPlayer.PlayAsync("EnterMovie ");
-        
-    }
+    private bool _isShow;
     
     public async Task WaitDlg(
-        Action                  action,
-        float                   seconds,
-        CancellationTokenSource cancellationToken = default)
+        Action action,
+        float  seconds,
+        CancellationTokenSource cancellationToken = null)
     {
         if(cancellationToken == null) return;
         
         dlgWaitBar.Visible = true;
-
+        
         try
         {
             float elapsed = 0f;
@@ -78,28 +72,20 @@ public partial class DlgPanel : Control
         action?.Invoke();
     }
     
-    public void Show(bool anim)
+    public async Task ShowDlg()
     {
-        if (anim)
-        {
-            Visible = true;
-        }
-        else
-        {
-            Visible = true;
-        }
+        _isShow = true;
+        continueMask.Visible = true;
+        await movieAnimationPlayer.PlayAsync("Show");
+        await movieAnimationPlayer.PlayAsync("Show");
     }
 
-    public void Hide(bool anim)
+    public async Task HideDlg()
     {
-        if (anim)
-        {
-            Visible = false;
-        }
-        else
-        {
-            Visible = false;
-        }
+        await movieAnimationPlayer.PlayAsync("Hide");
+        await movieAnimationPlayer.PlayAsync("Hide");
+        _isShow              = false;
+        continueMask.Visible = false;
     }
 
     private Action _onContinue;
@@ -123,7 +109,7 @@ public partial class DlgPanel : Control
     public async Task FreshDlg(string line,Action onContinue)
     {
         ClearDlgOpt();
-        Show(false);
+        await ShowDlg();
         await DlgTextLabel.Fresh(line, () =>
         {
             _onContinue = onContinue;

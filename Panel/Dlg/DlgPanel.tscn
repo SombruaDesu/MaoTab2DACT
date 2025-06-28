@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b5e4siv7vtnji"]
+[gd_scene load_steps=19 format=3 uid="uid://b5e4siv7vtnji"]
 
 [ext_resource type="Script" uid="uid://g01sd6ef0hmt" path="res://Scripts/Panel/DlgPanel.cs" id="1_ahohy"]
 [ext_resource type="Script" uid="uid://070mqwiontnp" path="res://Scripts/Component/TypingEffectText.cs" id="2_8rnf8"]
+[ext_resource type="Texture2D" uid="uid://dr328f28ph2o" path="res://Texture/UI/Dlg/dlgbox.png" id="2_hntv0"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="3_8rnf8"]
+[ext_resource type="Texture2D" uid="uid://b7wg3ijamhao3" path="res://Texture/UI/Dlg/char1.png" id="3_fcr24"]
 [ext_resource type="FontFile" uid="uid://cncello3dlr4s" path="res://Font/Silver.ttf" id="3_jyiww"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rnf8"]
@@ -29,9 +31,104 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="Animation" id="Animation_8rnf8"]
-resource_name = "EnterMovie"
-length = 0.6
+[sub_resource type="Animation" id="Animation_smsba"]
+resource_name = "Hide"
+length = 0.46667004
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(0.15, 1.8025011),
+"update": 0,
+"values": [Vector2(240, 448), Vector2(-600, 448)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(0.15, 1.8025011),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jyiww"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-600, 448)]
+}
+
+[sub_resource type="Animation" id="Animation_hntv0"]
+resource_name = "Show"
+length = 0.46667004
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(-600, 448), Vector2(240, 448)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jyiww"]
+_data = {
+&"Hide": SubResource("Animation_smsba"),
+&"RESET": SubResource("Animation_jyiww"),
+&"Show": SubResource("Animation_hntv0")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fcr24"]
+
+[sub_resource type="FontVariation" id="FontVariation_hntv0"]
+base_font = ExtResource("3_jyiww")
+
+[sub_resource type="Animation" id="Animation_s1g3n"]
+resource_name = "Hide"
+length = 0.46666956
 step = 0.0333333
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -40,10 +137,10 @@ tracks/0/path = NodePath("Top:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(0.22531264, 1),
+"times": PackedFloat32Array(0, 0.46666667),
+"transitions": PackedFloat32Array(0.15, 2),
 "update": 0,
-"values": [Vector2(0, -128), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(0, -128)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -52,13 +149,13 @@ tracks/1/path = NodePath("Bottom:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(0.22531264, 1),
+"times": PackedFloat32Array(0, 0.46666667),
+"transitions": PackedFloat32Array(0.15, 2),
 "update": 0,
-"values": [Vector2(0, 648), Vector2(0, 512)]
+"values": [Vector2(0, 520), Vector2(0, 648)]
 }
 
-[sub_resource type="Animation" id="Animation_jyiww"]
+[sub_resource type="Animation" id="Animation_iidj4"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -85,24 +182,57 @@ tracks/1/keys = {
 "values": [Vector2(0, 648)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_jyiww"]
-_data = {
-&"EnterMovie": SubResource("Animation_8rnf8"),
-&"RESET": SubResource("Animation_jyiww")
+[sub_resource type="Animation" id="Animation_fcr24"]
+resource_name = "Show"
+length = 0.46666956
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Top:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(0, -128), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Bottom:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4666667),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(0, 648), Vector2(0, 520)]
 }
 
-[node name="DlgPanel" type="Control" node_paths=PackedStringArray("DlgTextLabel", "continueMask", "optBox", "dlgWaitBar")]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_iidj4"]
+_data = {
+&"Hide": SubResource("Animation_s1g3n"),
+&"RESET": SubResource("Animation_iidj4"),
+&"Show": SubResource("Animation_fcr24")
+}
+
+[node name="DlgPanel" type="Control" node_paths=PackedStringArray("DlgTextLabel", "continueMask", "optBox", "dlgWaitBar", "movieAnimationPlayer", "illPlayer")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_ahohy")
-DlgTextLabel = NodePath("Panel/VBoxContainer/TypingEffectText")
+DlgTextLabel = NodePath("Control/Panel/VBoxContainer/TypingEffectText")
 continueMask = NodePath("Button")
-optBox = NodePath("Panel/VBoxContainer/OptBox")
+optBox = NodePath("Control/Panel/VBoxContainer/OptBox")
 dlgWaitBar = NodePath("ProgressBar")
+movieAnimationPlayer = NodePath("AnimationAsyncPlayer")
+illPlayer = NodePath("Control/IllAnimationAsyncPlayer")
 
 [node name="Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -122,63 +252,16 @@ offset_right = 954.79
 offset_bottom = 508.925
 show_percentage = false
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -377.0
-offset_top = -134.0
-offset_right = 378.0
-offset_bottom = -31.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TypingEffectText" type="MarginContainer" parent="Panel/VBoxContainer" node_paths=PackedStringArray("SizeTextLabel", "AnimTextLabel")]
-layout_mode = 2
-script = ExtResource("2_8rnf8")
-SizeTextLabel = NodePath("SizeText")
-AnimTextLabel = NodePath("Text")
-
-[node name="Text" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
-layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_jyiww")
-theme_override_font_sizes/normal_font_size = 36
-bbcode_enabled = true
-text = "你好世界"
-fit_content = true
-
-[node name="SizeText" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("3_jyiww")
-theme_override_font_sizes/normal_font_size = 36
-bbcode_enabled = true
-text = "你好世界"
-fit_content = true
-
-[node name="OptBox" type="VBoxContainer" parent="Panel/VBoxContainer"]
-layout_mode = 2
-
 [node name="Top" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -128.0
-offset_bottom = -647.99994
+offset_bottom = -647.99963
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_8rnf8")
 
 [node name="Bottom" type="Panel" parent="."]
@@ -190,11 +273,113 @@ offset_top = 648.0
 offset_bottom = 136.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_jyiww")
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = -600.0
+offset_top = 448.0
+offset_right = -560.0
+offset_bottom = 488.0
+
+[node name="NinePatchRect" type="TextureRect" parent="Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -336.00003
+offset_top = -248.00002
+offset_right = 740.745
+offset_bottom = 255.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.89, 0.89)
+texture = ExtResource("2_hntv0")
+
+[node name="Ill2" type="TextureRect" parent="Control"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -263.99997
+offset_top = -239.99998
+offset_right = 636.0
+offset_bottom = 263.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.89, 0.89)
+texture = ExtResource("3_fcr24")
+
+[node name="IllAnimationAsyncPlayer" type="AnimationPlayer" parent="Control"]
+libraries = {
+&"": SubResource("AnimationLibrary_jyiww")
+}
+script = ExtResource("3_8rnf8")
+metadata/_custom_type_script = "uid://dblixk680ddgk"
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 68.0
+offset_top = -40.0
+offset_right = 532.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_fcr24")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TypingEffectText" type="MarginContainer" parent="Control/Panel/VBoxContainer" node_paths=PackedStringArray("SizeTextLabel", "AnimTextLabel")]
+layout_mode = 2
+theme_override_constants/margin_bottom = -15
+script = ExtResource("2_8rnf8")
+SizeTextLabel = NodePath("SizeText")
+AnimTextLabel = NodePath("Text")
+
+[node name="Text" type="RichTextLabel" parent="Control/Panel/VBoxContainer/TypingEffectText"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = -20
+theme_override_fonts/normal_font = SubResource("FontVariation_hntv0")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头"
+fit_content = true
+autowrap_mode = 2
+
+[node name="SizeText" type="RichTextLabel" parent="Control/Panel/VBoxContainer/TypingEffectText"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/line_separation = -20
+theme_override_fonts/normal_font = ExtResource("3_jyiww")
+theme_override_font_sizes/normal_font_size = 36
+bbcode_enabled = true
+text = "猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头猫头"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="OptBox" type="VBoxContainer" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
 
 [node name="AnimationAsyncPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_jyiww")
+&"": SubResource("AnimationLibrary_iidj4")
 }
 script = ExtResource("3_8rnf8")
 metadata/_custom_type_script = "uid://dblixk680ddgk"
