@@ -145,7 +145,8 @@ public partial class Logic
         player.Tick();
 
         Game.WeatherMgr.Tick();
-
+        Game.Scene.Tick();
+        
         // 网络同步
         if (Game.OtherPlayer != null)
         {

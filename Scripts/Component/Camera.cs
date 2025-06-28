@@ -69,7 +69,7 @@ public partial class Camera : Camera2D
     
     public void SetZoom(float amount)
     {
-        targetZoom = Mathf.Clamp(amount,0.5f,1.6f);
+        targetZoom = Mathf.Clamp(amount,0.5f,2.4f);
     }
     
     public void Tick()

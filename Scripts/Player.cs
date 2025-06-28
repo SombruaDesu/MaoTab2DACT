@@ -173,8 +173,8 @@ public partial class Player : CharacterBody2D
     /// </summary>
     public void Tick()
     {
-        if (!_initialized)
-            return;
+        if (!_initialized) return;
+        if(_isDead) return;
         
         float dt = (float)Game.PhysicsDelta; // 缓存每帧物理时间增量
         
@@ -512,6 +512,17 @@ public partial class Player : CharacterBody2D
         }
     }
 
+    private bool AllowInput
+    {
+        get
+        {
+            if(_isHarm || _isDead)
+                return false;
+            
+            return true;
+        }
+    }
+
     /// <summary>
     /// 玩家输入接口（每帧调用，由 Root 传入当前输入）
     /// </summary>
@@ -522,7 +533,7 @@ public partial class Player : CharacterBody2D
     {
         if (!Data.Movable) return;
 
-        if (_isHarm)
+        if (!AllowInput)
         {
             ResetInput();
             return;

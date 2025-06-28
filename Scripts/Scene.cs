@@ -164,6 +164,8 @@ public partial class Scene : Node2D
                 return Task.FromResult(false);
             }
             
+            SafePoint.Clear();
+            
             CurLevel = level;
             Level.AddChild(level);
         }
@@ -224,5 +226,30 @@ public partial class Scene : Node2D
         }
         
         return Task.FromResult(true);
+    }
+
+    private Queue<Vector2> SafePoint = new();
+
+    public Vector2 GetLastSafePoint()
+    {
+        if(SafePoint.Count > 0)
+            return SafePoint.Dequeue();
+        
+        // 如果没有安全点，使用默认复活点
+        return CurLevel.SpawnPoint.FirstOrDefault().Value.Position;
+    }
+    
+    private double timer;
+    public void Tick()
+    {
+        timer += Game.PhysicsDelta;
+        if (timer >= 1f)
+        {
+            if (Game.MainPlayer.IsOnFloor())
+            {
+                SafePoint.Enqueue(Game.MainPlayer.Position);
+                timer = 0;
+            }
+        }
     }
 }
