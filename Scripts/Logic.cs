@@ -125,15 +125,15 @@ public partial class Logic
             direction.X += 1; // 向右
         }
 
-        if (Input.IsActionPressed("w"))
+        if (Input.IsActionPressed("j"))
         {
             direction.Y += 1; // 跳跃
         }
 
-        if (Input.IsActionPressed("j"))
+        /*if (Input.IsActionPressed("j"))
         {
             player.AttackInput();
-        }
+        }*/
 
         if (Input.IsActionJustReleased("f"))
         {
