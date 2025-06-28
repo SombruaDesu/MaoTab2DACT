@@ -15,7 +15,7 @@ public partial class Logic
 {
     protected bool   gameStarted;
     protected Player player;
-
+    private   string jumpKey;
     public async Task Init()
     {
         var networkManager = new NetworkManager();
@@ -27,8 +27,9 @@ public partial class Logic
 
         var home = Game.Interface.HomePanel;
 
-        home.OnHostGame += async void () =>
+        home.OnHostGame += async void (key) =>
         {
+            jumpKey      = key;
             home.Visible = false;
 
             await Game.Interface.LoadStart();
@@ -125,7 +126,7 @@ public partial class Logic
             direction.X += 1; // 向右
         }
 
-        if (Input.IsActionPressed("j"))
+        if (Input.IsActionPressed(jumpKey))
         {
             direction.Y += 1; // 跳跃
         }

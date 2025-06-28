@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bpfhp5tl5ncxr" path="res://Texture/Shelf/shelf02.png" id="8_vk253"]
 [ext_resource type="Texture2D" uid="uid://cyskbv5p4345n" path="res://Texture/Shelf/shelf06.png" id="9_r31c2"]
 [ext_resource type="Texture2D" uid="uid://bdmdj2noaqau6" path="res://Texture/Character/Idle/character_idle0.png" id="10_2j7rw"]
+[ext_resource type="Texture2D" uid="uid://cy3aqrnxovei2" path="res://Texture/Character/Harm/character01hit0000.png" id="10_15ue1"]
+[ext_resource type="Texture2D" uid="uid://l8l710lj3och" path="res://Texture/Character/Jump/character01falling0000.png" id="10_gxbmg"]
 [ext_resource type="Texture2D" uid="uid://sb82xu8j1af4" path="res://Texture/Spritesheet.png" id="10_r31c2"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="11_7wskr"]
 [ext_resource type="Texture2D" uid="uid://ds3tw485k85ra" path="res://Texture/Character/Idle/character_idle1.png" id="11_gxbmg"]
@@ -28,6 +30,7 @@
 [ext_resource type="Texture2D" uid="uid://d4c3lmn44yjfu" path="res://Texture/Character/Idle/character_idle7.png" id="17_6toe6"]
 [ext_resource type="Texture2D" uid="uid://djpmb8nekhimp" path="res://Texture/Character/character_run6.png" id="17_kal0s"]
 [ext_resource type="Texture2D" uid="uid://bnxrgmpt1jyxy" path="res://Texture/Character/character_run7.png" id="18_2j7rw"]
+[ext_resource type="Texture2D" uid="uid://tghj82pxmqxt" path="res://Texture/Character/Jump/character01jump0000.png" id="19_yrhg5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mu4ax"]
 size = Vector2(20, 22)
@@ -274,18 +277,6 @@ _data = {
 &"Top_3": SubResource("Animation_l83d4")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yitnd"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(33, 160, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l83d4"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(0, 224, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p78xu"]
-atlas = ExtResource("10_r31c2")
-region = Rect2(0, 160, 33, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_mu4ax"]
 atlas = ExtResource("10_r31c2")
 region = Rect2(0, 192, 33, 32)
@@ -294,7 +285,7 @@ region = Rect2(0, 192, 33, 32)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yitnd")
+"texture": ExtResource("10_gxbmg")
 }],
 "loop": true,
 "name": &"Falling",
@@ -302,7 +293,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l83d4")
+"texture": ExtResource("10_15ue1")
 }],
 "loop": true,
 "name": &"Harm",
@@ -339,7 +330,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_p78xu")
+"texture": ExtResource("19_yrhg5")
 }],
 "loop": true,
 "name": &"Jump",
