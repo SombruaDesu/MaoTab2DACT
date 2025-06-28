@@ -271,12 +271,14 @@ public partial class Player : CharacterBody2D
         // 结算暴雨冲击力
         if (Game.WeatherStrength / 100f >= 0.8f)
         {
-            _targetVelocity += _externalForce * dt * multiplier + new Vector2(0f,10f);
+            Data.JumpImpulse = 400 / 2;
         }
         else
         {
-            _targetVelocity += _externalForce * dt * multiplier;
+            Data.JumpImpulse = 400;
         }
+        
+        _targetVelocity += _externalForce * dt * multiplier;
         
         // 在地面时，如果外力产生的向上（负 Y）速度不足以克服 Weight，则不使角色离地
         if (!_isHarm && IsOnFloor())

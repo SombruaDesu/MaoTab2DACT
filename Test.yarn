@@ -87,5 +87,33 @@ title: Node_WaitTest
 ->你也好
     好好好
 
+<<define>>
+·extends Node
+·func _ready():
+·   if GameState.GetPlayer().GetItem("火种") != null:
+·       GameState.AddLevelTag("this","Fox有火种")
+·   else:
+·       GameState.RemoveLevelTag("this","Fox有火种")
+·   queue_free()
+<<do>>
+<<if has_level_tag("this","Fox有火种")>>
+    你怎么背着我想要的东西！
+    把它交出来！
+    ->交出
+        <<define>>
+        ·extends Node
+        ·func _ready():
+        ·   var item = GameState.GetPlayer().GetItem("火种")
+        ·   GameState.GetPlayer().PlaceItemTo(item,Vector2(766,460),finish)
+        ·   pass
+        ·
+        ·func finish():
+        ·   queue_free()
+        ·
+        <<do>>
+<<else>>
+    没什么事了，一边玩去吧。
+<<endif>>
+
 <<end>>
 ===

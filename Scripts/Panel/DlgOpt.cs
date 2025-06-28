@@ -25,7 +25,7 @@ public partial class DlgOpt : Control
     public async Task WaitOpt(
         Action                  action,
         float                   seconds,
-        CancellationTokenSource cancellationToken = default)
+        CancellationTokenSource cancellationToken)
     {
         if(cancellationToken == null) return;
         

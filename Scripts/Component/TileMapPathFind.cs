@@ -27,12 +27,16 @@ public partial class TileMapPathFind : TileMapLayer
     
     [Export] public int StepHeight = 1;   // 最多能走上多高的台阶（格子数）
     
-    public override void _Ready()
+    public void Init(bool debugGraph = false)
     {
-        _graphpoint = ResourceLoader.Load<PackedScene>("res://ScenePacked/Component/GraphPoint.tscn");
-        _usedTiles = GetUsedCells();
+        ShowDebugGraph = debugGraph;
+        
+        _graphpoint    = ResourceLoader.Load<PackedScene>("res://ScenePacked/Component/GraphPoint.tscn");
+        _usedTiles     = GetUsedCells();
         
         BuildGraph();
+
+        Visible = debugGraph;
     }
 
     private void BuildGraph()

@@ -38,6 +38,12 @@ public partial class YarnRuntime
             Continue();
         });
         
+        CommandDispatcher.AddCommandHandler<string,string>("remove_level_tag", (scene,tag) =>
+        {
+            Game.Scene.RemoveTag(scene,tag);
+            Continue();
+        });
+        
         CommandDispatcher.AddFunction<string,string,bool>("has_level_tag", (scene,tag) =>
         {
             return Game.Scene.HasTag(scene,tag);

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=44 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -8,12 +8,26 @@
 [ext_resource type="Script" uid="uid://bq7dxbbsoe3ku" path="res://Scripts/RoleAgent.cs" id="7_xmwv1"]
 [ext_resource type="Texture2D" uid="uid://q4f5u2jmtept" path="res://Texture/2d_lights_and_shadows_neutral_point_light.webp" id="8_msip7"]
 [ext_resource type="Texture2D" uid="uid://duf2qmn7takwj" path="res://icon.svg" id="9_mpica"]
-[ext_resource type="PackedScene" uid="uid://cmb6d2da1bj1e" path="res://ScenePacked/Box_1x1.tscn" id="10_ljrhq"]
+[ext_resource type="Script" uid="uid://qju63k4vfdee" path="res://Scripts/Data/ItemDefinition.cs" id="12_5bqlb"]
 [ext_resource type="Shader" uid="uid://b1nyiciuywxqs" path="res://Shader/Water.gdshader" id="12_vxmux"]
 [ext_resource type="Script" uid="uid://bxamsm6xbiexk" path="res://Scripts/Component/ItemSpawn.cs" id="13_5bqlb"]
 [ext_resource type="PackedScene" uid="uid://crckltxrgif68" path="res://ScenePacked/Box_2x2.tscn" id="14_1nl4h"]
 [ext_resource type="Script" uid="uid://cqcgo7aoahx60" path="res://Scripts/Data/ItemSpawnData.cs" id="14_rkfdh"]
-[ext_resource type="PackedScene" uid="uid://cu50upjhh4y2l" path="res://ScenePacked/Box_1x2.tscn" id="15_y0u32"]
+
+[sub_resource type="GDScript" id="GDScript_vxmux"]
+resource_name = "Base"
+script/source = "extends Node2D
+
+func _ready() -> void:
+	if(GameState.HasLevelTag(\"this\",\"火种被捡起\")):
+		$Box_2x2.queue_free()
+	pass
+
+
+func _on_box_2x_2_on_picked_up() -> void:
+	GameState.AddLevelTag(\"this\",\"火种被捡起\")
+	pass
+"
 
 [sub_resource type="Animation" id="Animation_1yrnh"]
 resource_name = "new_animation"
@@ -340,6 +354,14 @@ IdList = null
 SpawnProbability = 0.0
 metadata/_custom_type_script = "uid://cqcgo7aoahx60"
 
+[sub_resource type="Resource" id="Resource_rkfdh"]
+script = ExtResource("12_5bqlb")
+Id = "火种"
+Size = Vector2i(2, 2)
+CanRotate = false
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vxmux"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5bqlb"]
@@ -358,8 +380,8 @@ noise = SubResource("FastNoiseLite_rkfdh")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5bqlb"]
 shader = ExtResource("12_vxmux")
 shader_parameter/shader_speed = 1.0
-shader_parameter/ripple_clock = 46.05999999999767
-shader_parameter/inv_scale = Vector2(9.825, 1)
+shader_parameter/ripple_clock = 0.0
+shader_parameter/inv_scale = Vector2(100, 1)
 shader_parameter/y_scale = 1.0
 shader_parameter/distortion_noise = SubResource("NoiseTexture2D_5bqlb")
 shader_parameter/distortion_strength = 0.02999999999883584
@@ -394,10 +416,12 @@ fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 metadata/_snap_enabled = true
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("SeaFace")]
+[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("_pathLayer", "SeaFace", "ObjectNode")]
 script = ExtResource("1_1yrnh")
+_pathLayer = NodePath("Object/TileMapPathFind")
 SeaFacePosition = 654.0
 SeaFace = NodePath("Water")
+ObjectNode = NodePath("Object")
 LevelName = "TestLevel"
 _spawnPoint = Dictionary[String, NodePath]({
 "A": NodePath("SpawnPoint"),
@@ -417,6 +441,7 @@ scale = Vector2(2000, 900)
 texture = ExtResource("2_u18fy")
 
 [node name="Object" type="Node2D" parent="."]
+script = SubResource("GDScript_vxmux")
 
 [node name="门" type="Sprite2D" parent="Object"]
 modulate = Color(0.81237876, 0.3017064, 0, 1)
@@ -498,7 +523,7 @@ script = SubResource("GDScript_xmwv1")
 shape = SubResource("RectangleShape2D_msip7")
 
 [node name="碰撞盒" type="Area2D" parent="Object"]
-position = Vector2(575, 441.99997)
+position = Vector2(590.00006, 294)
 rotation = 1.5708
 scale = Vector2(8.915, 8.915)
 script = SubResource("GDScript_1nl4h")
@@ -507,7 +532,7 @@ script = SubResource("GDScript_1nl4h")
 shape = SubResource("RectangleShape2D_y0u32")
 
 [node name="对话碰撞盒" type="Area2D" parent="Object"]
-position = Vector2(766.00006, 408)
+position = Vector2(766.00006, 460)
 rotation = 1.5708
 scale = Vector2(8.915, 8.915)
 script = SubResource("GDScript_y0u32")
@@ -520,32 +545,15 @@ position = Vector2(370, 8)
 script = ExtResource("13_5bqlb")
 Data = SubResource("Resource_1nl4h")
 
-[node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
-position = Vector2(304, 464)
-
-[node name="Box_1x5" parent="Object" instance=ExtResource("10_ljrhq")]
-position = Vector2(432, 500)
-
-[node name="Box_1x6" parent="Object" instance=ExtResource("10_ljrhq")]
-position = Vector2(404, 500)
-
 [node name="Box_2x2" parent="Object" instance=ExtResource("14_1nl4h")]
-position = Vector2(244, 464)
-
-[node name="Box_1x2" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(172, 452)
-
-[node name="Box_1x3" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(272, 460)
-
-[node name="Box_1x4" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(272, 444)
+position = Vector2(187, 434)
+Def = SubResource("Resource_rkfdh")
 
 [node name="Water" type="Sprite2D" parent="."]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_5bqlb")
-position = Vector2(516, 642)
-scale = Vector2(9.825, 0.2)
+position = Vector2(522, 642)
+scale = Vector2(100, 0.2)
 texture = SubResource("GradientTexture2D_0n26d")
 
 [connection signal="body_entered" from="Object/门/门Zone" to="Object/门/门Zone" method="_on_body_entered"]
@@ -556,3 +564,4 @@ texture = SubResource("GradientTexture2D_0n26d")
 [connection signal="body_exited" from="Object/碰撞盒" to="Object/碰撞盒" method="_on_body_exited"]
 [connection signal="body_entered" from="Object/对话碰撞盒" to="Object/对话碰撞盒" method="_on_body_entered"]
 [connection signal="body_exited" from="Object/对话碰撞盒" to="Object/对话碰撞盒" method="_on_body_exited"]
+[connection signal="OnPickedUp" from="Object/Box_2x2" to="Object" method="_on_box_2x_2_on_picked_up"]

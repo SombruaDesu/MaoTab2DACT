@@ -16,6 +16,8 @@ public static partial class Game
     public static float WeatherStrength = 0;
     public static float WeatherSpeed = 100;
     
+    
+    
     public static void Save()
     {
         var playerData = new NetDataWriter();

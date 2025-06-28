@@ -103,7 +103,10 @@ public partial class WeatherMgr : Node2D
 
     private float curPostStrength;
     
-    
+    /// <summary>
+    /// 着色器驱动帧
+    /// </summary>
+    private float rippleClock;
     public void Tick()
     {
         if (_seaFace != null)
@@ -220,6 +223,4 @@ public partial class WeatherMgr : Node2D
         _seaFaceShader.SetShaderParameter("ripple_spawn_chance", weight);
         _seaFaceShader.SetShaderParameter("shader_speed", runningSpeed);
     }
-
-    private float rippleClock;
 }

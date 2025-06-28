@@ -36,7 +36,8 @@ public partial class DlgPanel : Control
             _onContinue = null;
         };
     }
-
+    
+    
     public async Task WaitDlg(
         Action                  action,
         float                   seconds,

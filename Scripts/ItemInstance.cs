@@ -13,9 +13,11 @@ namespace MaoTab.Scripts;
 [GlobalClass]
 public partial class ItemInstance : RigidBody2D
 {
-    [Export] public  int            W = 1;
-    [Export] public  int            H = 1;
+    const int CELL = 8;  // 一格 8px
+    
     [Export] public  ItemDefinition Def;
+    
+    [Signal] delegate void OnPickedUpEventHandler();
     
     public           bool           Rotated; // true = 旋转 90°
     public           int            X;       // 左下角格子的 x
@@ -24,6 +26,12 @@ public partial class ItemInstance : RigidBody2D
     [Export] private Area2D         _collisionArea;
     public           bool           canPackup;
     public           bool           canDrop;
+
+    public override void _Ready()
+    {
+        if(Def != null)
+          Init(Def);
+    }
 
     public void Init(ItemDefinition def)
     {
@@ -73,8 +81,44 @@ public partial class ItemInstance : RigidBody2D
         canPackup                   = true;
         _interactionArea.Monitoring = true;
     }
+
+    public async Task PlaceTo(Vector2 targetPos,float targetRot, float duration
+                             ,Callable onPickedUp,CancellationToken token = default)
+    {
+        Reparent(Game.Scene.CurLevel.ObjectNode);
+        
+        Vector2 startPos = Position;
+        float   startRot = RotationDegrees;
+        float   elapsed  = 0f;
+
+        SetProcess(true);
+
+        while (elapsed < duration && !token.IsCancellationRequested)
+        {
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
+            float delta   = (float)Game.PhysicsDelta;
+            elapsed      += delta;
+            float t       = Mathf.Clamp(elapsed / duration, 0f, 1f);
+
+            // 线性插值得到“基准”点
+            float x = Mathf.Lerp(startPos.X, targetPos.X, t);
+            float y = Mathf.Lerp(startPos.Y, targetPos.Y, t);
+
+            // 给 Y 加上抛物线偏移（Godot 2D 的 Y 轴向下为正，所以这里用减号）
+            y -= 4f * 30f * t * (1f - t);
+
+            Position        = new Vector2(x, y);
+            RotationDegrees = Mathf.LerpAngle(startRot, targetRot, t);
+        }
+
+        Position        = targetPos;
+        RotationDegrees = targetRot;
+        SetProcess(false);
+        
+        onPickedUp.Call();
+    }
     
-    const int CELL = 8;  // 一格 8px
     public async Task PickedUp(Node2D node,int x,int y,bool rotated)
     {
         Freeze  = true;
@@ -107,6 +151,8 @@ public partial class ItemInstance : RigidBody2D
         
         // 位置完全就位后才可以丢下
         canDrop = true;
+        
+        EmitSignal(SignalName.OnPickedUp);
         /*Position = new Vector2(-px - 4, py - 4);
         RotationDegrees = rotated ? 90 : 0;*/
     }

@@ -29,6 +29,28 @@ public partial class Scene : Node2D
     public Level PrvLevel;
     
     public Dictionary<string, LevelData> AllLevelData = new();
+
+    public void RemoveTag(string levelName, string tag)
+    {
+        if (levelName == "this")
+        {
+            levelName = CurLevel.Data.Name;
+        }
+        
+        if (AllLevelData.TryGetValue(levelName, out var data))
+        {
+            data.Tags.Remove(tag);
+            GD.Print("----\n移除关卡标签成功" +
+                     "\n\t关卡："+ levelName + 
+                     "\n\t标签：" + tag);
+        }
+        else
+        {
+            GD.Print("----\n[color=#e16032]移除关卡标签失败" +
+                     "\n\t关卡："+ levelName + 
+                     "\n\t标签：" + tag + "（标签不存在）");
+        }
+    }
     
     /// <summary>
     /// 向指定关卡数据添加标签
@@ -172,7 +194,7 @@ public partial class Scene : Node2D
                 Game.MainPlayer.Position = pos;
                 GD.PrintRich("----\n[color=#e16032]" +
                              "关卡加载完成：" + levelName + 
-                             "，由于关卡没有设置玩家刷新位置" +
+                             "，由于没有指定玩家刷新位置" +
                              "，使用默认刷新点：" + CurLevel.SpawnPoint.FirstOrDefault().Key +
                              "，位置：" + pos);
             }

@@ -15,6 +15,13 @@ public partial class Player
     
     public void FxUpdate()
     {
-        Mathf.Lerp(RainHitParticles.Amount, Game.WeatherStrength * 8,Game.WeatherStrength / 100f);
+        if (Game.WeatherStrength <= 80f)
+        {
+            RainHitParticles.Emitting = false;
+        }
+        else
+        {
+            RainHitParticles.Emitting = true;
+        }
     }
 }
