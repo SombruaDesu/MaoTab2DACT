@@ -335,12 +335,10 @@ position = Vector2(78.4057, 486.11047)
 
 [node name="ObjNodes" type="Node2D" parent="."]
 
-[node name="会动的岛原点" type="Node2D" parent="ObjNodes"]
-
 [node name="天空滚动层" type="Parallax2D" parent="ObjNodes"]
-scroll_offset = Vector2(1078.3225, -1.2679443)
+scroll_offset = Vector2(783.3845, 0)
 repeat_size = Vector2(1011, 0)
-repeat_times = 2
+repeat_times = 12
 
 [node name="天空" type="Sprite2D" parent="ObjNodes/天空滚动层"]
 position = Vector2(263.94562, 356.78867)
@@ -365,7 +363,6 @@ position = Vector2(309.62915, 377)
 texture = ExtResource("5_4bs74")
 
 [node name="会动的岛" type="Node2D" parent="ObjNodes"]
-position = Vector2(714.68915, 0)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="ObjNodes/会动的岛"]
 position = Vector2(0, 536)
@@ -433,6 +430,6 @@ texture = ExtResource("18_0mvk3")
 [node name="水面" type="Sprite2D" parent="."]
 texture_repeat = 2
 material = SubResource("ShaderMaterial_5bqlb")
-position = Vector2(533.99994, 653)
+position = Vector2(47205.336, 653)
 scale = Vector2(100, 0.2)
 texture = SubResource("GradientTexture2D_0n26d")
