@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://b5e4siv7vtnji"]
+[gd_scene load_steps=10 format=3 uid="uid://b5e4siv7vtnji"]
 
 [ext_resource type="Script" uid="uid://g01sd6ef0hmt" path="res://Scripts/Panel/DlgPanel.cs" id="1_ahohy"]
 [ext_resource type="Script" uid="uid://070mqwiontnp" path="res://Scripts/Component/TypingEffectText.cs" id="2_8rnf8"]
 [ext_resource type="Script" uid="uid://dblixk680ddgk" path="res://Scripts/Component/AnimationAsyncPlayer.cs" id="3_8rnf8"]
+[ext_resource type="FontFile" uid="uid://cncello3dlr4s" path="res://Font/Silver.ttf" id="3_jyiww"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rnf8"]
 content_margin_left = 0.0
@@ -113,6 +114,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 198.0
 offset_top = 499.0
@@ -150,15 +152,19 @@ AnimTextLabel = NodePath("Text")
 
 [node name="Text" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_jyiww")
+theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
-text = "Dlg"
+text = "你好世界"
 fit_content = true
 
 [node name="SizeText" type="RichTextLabel" parent="Panel/VBoxContainer/TypingEffectText"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("3_jyiww")
+theme_override_font_sizes/normal_font_size = 36
 bbcode_enabled = true
-text = "Dlg"
+text = "你好世界"
 fit_content = true
 
 [node name="OptBox" type="VBoxContainer" parent="Panel/VBoxContainer"]

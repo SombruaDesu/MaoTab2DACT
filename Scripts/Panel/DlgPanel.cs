@@ -26,6 +26,8 @@ public partial class DlgPanel : Control
     
     [Export] private AnimationAsyncPlayer animationPlayer;
     
+    [Export] private AnimationAsyncPlayer illPlayer;
+    
     public void Init()
     {
         Hide(false);
@@ -41,7 +43,7 @@ public partial class DlgPanel : Control
     
     public async void EnterMovieMode()
     {
-        await animationPlayer.PlayAsync("EnterMovie");
+        await animationPlayer.PlayAsync("EnterMovie ");
         
     }
     

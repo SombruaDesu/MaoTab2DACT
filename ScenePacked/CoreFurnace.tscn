@@ -1,0 +1,131 @@
+[gd_scene load_steps=20 format=3 uid="uid://bjx3nxj1mg8c"]
+
+[ext_resource type="Texture2D" uid="uid://t61bfx24etof" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000000.png" id="1_l2ujs"]
+[ext_resource type="Texture2D" uid="uid://bh2b11gaxh05u" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000001.png" id="2_x8kui"]
+[ext_resource type="Texture2D" uid="uid://dqitj2tbwuckj" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000002.png" id="3_4e22h"]
+[ext_resource type="Texture2D" uid="uid://cv4e6xb1my6qq" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000003.png" id="4_g56kd"]
+[ext_resource type="Texture2D" uid="uid://dh1jhiv6dp4wt" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000004.png" id="5_n8f10"]
+[ext_resource type="Texture2D" uid="uid://b06r4mfi8vfeb" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000005.png" id="6_isq1m"]
+[ext_resource type="Texture2D" uid="uid://bc7vmgmck147m" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000006.png" id="7_ya4cy"]
+[ext_resource type="Texture2D" uid="uid://co21jggyoealj" path="res://Texture/CoreFurnace/coreFurnaceWork00/coreFurnaceWork000007.png" id="8_jhdnn"]
+[ext_resource type="Texture2D" uid="uid://bbni6d4meirkt" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010000.png" id="9_pq05m"]
+[ext_resource type="Texture2D" uid="uid://c0o35j373kf2e" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010001.png" id="10_78ta2"]
+[ext_resource type="Texture2D" uid="uid://jopgknjw4hbr" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010002.png" id="11_sue8c"]
+[ext_resource type="Texture2D" uid="uid://dsuvfrovyd52f" path="res://Texture/CoreFurnace/coreFurnaceWork01/coreFurnaceWork010003.png" id="12_4o2lr"]
+[ext_resource type="Texture2D" uid="uid://brxnb035c3i2m" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020000.png" id="13_krqlf"]
+[ext_resource type="Texture2D" uid="uid://b4d3t1kedsih7" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020001.png" id="14_cq3ik"]
+[ext_resource type="Texture2D" uid="uid://dtp807n1i87kk" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020002.png" id="15_tuyuy"]
+[ext_resource type="Texture2D" uid="uid://bsnafy6gjmu8i" path="res://Texture/CoreFurnace/coreFurnaceWork02/coreFurnaceWork020003.png" id="16_eg8oy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_heb3t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_l2ujs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_x8kui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_4e22h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_g56kd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n8f10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_isq1m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ya4cy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_jhdnn")
+}],
+"loop": true,
+"name": &"Work0",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_pq05m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_78ta2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_sue8c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_4o2lr")
+}],
+"loop": true,
+"name": &"Work1",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_krqlf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_cq3ik")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_tuyuy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_eg8oy")
+}],
+"loop": true,
+"name": &"Work2",
+"speed": 5.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_heb3t"]
+resource_name = "Door"
+script/source = "extends Area2D
+
+var yarnAction = YarnAction.Create(\"Node_CoreWork\",0)
+
+func _ready() -> void:
+	var player = $\"..\" as AnimatedSprite2D
+	var level = GameState.TryGetInt(\"火力\",0)
+	player.play(\"Work\" + str(level))
+	pass
+
+# 当玩家碰撞时
+func _on_body_entered(body: Node2D) -> void:
+	if body is not Player:
+		return
+	var p = body as Player
+	p.SetYarnAction(yarnAction);
+	pass
+
+func _on_body_exited(body: Node2D) -> void:
+	if body is not Player:
+			return
+	var p = body as Player
+	p.RemoveYarnAction(yarnAction);
+	pass
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtlxh"]
+size = Vector2(16, 16)
+
+[node name="CoreFurnace" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_heb3t")
+animation = &"Work2"
+frame_progress = 0.3435389
+
+[node name="对话碰撞盒" type="Area2D" parent="."]
+rotation = 1.5708
+scale = Vector2(8.915, 8.915)
+script = SubResource("GDScript_heb3t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="对话碰撞盒"]
+shape = SubResource("RectangleShape2D_dtlxh")
+
+[connection signal="body_entered" from="对话碰撞盒" to="对话碰撞盒" method="_on_body_entered"]
+[connection signal="body_exited" from="对话碰撞盒" to="对话碰撞盒" method="_on_body_exited"]

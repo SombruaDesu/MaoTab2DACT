@@ -3,8 +3,7 @@
  * @Description: 玩家对象，核心移动部分
  */
 
-using System;
-using System.Threading.Tasks;
+using System; 
 using Godot;
 
 namespace MaoTab.Scripts;

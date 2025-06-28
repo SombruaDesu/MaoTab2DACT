@@ -141,6 +141,12 @@ public partial class Logic
             player.InteractionInput();
         }
 
+        if (Input.IsActionJustReleased("s"))
+        {
+            direction.Y -= 1; // 下蹲
+        }
+
+        
         player.Input(direction, Input.IsActionPressed("alt"), Input.IsActionPressed("shift"));
         player.Tick();
 
