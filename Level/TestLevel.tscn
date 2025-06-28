@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=4 uid="uid://cx0scs5ncd18h"]
+[gd_scene load_steps=51 format=4 uid="uid://cx0scs5ncd18h"]
 
 [ext_resource type="Script" uid="uid://c1rs2dxntkota" path="res://Scripts/Level.cs" id="1_1yrnh"]
 [ext_resource type="Texture2D" uid="uid://cm5iy4m56nuc7" path="res://Texture/NONE.webp" id="2_u18fy"]
@@ -364,6 +364,46 @@ CanRotate = false
 Weight = 0.0
 metadata/_custom_type_script = "uid://qju63k4vfdee"
 
+[sub_resource type="Resource" id="Resource_y0u32"]
+script = ExtResource("12_5bqlb")
+Id = ""
+Size = Vector2i(2, 1)
+CanRotate = true
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
+[sub_resource type="Resource" id="Resource_pudhq"]
+script = ExtResource("12_5bqlb")
+Id = ""
+Size = Vector2i(2, 1)
+CanRotate = true
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
+[sub_resource type="Resource" id="Resource_urqq3"]
+script = ExtResource("12_5bqlb")
+Id = ""
+Size = Vector2i(2, 1)
+CanRotate = true
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
+[sub_resource type="Resource" id="Resource_fcsoj"]
+script = ExtResource("12_5bqlb")
+Id = ""
+Size = Vector2i(2, 1)
+CanRotate = true
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
+[sub_resource type="Resource" id="Resource_05fte"]
+script = ExtResource("12_5bqlb")
+Id = ""
+Size = Vector2i(1, 1)
+CanRotate = true
+Weight = 0.0
+metadata/_custom_type_script = "uid://qju63k4vfdee"
+
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_vxmux"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5bqlb"]
@@ -553,18 +593,23 @@ Def = SubResource("Resource_rkfdh")
 
 [node name="Box_1x2" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(274, 442)
+Def = SubResource("Resource_y0u32")
 
 [node name="Box_1x3" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(313, 381)
+Def = SubResource("Resource_pudhq")
 
 [node name="Box_1x4" parent="Object" instance=ExtResource("15_y0u32")]
 position = Vector2(229, 356)
+Def = SubResource("Resource_urqq3")
 
 [node name="Box_1x5" parent="Object" instance=ExtResource("15_y0u32")]
-position = Vector2(237, 402)
+position = Vector2(188, 399)
+Def = SubResource("Resource_fcsoj")
 
 [node name="Box_1x1" parent="Object" instance=ExtResource("10_ljrhq")]
 position = Vector2(411, 498)
+Def = SubResource("Resource_05fte")
 
 [node name="Water" type="Sprite2D" parent="."]
 texture_repeat = 2
