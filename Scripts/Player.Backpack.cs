@@ -35,6 +35,19 @@ public partial class Player
     // 方便枚举实例
     private HashSet<ItemInstance> _items = new();
 
+    public ItemDefinition? GetItem(string id)
+    {
+        foreach (var item in _items)
+        {
+            if (item.Def.Id == id)
+            {
+                return item.Def;
+            }
+        }
+        
+        return null;
+    }
+    
     public int MaxUsedY => _nextY.Max() - 1; // 最大行
     public int MaxUsedX                      // 最大列
     {
@@ -54,6 +67,18 @@ public partial class Player
         for (int x = 1; x <= width; ++x) _nextY[x] = 1;
     }
 
+    /// <summary>
+    /// 将某个物品放置到目的地，完成后调用回调
+    /// </summary>
+    /// <param name="item">物品参数</param>
+    /// <param name="position">目的地位置</param>
+    /// <param name="onFinish">回调</param>
+    public void PlaceItemTo(ItemDefinition item,Vector2 position,Callable onFinish)
+    {
+       item.Instance.PlaceTo(position,0,1f,onFinish);
+       RemoveItem(item.Instance);
+    }
+    
     // 判断 item(带旋转) 是否能以 “左下角 = (x, y?)” 放下，
     // 如果能，返回 true 并把找到的最小合法 y 存入 out y
     public bool CanPlace(ItemDefinition def, bool rotated, int x, out int y)

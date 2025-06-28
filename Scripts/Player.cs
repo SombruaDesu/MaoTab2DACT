@@ -20,6 +20,11 @@ public partial class Player : CharacterBody2D
     public Vector2 InputMoveDirection = Vector2.Zero;
 
     /// <summary>
+    /// 体力
+    /// </summary>
+    public float PS;
+    
+    /// <summary>
     /// 奔跑状态（默认奔跑）
     /// </summary>
     public bool Run = true;
@@ -50,6 +55,9 @@ public partial class Player : CharacterBody2D
     private Vector2 _externalForce          = Vector2.Zero; // 持续施加，不自动清除
     private Vector2 _pendingExternalImpulse = Vector2.Zero;
 
+    /// <summary>
+    /// 当一次性冲力消散时
+    /// </summary>
     private Action OnExternalImpulseDissipate;
     
     // 摩擦力属性：
@@ -149,6 +157,16 @@ public partial class Player : CharacterBody2D
     {
         
     }
+
+    private void ResetInput()
+    {
+        InputMoveDirection = Vector2.Zero;
+        _wallHangRequested = false;
+        _jumpRequested     = false;
+        _jumpKeyReleased   = true;
+        _jumpButtonHeld    = false;
+        _jumpTime          = 0;
+    }
     
     /// <summary>
     /// 每帧调用，类似 _PhysicsProcess()
@@ -161,7 +179,7 @@ public partial class Player : CharacterBody2D
         float dt = (float)Game.PhysicsDelta; // 缓存每帧物理时间增量
         
         UpdateBattleSystem();
-
+        
         // 重置 _targetVelocity 为玩家输入决定的水平速度， 后续再叠加垂直与外力影响
         _targetVelocity.X = InputMoveDirection.X * (Run ? Data.RunSpeed : Data.WalkSpeed);
         
@@ -212,8 +230,7 @@ public partial class Player : CharacterBody2D
             _pendingExternalImpulse.Y = Mathf.Lerp(_pendingExternalImpulse.Y, 0, sy);
         
             // 当一次性冲力衰竭到一定程度时，视为完成
-            if (_pendingExternalImpulse.X.AetF(0, 15f) &&
-                _pendingExternalImpulse.Y.AetF(0, 15f))
+            if (_pendingExternalImpulse.AetV2(Vector2.Zero, 1f))
             {
                 _externalImpulse        = Vector2.Zero;
                 _pendingExternalImpulse = Vector2.Zero;
@@ -251,8 +268,18 @@ public partial class Player : CharacterBody2D
             multiplier = 1.0f - AirFriction / 100f;
         }
 
+        // 结算暴雨冲击力
+        if (Game.WeatherStrength / 100f >= 0.8f)
+        {
+            Data.JumpImpulse = 400 / 2;
+        }
+        else
+        {
+            Data.JumpImpulse = 400;
+        }
+        
         _targetVelocity += _externalForce * dt * multiplier;
-
+        
         // 在地面时，如果外力产生的向上（负 Y）速度不足以克服 Weight，则不使角色离地
         if (!_isHarm && IsOnFloor())
         {
@@ -269,6 +296,9 @@ public partial class Player : CharacterBody2D
         // 检测天花板碰撞，取消向上冲力
         HandleCeilingCollision();
 
+        // 更新特效
+        FxUpdate();
+        
         // 更新动画状态（方法内部实现动画切换逻辑）
         Animation();
 
@@ -491,16 +521,13 @@ public partial class Player : CharacterBody2D
     public void Input(Vector2 direction, bool isRun, bool isWallHang)
     {
         if (!Data.Movable) return;
-        
-        if(_isHarm)
+
+        if (_isHarm)
         {
-            InputMoveDirection = Vector2.Zero;
-            _wallHangRequested = false;
-            _jumpKeyReleased   = true;
-            _jumpButtonHeld    = false;
+            ResetInput();
             return;
         }
-
+        
         // 只使用 X 分量处理左右移动
         InputMoveDirection = new Vector2(direction.X, 0);
 

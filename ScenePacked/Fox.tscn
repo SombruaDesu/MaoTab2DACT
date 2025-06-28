@@ -46,9 +46,6 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_mxv3s"]
-length = 0.001
-
 [sub_resource type="Animation" id="Animation_yitnd"]
 resource_name = "Bottom_2"
 length = 0.033336636
@@ -77,6 +74,9 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(13, 2)]
 }
+
+[sub_resource type="Animation" id="Animation_mxv3s"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_kdf0d"]
 resource_name = "Top_1"

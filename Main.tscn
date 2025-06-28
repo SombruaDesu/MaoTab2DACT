@@ -1,18 +1,189 @@
-[gd_scene load_steps=9 format=3 uid="uid://b12bvldcy3kts"]
+[gd_scene load_steps=35 format=3 uid="uid://b12bvldcy3kts"]
 
 [ext_resource type="Script" uid="uid://bdnmku7adl06u" path="res://Scripts/Root.cs" id="1_glv2v"]
 [ext_resource type="Script" uid="uid://datqvqvw8l06i" path="res://Scripts/Scene.cs" id="2_trn2v"]
+[ext_resource type="Texture2D" uid="uid://bdfw3fqylyd6e" path="res://Texture/Fx_Rain.webp" id="3_03owx"]
 [ext_resource type="Script" uid="uid://btfs01nmb4bbk" path="res://Scripts/Component/AudioMixPlayer.cs" id="3_r0du0"]
 [ext_resource type="Script" uid="uid://cekqq2gf7y07n" path="res://Scripts/Interface.cs" id="3_trn2v"]
+[ext_resource type="Script" uid="uid://dskxq5sthwi52" path="res://Scripts/Component/WeatherMgr.cs" id="3_wkp8b"]
 [ext_resource type="AudioStream" uid="uid://bkqggp80p1mhq" path="res://Audio/Mili - Old City.mp3" id="4_lgr22"]
 [ext_resource type="Script" uid="uid://cu0my1j7f18qr" path="res://Scripts/Component/AudioPlayer.cs" id="5_3dxm6"]
+[ext_resource type="Script" uid="uid://c51j6aviajr8h" path="res://Scripts/Panel/DevPanel.cs" id="6_20pc6"]
 [ext_resource type="AudioStream" uid="uid://blobw6njkvn22" path="res://Audio/Mili - Old City Market.mp3" id="6_trn2v"]
+[ext_resource type="Shader" uid="uid://kf7otpffh6n7" path="res://Shader/DistortionSpeedLines.gdshader" id="7_5vvyt"]
 [ext_resource type="AudioStream" uid="uid://ci6xtwak1rqax" path="res://Audio/Mili - Old City ~ Respite.mp3" id="7_lgr22"]
 
-[node name="Root" type="Node" node_paths=PackedStringArray("_scene", "_ui", "_audioMixPlayer")]
+[sub_resource type="Curve" id="Curve_5vvyt"]
+_data = [Vector2(0, 0.05), 0.0, 0.0, 0, 0, Vector2(0.6184379, 0.049725056), 0.0, 0.0, 0, 0, Vector2(1, 0.3), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_c6i3y"]
+_limits = [0.0, 35.0, 0.0, 1.0]
+_data = [Vector2(0, 2.75), 0.0, 0.0, 0, 0, Vector2(0.55468756, 3.090313), 0.0, 0.0, 0, 0, Vector2(1, 35), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_c2ibq"]
+_limits = [0.0, 250.0, 0.0, 1.0]
+_data = [Vector2(0, 250), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_j4qnp"]
+_limits = [0.0, 4.0, 0.0, 1.0]
+_data = [Vector2(0, 0.755), 0.0, 0.0, 0, 0, Vector2(1, 3.185), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_wkp8b"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_wkp8b"]
+curve = SubResource("Curve_wkp8b")
+
+[sub_resource type="Curve" id="Curve_20pc6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.348485, 0.59228), 1.63872, 1.63872, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_20pc6"]
+curve = SubResource("Curve_20pc6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wkp8b"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(600, 1, 1)
+direction = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 500, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 99.99999
+scale_min = 0.5
+scale_max = 0.79999995
+alpha_curve = SubResource("CurveTexture_wkp8b")
+turbulence_noise_speed = Vector3(0, 9.825, 0)
+turbulence_influence_min = 0.072
+turbulence_influence_max = 0.078
+turbulence_initial_displacement_min = -31.5
+turbulence_initial_displacement_max = 12.2
+turbulence_influence_over_life = SubResource("CurveTexture_20pc6")
+sub_emitter_mode = 3
+sub_emitter_amount_at_collision = 32
+
+[sub_resource type="CurveTexture" id="CurveTexture_5vvyt"]
+curve = SubResource("Curve_wkp8b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5vvyt"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_5vvyt")
+
+[sub_resource type="Curve" id="Curve_hhcpw"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15254238, 1), 0.0, 0.0, 0, 0, Vector2(0.48587573, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_mpica"]
+curve = SubResource("Curve_hhcpw")
+
+[sub_resource type="Curve" id="Curve_mxvw5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.348485, 0.59228), 1.63872, 1.63872, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_03owx"]
+curve = SubResource("Curve_mxvw5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c6i3y"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(600, 1, 1)
+direction = Vector3(0, 0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 500, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = 99.99999
+scale_min = 0.5
+scale_max = 0.79999995
+alpha_curve = SubResource("CurveTexture_mpica")
+turbulence_noise_speed = Vector3(0, 9.825, 0)
+turbulence_influence_min = 0.072
+turbulence_influence_max = 0.078
+turbulence_initial_displacement_min = -31.5
+turbulence_initial_displacement_max = 12.2
+turbulence_influence_over_life = SubResource("CurveTexture_03owx")
+sub_emitter_mode = 3
+sub_emitter_amount_at_collision = 32
+
+[sub_resource type="Animation" id="Animation_20pc6"]
+resource_name = "Lightning"
+length = 0.7
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lightning:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.7),
+"transitions": PackedFloat32Array(3.482203, 2.143547, 0.12500015, 1),
+"update": 0,
+"values": [0.0, 0.0, 100.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_5vvyt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lightning:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5vvyt"]
+_data = {
+&"Lightning": SubResource("Animation_20pc6"),
+&"RESET": SubResource("Animation_5vvyt")
+}
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5vvyt"]
+frequency = 0.11
+fractal_type = 2
+domain_warp_enabled = true
+domain_warp_type = 2
+domain_warp_fractal_octaves = 1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_c6i3y"]
+height = 128
+seamless = true
+noise = SubResource("FastNoiseLite_5vvyt")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6i3y"]
+shader = ExtResource("7_5vvyt")
+shader_parameter/noise = SubResource("NoiseTexture2D_c6i3y")
+shader_parameter/rain_speed = 4.0
+shader_parameter/wind = 0.15
+shader_parameter/streak_density = 1.8
+shader_parameter/streak_width = 0.25
+shader_parameter/distortion_power = 0.015
+shader_parameter/blur_strength = 0.006
+shader_parameter/effect_strength = 1.0
+shader_parameter/big_drops_enable = true
+shader_parameter/big_drops_scale = 1.5
+shader_parameter/big_drops_power = 0.02
+
+[node name="Root" type="Node" node_paths=PackedStringArray("_weatherMgr", "_scene", "_ui", "_devUi", "_audioMixPlayer")]
 script = ExtResource("1_glv2v")
+_weatherMgr = NodePath("Scene/Weather")
 _scene = NodePath("Scene")
-_ui = NodePath("CanvasLayer/Control")
+_ui = NodePath("CanvasLayer/Interface")
+_devUi = NodePath("CanvasLayer/Dev")
 _audioMixPlayer = NodePath("Node")
 
 [node name="Scene" type="Node2D" parent="." node_paths=PackedStringArray("Level")]
@@ -21,9 +192,85 @@ Level = NodePath("Level")
 
 [node name="Level" type="Node2D" parent="Scene"]
 
+[node name="Weather" type="Node2D" parent="Scene" node_paths=PackedStringArray("RainParticles", "RainNoCollisionParticles", "LightningAnimation", "PostLayer")]
+position = Vector2(0, 2)
+script = ExtResource("3_wkp8b")
+RainParticles = NodePath("RainLine")
+RainNoCollisionParticles = NodePath("RainLineNoCollision")
+TrailLifetimeWeightCurve = SubResource("Curve_5vvyt")
+SpeedWeightCurve = SubResource("Curve_c6i3y")
+GravityWeightCurve = SubResource("Curve_c2ibq")
+RippleSpeedCurve = SubResource("Curve_j4qnp")
+LightningAnimation = NodePath("AnimationPlayer")
+PostLayer = NodePath("../../CanvasLayer/RainPostFx")
+
+[node name="RainLine" type="GPUParticles2D" parent="Scene/Weather"]
+amount = 1200
+amount_ratio = 0.2019
+sub_emitter = NodePath("RainPoint")
+texture = ExtResource("3_03owx")
+lifetime = 2.0
+preprocess = 2.0
+speed_scale = 11.64
+explosiveness = 0.01
+use_fixed_seed = true
+seed = 1337558236
+collision_base_size = 61.08
+visibility_rect = Rect2(-650, -1.995, 1300, 1500)
+draw_order = 0
+trail_enabled = true
+trail_sections = 2
+trail_section_subdivisions = 1
+process_material = SubResource("ParticleProcessMaterial_wkp8b")
+
+[node name="RainPoint" type="GPUParticles2D" parent="Scene/Weather/RainLine"]
+amount = 2000
+lifetime = 0.25
+explosiveness = 0.24
+interpolate = false
+fract_delta = false
+visibility_rect = Rect2(-1000, 0, 2000, 2000)
+process_material = SubResource("ParticleProcessMaterial_5vvyt")
+
+[node name="RainLineNoCollision" type="GPUParticles2D" parent="Scene/Weather"]
+amount = 200
+amount_ratio = 0.2019
+texture = ExtResource("3_03owx")
+lifetime = 3.0
+preprocess = 2.0
+speed_scale = 35.0
+explosiveness = 0.03
+randomness = 0.39
+use_fixed_seed = true
+seed = 1000
+collision_base_size = 61.08
+visibility_rect = Rect2(-650, 0, 1300, 1500)
+draw_order = 0
+trail_enabled = true
+trail_sections = 2
+trail_section_subdivisions = 1
+process_material = SubResource("ParticleProcessMaterial_c6i3y")
+
+[node name="Lightning" type="DirectionalLight2D" parent="Scene/Weather"]
+energy = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Scene/Weather"]
+libraries = {
+&"": SubResource("AnimationLibrary_5vvyt")
+}
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="RainPostFx" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_c6i3y")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Interface" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,34 +279,48 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_trn2v")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Control"]
+[node name="Dev" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("weatherSlider", "weatherSpeedSlider", "LightningButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_20pc6")
+weatherSlider = NodePath("VBoxContainer/Str/STRHSlider")
+weatherSpeedSlider = NodePath("VBoxContainer/Speed/SpeedHSlider")
+LightningButton = NodePath("VBoxContainer/Button")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/Dev"]
 layout_mode = 0
 offset_right = 82.0
 offset_bottom = 26.0
 text = "0"
 
-[node name="Control" type="Control" parent="CanvasLayer/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Panel" type="Panel" parent="CanvasLayer/Control/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Dev"]
 layout_mode = 0
-offset_left = 160.0
-offset_top = 170.0
-offset_right = 382.0
-offset_bottom = 470.0
+offset_top = 26.0
+offset_right = 110.0
+offset_bottom = 66.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/Control/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Str" type="HBoxContainer" parent="CanvasLayer/Dev/VBoxContainer"]
+layout_mode = 2
+
+[node name="STRHSlider" type="HSlider" parent="CanvasLayer/Dev/VBoxContainer/Str"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Speed" type="HBoxContainer" parent="CanvasLayer/Dev/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpeedHSlider" type="HSlider" parent="CanvasLayer/Dev/VBoxContainer/Speed"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="CanvasLayer/Dev/VBoxContainer"]
+layout_mode = 2
+text = "Lightning()"
 
 [node name="Node" type="Node" parent="."]
 script = ExtResource("3_r0du0")

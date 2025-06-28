@@ -40,6 +40,16 @@ public static class MathfHelper
         return Math.Abs(a - b) < tolerance;
     }
     
+    public static bool AetD(this double a, double b, double tolerance = 0.1f)
+    {
+        return Math.Abs(a - b) < tolerance;
+    }
+    
+    public static bool AetV2(this Vector2 a, Vector2 b, float tolerance = 0.1f)
+    {
+        return a.X.AetF(b.X, tolerance) && a.Y.AetF(b.Y, tolerance);
+    }
+    
     /// <summary>
     /// 从一个 Vector2 插值到另一个 Vector2，并通过一个 0 到 1 的浮点数控制进度.
     /// 当 progress 为 0 时返回 from，当 progress 为 1 时返回 to.

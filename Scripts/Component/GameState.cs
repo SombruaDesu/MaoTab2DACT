@@ -76,6 +76,12 @@ public partial class GameState : Node
         Game.Scene.AddTag(scene,tag);
     }
 
+    public static void RemoveLevelTag(string scene, string tag)
+    {
+        Game.Scene.RemoveTag(scene,tag);
+    }
+
+    
     public static Node GetLevelNode(string path)
     {
         if(Game.Scene.CurLevel == null) return null;

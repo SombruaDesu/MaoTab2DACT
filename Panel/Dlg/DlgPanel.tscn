@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://g01sd6ef0hmt" path="res://Scripts/Panel/DlgPanel.cs" id="1_ahohy"]
 [ext_resource type="Script" uid="uid://070mqwiontnp" path="res://Scripts/Component/TypingEffectText.cs" id="2_8rnf8"]
 
-[node name="DlgPanel" type="Control" node_paths=PackedStringArray("DlgTextLabel", "continueMask", "optBox")]
+[node name="DlgPanel" type="Control" node_paths=PackedStringArray("DlgTextLabel", "continueMask", "optBox", "dlgWaitBar")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +14,7 @@ script = ExtResource("1_ahohy")
 DlgTextLabel = NodePath("Panel/VBoxContainer/TypingEffectText")
 continueMask = NodePath("Button")
 optBox = NodePath("Panel/VBoxContainer/OptBox")
+dlgWaitBar = NodePath("ProgressBar")
 
 [node name="Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -23,6 +24,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 198.0
+offset_top = 499.0
+offset_right = 954.79
+offset_bottom = 508.925
+show_percentage = false
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

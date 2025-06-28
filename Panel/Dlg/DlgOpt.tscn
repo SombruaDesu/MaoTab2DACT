@@ -2,12 +2,18 @@
 
 [ext_resource type="Script" uid="uid://cj0nuvyfni6" path="res://Scripts/Panel/DlgOpt.cs" id="1_nfghm"]
 
-[node name="DlgOpt" type="MarginContainer" node_paths=PackedStringArray("label", "button")]
+[node name="DlgOpt" type="MarginContainer" node_paths=PackedStringArray("label", "button", "optWaitBar")]
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 script = ExtResource("1_nfghm")
 label = NodePath("MarginContainer/RichTextLabel")
 button = NodePath("Button")
+optWaitBar = NodePath("ProgressBar")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+layout_mode = 2
+size_flags_vertical = 1
+show_percentage = false
 
 [node name="Button" type="Button" parent="."]
 show_behind_parent = true

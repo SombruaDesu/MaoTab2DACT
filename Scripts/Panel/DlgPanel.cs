@@ -3,9 +3,9 @@
  * @Description: 对话界面
  */
 
-
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using MaoTab.Scripts.Component;
@@ -22,9 +22,13 @@ public partial class DlgPanel : Control
     
     [Export] private VBoxContainer optBox;
     
+    [Export] private ProgressBar dlgWaitBar;
+    
     public void Init()
     {
         Hide(false);
+        
+        dlgWaitBar.Visible = false;
         
         continueMask.ButtonUp += () =>
         {
@@ -32,7 +36,39 @@ public partial class DlgPanel : Control
             _onContinue = null;
         };
     }
+    
+    
+    public async Task WaitDlg(
+        Action                  action,
+        float                   seconds,
+        CancellationTokenSource cancellationToken = default)
+    {
+        if(cancellationToken == null) return;
+        
+        dlgWaitBar.Visible = true;
 
+        try
+        {
+            float elapsed = 0f;
+            while (elapsed < seconds && !cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(10, cancellationToken.Token);
+
+                elapsed += (float)Game.PhysicsDelta;
+                dlgWaitBar.Value = MathF.Min((float)dlgWaitBar.MaxValue,
+                    (float)dlgWaitBar.MaxValue * (elapsed / seconds));
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            dlgWaitBar.Visible = false;
+        }
+        
+        if(cancellationToken.IsCancellationRequested) return;
+        
+        action?.Invoke();
+    }
+    
     public void Show(bool anim)
     {
         if (anim)
@@ -93,11 +129,33 @@ public partial class DlgPanel : Control
             var optNode = await ResourceHelper.LoadPacked<DlgOpt>("res://Panel/Dlg/DlgOpt.tscn", optBox);
             _opts.Add(optNode);
             var index1  = index;
+            
+            CancellationTokenSource cancellationToken = new();
+            
             optNode.Fresh(opt.Line.TextWithoutCharacterName.Text, () =>
             {
                 onSelect?.Invoke(index1);
                 ClearDlgOpt();
             });
+            
+            foreach (var attribute in opt.Line.TextWithoutCharacterName.Attributes)
+            {
+                switch (attribute.Name)
+                {
+                    case "wait":
+                        if (attribute.Properties.TryGetValue("time", out var bProperty))
+                        {
+                            optNode.WaitOpt(() =>
+                            {
+                                cancellationToken.Cancel();
+                                onSelect?.Invoke(index1);
+                            },
+                            bProperty.IntegerValue, // 自动选择时间
+                            cancellationToken);
+                        }
+                        break;
+                }
+            }
         }
     }
 }
